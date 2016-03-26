@@ -42,16 +42,13 @@ points should be determined by IndVal maxima or z-score maxima
 argument from the original TITAN funtion call.}
 }
 \value{
-A list of four elements: \itemize{ \item{bt.metrics }{A
-  matrix with nrow equal to number of taxa where the first column
-  is the bootstrapped IndVal or z score maximum, the second is
-  the environmental value, the third is the indicator direction,
-  and the fourth is the p value at that point.} \item{ivzs }{Z
-  scores for all taxa across candidate change points in the
-  replicate sample} \item{bsrti }{A sorted version of the
-  bootstrapped environmental gradient} \item{rspdr }{Response
-  direction (1 or 2) for all taxa across candidate change points
-  in the replicate sample} }
+A list of four elements:
+\itemize{
+  \item{bt.metrics}{A matrix with nrow equal to number of taxa where the first column is the bootstrapped IndVal or z score maximum, the second is the environmental value, the third is the indicator direction, and the fourth is the p value at that point.}
+  \item{ivzs}{Z scores for all taxa across candidate change points in the replicate sample}
+  \item{bsrti}{A sorted version of the bootstrapped environmental gradient}
+  \item{rspdr}{Response direction (1 or 2) for all taxa across candidate change points in the replicate sample}
+}
 }
 \description{
 This function implements resampling (with replacement) of the

@@ -55,13 +55,6 @@ the original TITAN funtion call.}
 \item{numUnit}{An argument specifying the number of values along
 the environmental gradient.}
 }
-\value{
-A list of two items: \itemize{ \item{bSeq }{An index of
-  the sequence of bootstrap replicates.  The structure of bSeq
-  will differ for sequential or parallel processing.}
-  \item{ivz.bt.list }{Itself a list of four items comprising
-  output passed on from function 'tboot'} }
-}
 \description{
 A wrapper function for controlling the implementation of
 bootstrap replicates using the function 'tboot' by sequential or

@@ -50,29 +50,22 @@ preserve active memory.  This fucntion is sometimes necessary
 for large data files (e.g., >400 sampling sites and >100 taxa).}
 }
 \value{
-A list with 13 items: \itemize{ \item{sppmax
-  }{Description of 'comp1'} \item{sumz.cp }{Description of
-  'comp1'} \item{env }{The vector of environmental values used in
-  the TITAN function call} \item{taxa }{The site-by-taxon matrix
-  used in the TITAN function call} \item{envlcs }{A vector of
-  candidate partitions derived from subtracting 'minSplt' from
-  'env'} \item{srtEnv }{A sorted version of environmental values}
-  \item{ivzScores }{A matrix containing group membership, z
-  scores, IndVals, and p values for each taxon at every candidate
-  partition in 'envcls'} \item{ivz }{A 2-column matrix containing
-  parallel vectors of sum(z-) and sum(z+ scores for every
-  candidate partition in 'envcls')} \item{ivz.f }{A 2-column
-  matrix containing parallel vectors of sum(z-) and sum(z+ scores
-  filtered by pure and reliable taxa for every candidate
-  partition in 'envcls')} \item{maxSumz }{A 2-column matrix of
-  environmental values at sum(z-) and sum(z+) maxima across all
-  bootstrap replicates} \item{maxFsumz }{A 2-column matrix of
-  environmental values at filtered sum(z-) and sum(z+) maxima
-  across all bootstrap replicates} \item{metricArray }{An array
-  of group membership, env change points, z scores, and p values
-  equivalent to 'ivzScores' for each bootstrap replicate}
-  \item{targs }{A vector of arguments used in the TITAN function
-  call} }
+A list with 13 items:
+\itemize{
+  \item{sppmax}{Description of 'comp1'}
+  \item{sumz.cp}{Description of 'comp1'}
+  \item{env}{The vector of environmental values used in the TITAN function call}
+  \item{taxa}{The site-by-taxon matrix used in the TITAN function call}
+  \item{envlcs}{A vector of candidate partitions derived from subtracting 'minSplt' from 'env'}
+  \item{srtEnv}{A sorted version of environmental values}
+  \item{ivzScores}{A matrix containing group membership, z scores, IndVals, and p values for each taxon at every candidate partition in 'envcls'}
+  \item{ivz}{A 2-column matrix containing parallel vectors of sum(z-) and sum(z+ scores for every candidate partition in 'envcls')}
+  \item{ivz.f}{A 2-column matrix containing parallel vectors of sum(z-) and sum(z+ scores filtered by pure and reliable taxa for every candidate partition in 'envcls')}
+  \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and sum(z+) maxima across all bootstrap replicates}
+  \item{maxFsumz}{A 2-column matrix of environmental values at filtered sum(z-) and sum(z+) maxima across all bootstrap replicates}
+  \item{metricArray}{An array of group membership, env change points, z scores, and p values equivalent to 'ivzScores' for each bootstrap replicate}
+  \item{targs}{A vector of arguments used in the TITAN function call}
+}
 }
 \description{
 The primary wrapper function controlling operation of all

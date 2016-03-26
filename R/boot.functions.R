@@ -44,16 +44,13 @@
 #'   points should be determined by IndVal maxima or z-score maxima
 #'   (as in Baker and King 2010). The default is to pass on the
 #'   argument from the original TITAN funtion call.
-#' @return A list of four elements: \itemize{ \item{bt.metrics }{A
-#'   matrix with nrow equal to number of taxa where the first column
-#'   is the bootstrapped IndVal or z score maximum, the second is
-#'   the environmental value, the third is the indicator direction,
-#'   and the fourth is the p value at that point.} \item{ivzs }{Z
-#'   scores for all taxa across candidate change points in the
-#'   replicate sample} \item{bsrti }{A sorted version of the
-#'   bootstrapped environmental gradient} \item{rspdr }{Response
-#'   direction (1 or 2) for all taxa across candidate change points
-#'   in the replicate sample} }
+#' @return A list of four elements:
+#' \itemize{
+#'   \item{bt.metrics}{A matrix with nrow equal to number of taxa where the first column is the bootstrapped IndVal or z score maximum, the second is the environmental value, the third is the indicator direction, and the fourth is the p value at that point.}
+#'   \item{ivzs}{Z scores for all taxa across candidate change points in the replicate sample}
+#'   \item{bsrti}{A sorted version of the bootstrapped environmental gradient}
+#'   \item{rspdr}{Response direction (1 or 2) for all taxa across candidate change points in the replicate sample}
+#' }
 #' @references Baker, ME and RS King.  2010. A new method for
 #'   detecting and interpreting biodiversity and ecological
 #'   community thresholds. Methods in Ecology and Evolution 1(1):
@@ -68,8 +65,8 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
   ## Create empty arrays for storing sum(z-) and sum(z+) across
   ## envcls by replicate
   boot.metrics <- rep(NA, length(bSeq))
-  numUnit = length(env)
-  rnum = runif(1, 0, 100)
+  numUnit <- length(env)
+  rnum <- runif(1, 0, 100)
   max.btSumz <- rep(NA, 2)
 
   for (i in 1:length(bSeq)) {
@@ -113,9 +110,9 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
     ## imax or zmax),z.score,iv.p
     for (j in 1:numTxa) {
       if (imax == FALSE) {
-        maxSplt = which.max(abs(ivzScores.bt[j + (numTxa),]))
+        maxSplt <- which.max(abs(ivzScores.bt[j + (numTxa),]))
       } else {
-        maxSplt = which.max(abs(ivzScores.bt[j + (numTxa * 2), ]))
+        maxSplt <- which.max(abs(ivzScores.bt[j + (numTxa * 2), ]))
       }
       bt.metrics[j, 1] <- ivzScores.bt[j, maxSplt]
       bt.metrics[j, 2] <- (bSrti[minSplt + maxSplt - 1] +
@@ -238,11 +235,11 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
 #'   the original TITAN funtion call.
 #' @param numUnit An argument specifying the number of values along
 #'   the environmental gradient.
-#' @return A list of two items: \itemize{ \item{bSeq }{An index of
-#'   the sequence of bootstrap replicates.  The structure of bSeq
-#'   will differ for sequential or parallel processing.}
-#'   \item{ivz.bt.list }{Itself a list of four items comprising
-#'   output passed on from function 'tboot'} }
+#' @return A list of two items:
+#' \itemize{
+#'   \item{bSeq}{An index of the sequence of bootstrap replicates.  The structure of bSeq will differ for sequential or parallel processing.}
+#'   \item{ivz.bt.list}{Itself a list of four items comprising output passed on from function \code{\link{tboot}}
+#' }
 #' @references Baker, ME and RS King.  2010. A new method for
 #'   detecting and interpreting biodiversity and ecological
 #'   community thresholds. Methods in Ecology and Evolution 1(1):
@@ -265,8 +262,8 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
     cl <- parallel::makeCluster(cores, type = "SOCK")
     # parallel::clusterExport(cl,
     # c('indval','indvals','permiv','b.getivz','indvalp','indvalps','ivzsums'))
-    bSeq = parallel::clusterSplit(cl, 1:nBoot)
-    ivz.bt.list = parallel::clusterApply(cl, bSeq, tboot, env = env,
+    bSeq <- parallel::clusterSplit(cl, 1:nBoot)
+    ivz.bt.list <- parallel::clusterApply(cl, bSeq, tboot, env = env,
       taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm,
       memory = memory, imax = imax)
     parallel::stopCluster(cl)
@@ -369,17 +366,15 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 #' @param minSplt An argument specifying minimum split size of
 #'   partitioning along the environmental gradient.  The default is
 #'   to use the value specified in the original TITAN function call.
-#' @return A list of six items: \itemize{ \item{sppSub1 }{A vector
-#'   of taxon index numbers for pure and reliable decreasers}
-#'   \item{sppSub2 }{A vector of taxon index numbers for pure and
-#'   reliable increasers} \item{sppmax }{The completed
-#'   taxon-specific summary output table for TITAN} \item{maxSumz
-#'   }{A 2-column matrix of environmental values at sum(z-) and
-#'   sum(z+) maxima across all bootstrap replicates} \item{maxFsumz
-#'   }{A 2-column matrix of environmental values at filtered sum(z-)
-#'   and sum(z+) maxima across all bootstrap replicates}
-#'   \item{metricArray}{An array of group membership, env change
-#'   points, z scores, and p values for passing to 'plot.IVecdf'} }
+#' @return A list of six items:
+#' \itemize{
+#'   \item{sppSub1}{A vector of taxon index numbers for pure and reliable decreasers}
+#'   \item{sppSub2}{A vector of taxon index numbers for pure and reliable increasers}
+#'   \item{sppmax}{The completed taxon-specific summary output table for TITAN}
+#'   \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and sum(z+) maxima across all bootstrap replicates}
+#'   \item{maxFsumz}{A 2-column matrix of environmental values at filtered sum(z-) and sum(z+) maxima across all bootstrap replicates}
+#'   \item{metricArray}{An array of group membership, env change points, z scores, and p values for passing to 'plot.IVecdf'}
+#' }
 #' @references Baker, ME and RS King.  2010. A new method for
 #'   detecting and interpreting biodiversity and ecological
 #'   community thresholds. Methods in Ecology and Evolution 1(1):

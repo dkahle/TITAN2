@@ -54,17 +54,15 @@ partitioning along the environmental gradient.  The default is
 to use the value specified in the original TITAN function call.}
 }
 \value{
-A list of six items: \itemize{ \item{sppSub1 }{A vector
-  of taxon index numbers for pure and reliable decreasers}
-  \item{sppSub2 }{A vector of taxon index numbers for pure and
-  reliable increasers} \item{sppmax }{The completed
-  taxon-specific summary output table for TITAN} \item{maxSumz
-  }{A 2-column matrix of environmental values at sum(z-) and
-  sum(z+) maxima across all bootstrap replicates} \item{maxFsumz
-  }{A 2-column matrix of environmental values at filtered sum(z-)
-  and sum(z+) maxima across all bootstrap replicates}
-  \item{metricArray}{An array of group membership, env change
-  points, z scores, and p values for passing to 'plot.IVecdf'} }
+A list of six items:
+\itemize{
+  \item{sppSub1}{A vector of taxon index numbers for pure and reliable decreasers}
+  \item{sppSub2}{A vector of taxon index numbers for pure and reliable increasers}
+  \item{sppmax}{The completed taxon-specific summary output table for TITAN}
+  \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and sum(z+) maxima across all bootstrap replicates}
+  \item{maxFsumz}{A 2-column matrix of environmental values at filtered sum(z-) and sum(z+) maxima across all bootstrap replicates}
+  \item{metricArray}{An array of group membership, env change points, z scores, and p values for passing to 'plot.IVecdf'}
+}
 }
 \description{
 A function to take output from TITAN's bootstrap procedure and
