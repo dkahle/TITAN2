@@ -1,0 +1,544 @@
+---
+title: "Glades.TITAN"
+author: "Matthew Baker (UMBC),  Ryan King (Baylor), and David Kahle (Baylor)"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Glades.TITAN}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+### An Introduction to Threshold Indicator Taxa Analysis with **TITAN2** (v2.1)
+
+The purpose of this vignette is to walk users through the basic functionality of the package **TITAN2** for analysis of taxon-specific contributions to community change along an environmental gradient.  The Everglades data for this vignette was described in [Baker and King (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full) first published by [King and Richardson (2003)](http://link.springer.com/article/10.1007/s00267-002-0036-4#/page-1).
+
+For users familiar with the original version of `titan()` and associated functions, released as a text file for R 2.9.2 in Appendix 3 of [Baker and King (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full), there are a number of updates included in the R package **TITAN2**, some of which may break your code.  First, the original scripts have been broken into modular component functions to facilitate dissemination through CRAN.  Second, a number of functions have been added to reduce run time and allow for the handling of large datasets.  Third, several new analyses and plotting functions have been included, and others dropped.  Fourth, several minor bugs have been fixed; these include screens for inappropriate data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### First Steps
+
+For users new to **TITAN2**, the package can be loaded like any other R package downloaded from CRAN with the `install.packages()` function: i.e. `install.packages("TITAN2")`. The package can then be loaded into an active R session using the `library()` function:
+
+```{r}
+library(TITAN2)
+```
+
+As with the first version of the project, the function `titan()` requires a site by taxa matrix as well as an environmental gradient.  To facilitate this discussion, we have included in **TITAN2** examples of both: the datasets `glades.taxa` and `glades.env`.  This is the same data included with the original version in [Baker and King (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full).  Users can load the taxa data with the `data()` function:
+
+```{r}
+data(glades.taxa)
+str(glades.taxa, list.len = 5)
+```
+
+*See below for a discussion of how you can get your data into R.*
+
+The `data()` function loads the site by taxa matrix of 126 rows and 164 columns `glades.taxa`, and the `str()` ("structure") function gives a summary of what the data object is.  The columns of `glades.taxa` contain $log_{10}(x+1)$ transformed densities of macroinvertebrate taxa (though transformation is usually unnecessary in **TITAN2**).  The rows are sample units.  Taxa names are 8-character abbreviations of scientific names. Only taxa with > = 5 occurrences are included.  Taxa in your file must occur > = 3 times.  Missing values are not allowed.  
+
+Loading the sample environmental gradient data is done similarly:
+
+```{r}
+data(glades.env)
+str(glades.env)
+```
+
+This dataset has 126 rows and 1 column, surface-water total phosphorus (ug/L).  As with the taxa data, missing values are not allowed in the environmental gradient data.  
+
+We are now ready to run the `titan()` function.  
+
+```{r, eval = F}
+glades.titan <- titan(glades.env, glades.taxa)
+```
+
+In the above use of `titan()` many parameters are set by default, but they can be customized to the user's circumstance by direct specification.  The default values assumed by the above call are
+
+```{r, eval = F}
+glades.titan <- titan(glades.env, glades.taxa, minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500, 
+  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE)
+```
+
+`titan()`'s extensive computations often require long run times, typically minutes or hours depending on the specifications.  To save you some time from running the above function yourself, we've included the results in the built-in dataset `glades.titan`, accessible with the `data()` function as before:
+
+```{r}
+data(glades.titan)
+```
+
+In `titan()` the primary arguments are the environmental gradient (here `glades.env`) and the taxa matrix (here `glades.taxa`).  When you use the function, be sure to save the output to another variable (this is the `glades.titan <- titan(gla...` part above).  Note that the deviance argument in `titan()` has been dropped from previous versions.  Other arguments include the following; you can learn more about them in the documentation of `titan()` obtained by typing `?titan`:
+
+- `minSplt`—the minimum number of observations on either side of a change point required to compute IndVal, $z$ scores, and associated statistics.  There are few reasons to make this value larger unless one is investigating sample bias.  Although small data sets may require reducing `minSplt`, it should never be smaller than 3.  
+
+- `numPerm`—the number of random permutations of the taxa data used to compare observed IndVal scores to random ordering of observations along the environmental gradient, compute IndVal p-values (the probability that the magnitude of the observed value is no different from a distribution of those obtained via random permutation), and to calculate the mean and standard deviation necessary for computing $z$ scores.  We recommend a minimum of 250 for this argument during data exploration, and higher numbers (e.g., 500 or 1000) for more formal analysis because larger numbers will result in convergence on a more precise $z$ score that will show less variation between runs.  Larger values will increase computation time.
+
+- `boot`—a logical `TRUE` or `FALSE` controlling whether the function will employ a bootstrap resampling procedure to estimate uncertainty associated with the sample.  This is strongly recommended as the absence of the bootstrap results and associated diagnostics will almost certainly result in interpretive errors, and should not be called **TITAN2** ([Baker and King 2013](http://www.bioone.org/doi/abs/10.1899/12-142.1)).  
+
+- `nBoot`—controls the number of new datasets created by resampling the observed data with replacement.  Values <500 can be used for exploration of large datasets to reduce computation time, but we recommend 500 or 1000 for formal analysis.
+
+- `imax`—controls whether the IndVal maximum or the $z$-score maximum (default and v1.0) is used to determine change points for each taxon.  This argument is provided as an option for those users concerned about the effect of bias introduced by the permutation used to calculate $z$ scores (see [Baker and King 2013](http://www.bioone.org/doi/abs/10.1899/12-142.1) for explanation).  In practice, we have found that $z$-score bias is rarely a concern with empirical biological survey data. Nevertheless, we provide the option because we are unable to anticipate the full range of applications users may require.
+
+- `ivTot`—controls whether IndVal scores are computed by mean relative abundance across partitions (the default; after [Dufrene and Legendre 1997](http://www.esajournals.org/doi/abs/10.1890/0012-9615(1997)067[0345:SAAIST]2.0.CO;2)) or relative abundance obtained by the ratio of summed abundance in each partition to the total.  We have found that the latter is helpful for exploring the effects of extreme skew in samples along the environmental gradient, but do not generally recommend it.
+
+- `pur.cut`—the cut off value that defines what is considered a pure response direction.  The default (0.95) requires that 95% of the results from bootstrap replicates agree with the observed response direction. NOTE: it is possible for strong unimodal responses to produce high reliability and low purity.
+
+- `rel.cut`—the cut off value that defines what is considered a reliable response magnitude.  The default (0.95) requires that 95% of the results from bootstrap replicates have a IndVal p-value less than or equal to 0.05, indicating a response magnitude at a given change point location that differs significantly from what would expect from random permutation.  Low reliability often indicates that resampling can produce sample distributions without a strong response signal, but this is not always the case.
+
+- `ncpus`—controls the number of processing cores to which the bootstrap procedure is allocated.  The default (1) processes each bootstrap replicate in sequence.  If ncpus>1 the replicates will be allocated to different cores and processed in parallel using the R package **parallel** (which comes with R).  Parallel processing dramatically shortens run time and is recommended for most desktop applications as modern personal computers typically have 2-8 processing cores. 
+
+- `memory`—a logical indicating whether temporary files should be written to disk during processing of bootstrap replicates.  Although this IO procedure can extend sequential processing time, its effects is negligible relative to parallelization, and we recommend it for data matrices larger than 250,000 elements (e.g., 500 sites by 500 taxa).  Note that use of `memory = TRUE` results in the creation of a scratch directory within the local workspace called "temp.dir"" containing the excess results from each bootstrap replicate necessary for accurate summary.  These files may be saved or discarded following each program run.
+
+During normal program operation, the taxa dataset is screened to assess whether it is appropriate for `titan()` and the following messages are written to the screen:
+
+```{r, echo = FALSE}
+message("100% occurrence detected 1 times (0.8% of taxa), use of TITAN less than ideal for this data type")
+message("Taxa frequency screen complete")
+```
+
+The first screen checks for excessively rare or common taxa occurrences and returns a warning if 100% or below minimum number of occurrences are detected.  In some cases where analysis would be nonsensical, `titan()` will end its run.  The second screen checks to make sure the environmental gradient and the taxa matrix have the same number of records.  
+
+The next set of messages detail progress of the change point analysis computations on the observed data:
+
+```{r, echo = FALSE}
+message("Determining partitions along gradient")
+message("Calculating observed IndVal maxima and class values")
+message("Calculating IndVals using mean relative abundance")
+message("Permuting IndVal scores")
+message("IndVal $z$ score calculation complete")
+message("Summarizing Observed Results")
+message("Estimating taxa change points using z-score maxima")
+```
+
+The final message issued in a normal execution presents the progress of the bootstrap routine by counting off replicates (if `ncpus = 1`):
+
+```{r, echo = FALSE}
+message("Bootstrap resampling in sequence...")
+message(1*1)
+message(2*1)
+message(3*1)
+```
+
+or informing the user that the bootstrap is running in parallel (if `ncpus = 2` or greater): 
+
+```{r, echo = FALSE}
+message("Bootstrap resampling in parallel using 2 CPUs...no index will be printed to screen")
+```
+
+This is the most computationally intensive step in the analysis.  The Everglades dataset takes ~6-7 seconds per bootstrap replicate, depending on processor speed.  Thus, 500 replicates take 3500 seconds or 58 minutes and ~60 minutes for the entire run.  However, `ncpus = 2` cuts this time in half to about 32 min, and `ncpus = 4` lowers the time to about 15 min, etc.  For initial explorations, users may consider setting `boot = FALSE`.  However, we do not recommend any interpretation of graphical outputs or many tabular outputs until filtered by bootstrap diagnostics.
+
+
+
+
+
+#### Note on Loading Your Own Data
+
+As noted in the previous section, `titan()` requires two datasets: a site by taxa matrix and a environmental gradient dataset.  The site by taxa matrix should ideally be of class `data.frame`, the standard data structure in R.  These can be read into R in several ways, for example the `read.table()` or `read.csv()` functions.  The **readr** package has other similar functions to help read data into R.  The environmental gradient dataset can either be a `data.frame` object with one column or simply an atomic vector of class `numeric`.  In addition to the the data-reading functions listed above, `scan()` can be helpful for reading data of this type into R.  In addition to these, the `file.choose()` function allows users to select files interactively, which can help avoid pathing issues.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Tabular Results
+
+Community change points are returned automatically at the end of each `titan()` call, but these tabular sum(z) change point results are part of the titan object and may be called as follows:
+```{r}
+glades.titan$sumz.cp
+```
+
+The columns include the observed change point (`cp`) defined by the sum(z) maximum and selected quantiles (0.05-0.95) of the change points determined by resampling the observed data.
+
+Rows include the change points corresponding to declining or negatively responding taxa (sumz-), those corresponding to the increasing or positively responding taxa (sumz+), and the corresponding scores using filtered versions of both sums.  Filtering is achieved by computing the sum(z) scores using only those taxa that are determined to be pure and reliable indicators.  FIltered scores are sensitive to `pur.cut` and `rel.cut` arguments at the `titan()` function call.  Filtered scores may be used as a check to indicate whether impure or unreliable indicator taxa are contributing substantially to the pattern of sum(z) scores (in this case they do not).
+
+To obtain tabular results for individual taxa we can simply type `glades.titan$sppmax`.  Since this is a $164 \times 16$ matrix, we use the `head()` function to just display the top to get a feel for the results:
+
+```{r}
+head(glades.titan$sppmax)
+```
+
+The resulting table lists all taxa as rows and the columns are as follows:
+
+- `ienv.cp`—environmental change point for each taxon based on IndVal maximum (used if `imax = TRUE`)
+
+- `zenv.cp`—environmental change point for each taxon based on z maximum (default, `imax = FALSE`)
+
+- `freq`—number of non-zero abundance values per taxon
+
+- `maxgrp`—1 if z- (negative response); 2 if z+ (positive response)
+
+- `IndVal`-[Dufrene and Legendre 1997](http://www.esajournals.org/doi/abs/10.1890/0012-9615(1997)067[0345:SAAIST]2.0.CO;2) IndVal statistic, scaled 0-100%
+
+- `obsiv.prob`—the probability of obtaining an equal or larger IndVal score from random data; (number of random IndVals > =  observed IndVal)/ numPerm
+
+- `zscore`—IndVal $z$ score
+
+- `5%`, `10%`, `50%`, `90%`, `95%`—change point quantiles among bootstrap replicates
+
+- `purity`—proportion of replicates matching observed `maxgrp` assignment
+
+- `reliability`—proportion of replicate `obsiv.prob` values < =  0.05
+
+- `z.median`—median score magnitude across all bootstrap replicates
+
+- `filter`—logical (if >0) indicating whether each taxa met purity and reliability criteria, value indicates `maxgrp` assignment.
+
+Remember that each `titan` object (created with the `titan()` function) contains a number of additional elements for post hoc exploration:
+
+```{r}
+str(glades.titan, max.level = 1, give.attr = FALSE)
+```   
+
+`summary(glades.titan)` provides similar output.  The items within each `titan` object include:
+
+- `sppmax`—the taxon-specific result table described above
+
+- `sumz.cp`—the community result table described above
+
+- `env`—the environmental gradient, i.e. `glades.env`
+
+- `taxa`—the taxa matrix, i.e. `glades.taxa`
+
+- `envcls`—the environmental values used as candidate split points
+
+- `srtEnv`—a sorted version of the environmental gradient
+
+- `ivzScores`—a matrix containing `maxgrp`, $z$ scores, indVals, and `obsiv.prob` for each taxon
+
+- `ivz`—sums of all taxa `z` scores belonging to `maxgrp = 1` or `maxgrp = 2` at each candidate split point along the environmental gradient
+
+- `ivz.f`—sums of all pure and reliable taxa $z$ scores belonging to `maxgrp = 1` or `maxgrp = 2` at each candidate split point along the environmental gradient
+
+- `maxSumz`—the environmental value corresponding to the unfiltered sum(z) maximum for each maxgrp and each bootstrap replicate
+
+- `maxFsumz`—the environmental value corresponding to the filtered sum(z) maximum for each maxgrp and each bootstrap replicate
+
+- `metricArray`—an array of summary metrics from the bootstrap based on ivzScores
+
+- `arguments`—a list of arguments used in `titan()` function call
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Visualizing Results
+
+#### `plotSumz()`
+
+The community-level output may be viewed using the `plotSumz()` function.  There are many options for changing the look of the graph; see its full documentation with `?plotSumz`. An abbreviated version is presented below.  To begin, here's how you use `plotSumz()`:
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 6,fig.width = 8}
+plotSumz(glades.titan, filter = FALSE)
+```
+
+The filled and hollow symbols denote the magnitude of summed $z$ scores of increasing (z+) or decreasing (z-) taxa. Peaks in the values indicate points along the environmental gradient that produce large amounts of change in community composition and/or structure.  Plateaus denote regions of change. Solid and dashed lines are cumulative frequency distributions of sum(z-) and sum(z+) maxima (respectively) across bootstrap replicates.  Vertical CFDs indicate narrow uncertainty about where the maximum chnage occurs, sloping or stair-step CFDs suggest broad uncertainty regarding the location of maximum change.
+
+Note that users can adjust colors (e.g. col1 and fil1) and labels for the left hand y-axis using the argument `y1label` or the x-axis with `xlabel`.  Setting `filter = TRUE` will display the filtered sum(z) scores.  In general, the filtered scores should show a similar pattern but be somewhat lower in magnitude depending on contributions from impure or unreliable taxa:  
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 6,fig.width = 8}
+plotSumz(glades.titan, filter = TRUE)
+```
+
+
+<!-- Besides the mandatory titan object, arguments include: -->
+
+<!-- - `filter`—controls whether filtered or unfiltered (default) sum(z) scores are plotted -->
+
+<!-- - `cumfrq`—logical whether cumulative frequencies are plotted -->
+
+<!-- - `bootz1`—logical whether cumulative frequencies for `maxgrp = 1` should be plotted -->
+
+<!-- - `bootz2`—logical whether cumulative frequencies for `maxgrp = 2` should be plotted -->
+
+<!-- - `sumz1`—logical whether sum(z) for `maxgrp = 1` should be plotted -->
+
+<!-- - `sumz2`—logical whether sum(z) for `maxgrp = 2` should be plotted -->
+
+<!-- - `xmin`—controls the x-axis minimum -->
+
+<!-- - `xmax`—controls the x-axis maximum -->
+
+<!-- - `xlabel`—text string for x-axis label -->
+
+<!-- - `y1label`—text string for first y-axis, default labels are filtered or unfiltered sum(z) -->
+
+<!-- - `y2label`—text string for second y-axis -->
+
+<!-- - `log`—whether any axis should be log transformed for display (default is " ") -->
+
+<!-- - `at`—controls coordinates of x-axis location -->
+
+<!-- - `tck`—controls length and direction of tick marks; set to point -->
+
+<!-- - `bty`—controls box type around plot; default = "u" -->
+
+<!-- - `ntick`—number of tick marks to be plotted per axis -->
+
+<!-- - `prtty`—controls whether `pretty()` is used to plot axis labels -->
+
+<!-- - `dig`—controls number of decimal digits in axes -->
+
+<!-- - `cex`—controls size of points in graph -->
+
+<!-- - `cex.leg`—controls size of legend text/symbols -->
+
+<!-- - `cex.lab` and cex.axis—control size of text on axes -->
+
+<!-- - `leg.x—x` coordinate of legend -->
+
+<!-- - `leg.y—y` coordinate of legend -->
+
+<!-- - `legend`—logical whether legend should be plotted -->
+
+<!-- - `pch1`—point symbols for `maxgrp = 1` -->
+
+<!-- - `pch2`—point symbols for `maxgrp = 2` -->
+
+<!-- - `col1`—color for `maxgrp = 1` -->
+
+<!-- - `col2`—color for `maxgrp = 2` (unfilled) -->
+
+
+
+
+
+
+
+#### `plotTaxa()`
+
+Significant indicator taxa change points can be plotted, too.  Again, there are many options for changing the look of the graph, so see the full documentation with `?plotTaxa`, but you can get started by simply calling `plotTaxa()` on the output of `titan()`:
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 8,fig.width = 8}
+plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
+``` 
+
+Each plot includes robust declining taxa on the left axis, increasers on the right.  Each observed change point (or median of bootstrap replicates if `z.med = TRUE`) is indicated by the circular symbol; the horizontal lines suggest 5-95% quantiles from the bootstrapped change point distribution.
+
+Optional arguments include:
+
+- `z1`—logical whether `maxgrp = 1` taxa change points should be plotted
+
+- `z2`—logical whether `maxgrp = 2` taxa change points should be plotted
+
+- `interval`—logical whether 5%-95% quantile intervals should be plotted
+
+- `prob95`—controls whether change point symbols are plotted at observed value or at quantile extremes, the extremes are useful for thinking about change from a risk perspective
+
+- `z.med`—controls whether change point symbols are plotted at median of bootstrap replicates and using median $z$ score instead of observed value
+
+- `cex.taxa`—controls size of taxon names in graph.
+
+- `all`—determines whether all taxa or just pure and reliable taxa are plotted.
+
+`log`, `at`, `xmin`, `xmax`, `xlabel`, `tck`, `bty`, `ntick`, `prtty`, `dig`, `leg.x`, `leg.y`, `cex`, `cex.axis`, `cex.leg`, `cex.lab`, `legend`, `col1`, `fil1`, `col2`, and `fil2` are the same as in `plotSumz()` above.
+
+Here is the same function with `z.med = TRUE`:
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 8,fig.width = 8}
+plotTaxa(glades.titan,xlabel = "Surface Water TP (ug/l)",z.med = T)
+``` 
+Alternatively, with `prob95 = TRUE`:
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 8,fig.width = 8}
+plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = F, prob95 = T)
+``` 
+
+Importantly, some of the control over the plotting that was optional in the original version has been internalized and warnings are issued when users plot results without using the bootstrap results.  Tables of significant z- and z+ taxa used to make graph are automatically returned but no longer automatically written as text files (these can be easily extracted from the `glades.titan$sppmax` table).
+
+
+
+
+
+
+
+
+#### `plotCPs()`
+
+In **TITAN2** 2.0, there are several new plotting options; all contained within a single function centered on interpreting taxon-specific change points in the context of the results from the bootstrap resampling procedure.
+
+- `taxa.dist`—logical controls if taxon-specific change point distributions are plotted
+
+- `z.weights`—logical controls if the median z-sore magnitude is used to weight the PDF from the distribution of resampled change points
+
+- `taxaID`—if a number or name, creates a single taxon-specific abundance plot
+
+- `cp.med`—logical controls if change point locations should be plotted using the median value across all bootstrap replicates instead of the observed value
+
+- `cp.trace`—logical controls if IndVal and zscores are plotted for all candidate change points
+
+- `cp.hist`—logical controls if histogram of change point PDF is plotted
+
+- `stacked`—logical controls if change point PDFs for increasing and decreasing taxa are stacked or plotted separately
+
+The remaining arguments: `xlabel`, `xmin`, `xmax`, `tck`, `bty`, `ntick`, `cex`, `cex.axis`, `cex.leg`, `cex.lab`, `leg.x`, `leg.y` and `legend` are the same as in the previous plotting functions.
+
+The default graphic from `plotCPs()` is a $z$-score weighted probability density function derived from the empirical distribution of change points across all bootstrap replicates plotted as a histogram for each pure and reliable taxon (blue for decreasers and red for increasers). NOTE: When you try to plot the matrix of plots consecutively you can generate an error about the "Figure margins too large".  This is easily addressed by closing the plot window, or turning the graphics device off.
+
+```{r, fig.height = 10,fig.width = 10}
+plotCPs(glades.titan)
+``` 
+
+Typically, these histograms are visually scanned to distinguish those taxa whose bootstrapped change point distributions are clearly unimodal from those that are multimodal or more uniform.  For any taxon of interest, a closer inspection can be achieved by setting the argument "taxaID" to a taxon ID number or label name.  For example, in the plot above, if the declining (i.e., `maxgrp = 1`) taxon `"ENALCIVI"` is of interest, the user can set `taxaID = 57` or `taxaID = "ENALCIVI"` and either will produce the plot below.  Again, you may need to close the plotting window or turn graphics off because we are switching plot margins.
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 5,fig.width = 8}
+plotCPs(glades.titan, taxaID = "ENALCIVI", xlabel = "Surface Water TP (ug/l)")
+``` 
+
+The base plot is simply taxon-specific abundance (black circles) along the environmental gradient.  Overlaid near the top of the plot in red is the observed change point, or if `cp.med = TRUE`, the median change point across all bootstrap replicates.   Overlaid on the abundance plot is the $z$-weighted (if `z.weights = TRUE`) probability density function of change point locations across all bootstrap replicates (blue histogram).  Setting `cp.hist = FALSE` will remove the histogram.  On the other hand, setting `cp.trace = TRUE` will plot the observed IndVal $z$ scores (in red; what **TITAN2** uses by default if `imax = FALSE`) and the observed IndVal scores (in grey) for every candidate change point along the environmental gradient (see [Baker and King 2013](http://www.bioone.org/doi/abs/10.1899/12-142.1) for examples):
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 5,fig.width = 8}
+plotCPs(glades.titan, taxaID = "ENALCIVI", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+``` 
+
+Below is an increasing taxon from the same data set with a conspicuously bimodal distribution of replicate change points:
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 5,fig.width = 8}
+plotCPs(glades.titan, taxaID = "OSTRASP5", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+``` 
+
+Here it appears as if two potential change points were predominantly identified:  one that kept nearly all of the abundance to the right, and another (the observed) than kept nearly all the absences to the left.  
+
+Finally, if `taxa.dist = FALSE`, instead of a taxon-specific plot, `plotCPs()` will produce a plot of the summed $z$-weighted (if `z.weights = TRUE`) probability densities across increasing (`maxgrp = 1`; blue) decreasing (`maxgrp = 2`; red) and all pure and reliable taxa (filter>0; grey):
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 6,fig.width = 8}
+plotCPs(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)")
+```  
+
+The accompanying table summarizes the location of both the $z$-weighted and unweighted maxima along the environmental gradient, as well as the magnitude of those maxima for decreasing taxa (`maxgrp = 1`), increasing taxa (`maxgrp = 2`), and all pure and reliable taxa combined.  In this case there appears to be good correspondence between the sum(z) maxima and the summed $z$-weighted PDF maxima.  In other words, the points at which community change appears to be greatest corresponds to where the sum of individual taxa changes tend to occur, even when different sets of observations are used.  In practice, this is a desirable result we would expect to occur most of the time, yet exceptions to this pattern can also be informative.  For example, in the plot above, there appears to be another candidate change point closer to ~10 ug/l where declining taxa tend to change frequently, and at both ~25 ug/l and ~40 ug/l there are large numbers of frequently occurring change points across both decliners and increasers even though they are not particularly large for either group by itself. 
+
+Alternatively, these different sums can be represented as a stacked bar chart by setting `stacked = TRUE`:
+
+```{r, echo = FALSE}
+graphics.off()
+```
+```{r, fig.height = 6,fig.width = 8}
+plotCPs(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", stacked = TRUE)
+```  
+
+Here the blue and red circles correspond to the location of the respective maxima for decreasing and increasing taxa change points.  In either case, the summed PDFs are meant to provide complementarity to the `plotSumz()` graphic about where there are key values along the environmental gradient where many coincident change points occur regardless of the sample.
+
+
+**Citations:**
+
+  *Baker, M.E. and R. S. King.  2010. A new method for detecting and interpreting biodiversity and ecological community thresholds. Methods in Ecology and Evolution 1: 25-43.Z*
+
+  *Baker, M.E. and R. S. King.  2013. Of TITAN and strawmen: an appeal for greater understanding of community data. Freshwater Science  32(2):489-506.*
+  
+  *King, R.S. and C. J. Richardson. 2003. Integrating bioassessment and ecological risk assessment: an approach to developing numerical water-quality criteria. Environmental Management 31(6):795-809.*
+
+  *Dufrene, M. and P. Legendre. 1997. Species assemblages and indicator species: the need for a flexible asymmetrical approach. Ecological Monographs. 67:345-366.*
