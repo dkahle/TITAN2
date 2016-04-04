@@ -19,7 +19,8 @@ Description: Uses indicator species scores across binary partitions of
   understanding of community data. Freshwater Science 32(2):489-506.
 VignetteBuilder: knitr
 Depends: R (>= 2.15.0)
-Imports: parallel
+Imports: parallel,
+    ggplot2
 Suggests: knitr,
     rmarkdown
 License: GPL-2

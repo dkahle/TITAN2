@@ -3,7 +3,8 @@ Version 2.2
 
 NEW FEATURES
 
-*
+* new function ggplotTaxa plots taxa using the ggplot2 framework.
+    TITAN2 now imports ggplot2.
 *
 
 CHANGES
