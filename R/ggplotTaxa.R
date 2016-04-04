@@ -269,16 +269,20 @@ ggplotTaxa <- function(titan.out, z1 = TRUE, z2 = TRUE, interval = TRUE, prob95 
     geom_segment(aes(
         x = p05, xend = p95,
         y = y, yend = y,
-        color = factor(filter), size = zscore, alpha = abs(zscore)
+        color = factor(filter), size = zscore, alpha = abs(zscore), fill = factor(filter)
     ), lineend = "round") +
     # geom_point(aes(
     #     x = zenv.cp, y = y,
     #     color = factor(filter), size = zscore, alpha = .5
     # )) +
-    geom_segment(aes(x = zenv.cp, xend = zenv.cp, y = y-.3, yend = y+.3), size = .25) +
-    geom_text(aes(x = (p05+p95)/2, y = y, label = id), size = 2) +
+    # geom_segment(aes(x = zenv.cp, xend = zenv.cp, y = y-.3, yend = y+.3), size = .25) +
+    geom_point(aes(x = zenv.cp, y = y), size = .5) +
+    geom_text(
+      aes(x = (p05+p95)/2, y = y, label = paste0(id," (", round(zscore), ")")),
+      size = 2
+    ) +
     theme_bw() +
-    scale_alpha("Magnitude\nof z-score") +
+    scale_alpha("Magnitude\nof z-score", guide = FALSE) +
     scale_size(guide = FALSE) +
     # scale_y_continuous(
     #   breaks = ybreaks,
@@ -286,7 +290,8 @@ ggplotTaxa <- function(titan.out, z1 = TRUE, z2 = TRUE, interval = TRUE, prob95 
     # ) +
     scale_y_continuous("", breaks = NULL) +
     xlab("Surface Water TP (ug/L)") +
-    scale_color_discrete("", labels = c("1" = "z-", "2" = "z+"))
+    scale_color_discrete("", labels = c("1" = "z–", "2" = "z+")) +
+    guides(colour = guide_legend(override.aes = list(size = 3)))
 
   return(p)
 
