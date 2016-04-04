@@ -16,7 +16,7 @@
 #' 2013. Of TITAN and straw men: an appeal for greater understanding
 #' of community data. Freshwater Science 32(2):489-506.
 #'
-#' @import parallel
+#' @import parallel ggplot2
 #' @docType package
 #' @name TITAN2
 #' @importFrom graphics axis box legend mtext par plot points
