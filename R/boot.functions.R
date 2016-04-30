@@ -237,8 +237,11 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
 #'   the environmental gradient.
 #' @return A list of two items:
 #' \itemize{
-#'   \item{bSeq}{An index of the sequence of bootstrap replicates.  The structure of bSeq will differ for sequential or parallel processing.}
-#'   \item{ivz.bt.list}{Itself a list of four items comprising output passed on from function \code{\link{tboot}}
+#'   \item{bSeq}{An index of the sequence of bootstrap replicates.
+#'     The structure of bSeq will differ for sequential or
+#'     parallel processing.}
+#'   \item{ivz.bt.list}{Itself a list of four items comprising output
+#'   passed on from function \code{\link{tboot}}}
 #' }
 #' @references Baker, ME and RS King.  2010. A new method for
 #'   detecting and interpreting biodiversity and ecological
