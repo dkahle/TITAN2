@@ -105,6 +105,8 @@
 #' plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 #' plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)", log = "x")
 #' ggplotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
+#'
+#' library(ggplot2)
 #' ggplotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)") + scale_x_log10()
 #'
 ggplotTaxa <- function(titan.out, z1 = TRUE, z2 = TRUE, interval = TRUE, prob95 = FALSE,
