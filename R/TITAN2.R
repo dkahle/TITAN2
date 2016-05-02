@@ -19,9 +19,11 @@
 #' @import parallel ggplot2
 #' @docType package
 #' @name TITAN2
+#' @importFrom Rcpp evalCpp
 #' @importFrom graphics axis box legend mtext par plot points
 #'   polygon segments symbols
 #' @importFrom stats approxfun median quantile runif sd
 #' @importFrom utils read.table write.table
+#' @useDynLib TITAN2
 #' @aliases TITAN2 package-TITAN2
 NULL
