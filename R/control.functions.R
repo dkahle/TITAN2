@@ -18,6 +18,7 @@
 #' @param minSplt The minimum split size used for partitioning.  The
 #'   default is to use the argument form the original TITAN function
 #'   call.
+#' @param messaging If \code{TRUE}, provide progress messages.
 #' @return A site by taxon matrix of sampled counts at each sampling
 #'   location.
 #' @references Baker, ME and RS King.  2010. A new method for
@@ -29,9 +30,9 @@
 #'   Freshwater Science 32(2):489-506.
 #' @author M. Baker and R. King
 #' @keywords TITAN ~kwd2
-txa.screen <- function(txa, minSplt = minSplt) {
+txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
 
-  message("Screening data...")
+  if(messaging) message("Screening taxa...")
   taxa <- data.matrix(txa)
   numUnit <- nrow(txa)
   if (numUnit < 10) stop("Number of observations too small")
@@ -40,11 +41,12 @@ txa.screen <- function(txa, minSplt = minSplt) {
   ocrnc <- colSums(taxa > 0, na.rm = TRUE)
   minTaxa <- min(ocrnc)
   if (max(ocrnc) == numUnit) {
-    message("  100% occurrence detected ", length(which(ocrnc == numUnit)),
-      " times (",
-      round((length(which(ocrnc == numUnit))/numUnit) * 100, digits = 1),
-      "% of taxa),\n  use of TITAN less than ideal for this data type."
-    )
+    detected_times <- sum(ocrnc == numUnit)
+    pct_of_taxa <- round((length(which(ocrnc == numUnit))/numUnit) * 100, digits = 1)
+    if(messaging) message(sprintf(
+      "  100%% occurrence detected %i times (%.1f%% of taxa),", detected_times, pct_of_taxa
+    ))
+    if(messaging) message("  use of TITAN less than ideal for this data type.")
   }
   if (minTaxa < 3) {
     stop("Minimum taxon occurrence frequency is 3, your data do not meet this criterion")
@@ -58,8 +60,7 @@ txa.screen <- function(txa, minSplt = minSplt) {
     }
   }
 
-
-  message("Taxa frequency screen complete.")
+  if(messaging) message("  taxa frequency screen complete.")
   taxa
 }
 
@@ -122,24 +123,22 @@ txa.screen <- function(txa, minSplt = minSplt) {
 #'   25:37.
 #' @author M. Baker and R. King
 #' @keywords TITAN
-env.part <- function(env, taxa, minSplt = minSplt) {
+env.part <- function(env, taxa, minSplt = minSplt, messaging = TRUE) {
+  if(messaging) message("Partitioning along gradient...")
   nUnit <- length(env)
   numUnit <- nrow(taxa)
-  if (nUnit != numUnit) {
-    stop("Number of sites not equal between env vector and taxa matrix")
-  }
+  if (nUnit != numUnit) stop("Number of sites not equal between env vector and taxa matrix")
   env <- as.matrix(env)
   rankEnv <- rank(env, ties.method = "random")
   srtEnv <- sort(env)
   srtEnv2 <- sort(rankEnv)
-  numTxa = ncol(taxa)
+  numTxa <- ncol(taxa)
   envcls <- srtEnv[(minSplt):(numUnit - minSplt)]
-  numClass = length(envcls)
+  numClass <- length(envcls)
   eclass <- matrix(NA, numUnit, numClass)
   for (c in 1:numClass) {
     eclass[, c] <- ((rankEnv > srtEnv2[minSplt + (c - 1)]) * 1) + 1
   }
-  message("Determining partitions along gradient...")
   list(env, numUnit, numTxa, numClass, srtEnv, envcls, eclass)
 }
 
@@ -234,7 +233,7 @@ obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax) {
 
   ## Write imax, zmax, freq, maxgrp, IndVal, iv.prob, zscores to
   ## table
-  for (i in 1:numTxa) {	
+  for (i in 1:numTxa) {
     sppmax[i, 1] <- (srtEnv[minSplt + (max.ival[i] - 1)] +
       srtEnv[minSplt + max.ival[i]])/2
     sppmax[i, 2] <- (srtEnv[minSplt + (max.zval[i] - 1)] +

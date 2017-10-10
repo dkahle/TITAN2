@@ -68,7 +68,7 @@
 tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
   nPerm = nPerm, memory = memory, imax = imax) {
 
-  message(bSeq, "... ", appendLF = FALSE)
+  message(bSeq, ".. ", appendLF = FALSE)
   ## Create empty arrays for storing sum(z-) and sum(z+) across
   ## envcls by replicate
   boot.metrics <- rep(NA, length(bSeq))
@@ -522,12 +522,10 @@ big.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   numClass, numUnit, ncpus, pur.cut, rel.cut, minSplt) {
 
   numTxa <- nrow(sppmax)
-  ## Create empty matrix for storing IndVal maxima and group
-  ## assignments
+  # create empty matrix for storing IndVal maxima and group assignments
   metricArray <- array(NA, c(numTxa, 4, nBoot))
 
-  ## Store env values of filtered and unfiltered sum(z) maxima by
-  ## bootstrap replicate
+  # store env values of filtered and unfiltered sum(z) maxima by bootstrap replicate
   sumzBoot <- matrix(NA, nBoot, 2)
   sumzBoot.f <- matrix(NA, nBoot, 2)
   maxSumz <- matrix(NA, nBoot, 2)
@@ -535,8 +533,7 @@ big.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   track.seq <- rep(NA, nBoot)
   aseq = 0
 
-  ### The following loop creates an array across all bootreps from
-  ### parallel or sequenced result list
+  # create an array across all bootreps from parallel or sequenced result list
   if (ncpus > 1) {
     for (s in 1:ncpus) {
       for (l in 1:length(bSeq[[s]])) {
@@ -553,101 +550,66 @@ big.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
     }
   }
 
-  purity1 <- rowMeans(metricArray[, 1, ] == 1, na.rm = T)
-  purity2 <- rowMeans(metricArray[, 1, ] == 2, na.rm = T)
-  reliab <- rowMeans(metricArray[, 4, ] < 0.05, na.rm = T)
+  purity1 <- rowMeans(metricArray[,1,] == 1, na.rm = T)
+  purity2 <- rowMeans(metricArray[,1,] == 2, na.rm = T)
+  reliab  <- rowMeans(metricArray[,4,] < 0.05, na.rm = T)
   z.median <- apply(metricArray[, 3, ], 1, median, na.rm = T)
   quantiles <- t(apply(metricArray[, 2, ], 1, quantile, probs = c(0.05,
     0.1, 0.5, 0.9, 0.95), na.rm = T))
 
   sppmax[, 14] <- reliab
   sppmax[, 15] <- z.median
-  sppmax[which(purity1 >= pur.cut & reliab >= rel.cut & obs1),
-    16] <- 1
-  sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2),
-    16] <- sppmax[which(purity2 >= pur.cut & reliab >= rel.cut &
-    obs2), 16] + 2
-  sppmax[which(sppmax[, 4] == 1), 13] <- purity1[which(sppmax[,
-    4] == 1)]
-  sppmax[which(sppmax[, 4] == 2), 13] <- purity2[which(sppmax[,
-    4] == 2)]
+  sppmax[which(purity1 >= pur.cut & reliab >= rel.cut & obs1), 16] <- 1
+  sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] <-
+    sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] + 2
+  sppmax[which(sppmax[, 4] == 1), 13] <- purity1[which(sppmax[,4] == 1)]
+  sppmax[which(sppmax[, 4] == 2), 13] <- purity2[which(sppmax[,4] == 2)]
   sppmax[, 8:12] <- quantiles
   sppSub1 <- which(sppmax[, 16] == 1)
   sppSub2 <- which(sppmax[, 16] == 2)
 
-  ## Read z score matrices in one at a time and obtain filtered
-  ## sumz maxima
+  # read z score matrices in one at a time and obtain filtered sumz maxima
   if (ncpus > 1) {
     aseq = 0
     for (s in 1:ncpus) {
       for (l in 1:length(bSeq[[s]])) {
         aseq = aseq + 1
-        ztab = read.table(paste("temp.dir/boot.z.", track.seq[aseq],
-          ".", l, ".txt", sep = ""))
-        rspdir = read.table(paste("temp.dir/boot.rd.",
-          track.seq[aseq], ".", l, ".txt", sep = ""))
-        bSrtEnv = read.table(paste("temp.dir/bSrti.", track.seq[aseq],
-          ".", l, ".txt", sep = ""))
-        sumzBoot[aseq, 1] <- which.max(colSums(ztab * (rspdir ==
-          1), na.rm = T))
+        ztab    = read.table(paste("temp.dir/boot.z.", track.seq[aseq], ".", l, ".txt", sep = ""))
+        rspdir  = read.table(paste("temp.dir/boot.rd.", track.seq[aseq], ".", l, ".txt", sep = ""))
+        bSrtEnv = read.table(paste("temp.dir/bSrti.", track.seq[aseq], ".", l, ".txt", sep = ""))
+        sumzBoot[aseq, 1] <- which.max(colSums(ztab * (rspdir == 1), na.rm = T))
 
         if (length(sppSub1) > 1) {
-          sumzBoot.f[aseq, 1] <- which.max(colSums(ztab[sppSub1,
-          ] * (rspdir[sppSub1, ] == 1), na.rm = T))
+          sumzBoot.f[aseq, 1] <- which.max(colSums(ztab[sppSub1,] * (rspdir[sppSub1, ] == 1), na.rm = T))
         } else {
-          sumzBoot.f[aseq, 1] <- which.max(ztab[sppSub1,
-          ] * (rspdir[sppSub1, ] == 1))
+          sumzBoot.f[aseq, 1] <- which.max(ztab[sppSub1,] * (rspdir[sppSub1, ] == 1))
         }
-        sumzBoot[aseq, 2] <- which.max(colSums(ztab * (rspdir ==
-          2), na.rm = T))
+        sumzBoot[aseq, 2] <- which.max(colSums(ztab * (rspdir == 2), na.rm = T))
         if (length(sppSub2) > 1) {
-          sumzBoot.f[aseq, 2] <- which.max(colSums(ztab[sppSub2,
-          ] * (rspdir[sppSub2, ] == 2), na.rm = T))
+          sumzBoot.f[aseq, 2] <- which.max(colSums(ztab[sppSub2,] * (rspdir[sppSub2, ] == 2), na.rm = T))
         } else {
-          sumzBoot.f[aseq, 2] <- which.max(ztab[sppSub2,
-          ] * (rspdir[sppSub2, ] == 2))
+          sumzBoot.f[aseq, 2] <- which.max(ztab[sppSub2,] * (rspdir[sppSub2, ] == 2))
         }
 
-        maxSumz[aseq, 1] <- (bSrtEnv[(minSplt + sumzBoot[aseq,
-          1]) - 1, ] + bSrtEnv[(minSplt + sumzBoot[aseq,
-          1]), ])/2
-        maxSumz[aseq, 2] <- (bSrtEnv[(minSplt + sumzBoot[aseq,
-          2]) - 1, ] + bSrtEnv[(minSplt + sumzBoot[aseq,
-          2]), ])/2
-        maxFsumz[aseq, 1] <- (bSrtEnv[(minSplt + sumzBoot.f[aseq,
-          1]) - 1, ] + bSrtEnv[(minSplt + sumzBoot.f[aseq,
-          1]), ])/2
-        maxFsumz[aseq, 2] <- (bSrtEnv[(minSplt + sumzBoot.f[aseq,
-          2]) - 1, ] + bSrtEnv[(minSplt + sumzBoot.f[aseq,
-          2]), ])/2
+        maxSumz[aseq, 1]  <- (bSrtEnv[(minSplt +   sumzBoot[aseq,1]) - 1, ] + bSrtEnv[(minSplt +   sumzBoot[aseq,1]), ])/2
+        maxSumz[aseq, 2]  <- (bSrtEnv[(minSplt +   sumzBoot[aseq,2]) - 1, ] + bSrtEnv[(minSplt +   sumzBoot[aseq,2]), ])/2
+        maxFsumz[aseq, 1] <- (bSrtEnv[(minSplt + sumzBoot.f[aseq,1]) - 1, ] + bSrtEnv[(minSplt + sumzBoot.f[aseq,1]), ])/2
+        maxFsumz[aseq, 2] <- (bSrtEnv[(minSplt + sumzBoot.f[aseq,2]) - 1, ] + bSrtEnv[(minSplt + sumzBoot.f[aseq,2]), ])/2
       }
     }
   } else {
     for (i in 1:nBoot) {
-      ztab = read.table(paste("temp.dir/boot.z.", track.seq[i],
-        ".", 1, ".txt", sep = ""))
-      rspdir = read.table(paste("temp.dir/boot.rd.", track.seq[i],
-        ".", 1, ".txt", sep = ""))
-      bSrtEnv = read.table(paste("temp.dir/bSrti.", track.seq[i],
-        ".", 1, ".txt", sep = ""))
-      sumzBoot[i, 1] <- which.max(colSums(ztab * (rspdir ==
-        1), na.rm = T))
-      sumzBoot[i, 2] <- which.max(colSums(ztab * (rspdir ==
-        2), na.rm = T))
-      sumzBoot.f[i, 1] <- which.max(colSums(ztab[sppSub1,
-        , i] * (rspdir[sppSub1, , i] == 1), na.rm = T))
-      sumzBoot.f[i, 2] <- which.max(colSums(ztab[sppSub2,
-        , i] * (rspdir[sppSub2, , i] == 2), na.rm = T))
-      maxSumz[i, 1] <- (bSrtEnv[(minSplt + sumzBoot[i, 1]) -
-        1, ] + bSrtEnv[(minSplt + sumzBoot[i, 1]), ])/2
-      maxSumz[i, 2] <- (bSrtEnv[(minSplt + sumzBoot[i, 2]) -
-        1, ] + bSrtEnv[(minSplt + sumzBoot[i, 2]), ])/2
-      maxFsumz[i, 1] <- (bSrtEnv[(minSplt + sumzBoot.f[i,
-        1]) - 1, ] + bSrtEnv[(minSplt + sumzBoot.f[i, 1]),
-        ])/2
-      maxFsumz[i, 2] <- (bSrtEnv[(minSplt + sumzBoot.f[i,
-        2]) - 1, ] + bSrtEnv[(minSplt + sumzBoot.f[i, 2]),
-        ])/2
+      ztab = read.table(paste("temp.dir/boot.z.", track.seq[i], ".", 1, ".txt", sep = ""))
+      rspdir = read.table(paste("temp.dir/boot.rd.", track.seq[i], ".", 1, ".txt", sep = ""))
+      bSrtEnv = read.table(paste("temp.dir/bSrti.", track.seq[i], ".", 1, ".txt", sep = ""))
+      sumzBoot[i, 1] <- which.max(colSums(ztab * (rspdir == 1), na.rm = T))
+      sumzBoot[i, 2] <- which.max(colSums(ztab * (rspdir == 2), na.rm = T))
+      sumzBoot.f[i, 1] <- which.max(colSums(ztab[sppSub1,,i] * (rspdir[sppSub1,,i] == 1), na.rm = T))
+      sumzBoot.f[i, 2] <- which.max(colSums(ztab[sppSub2,,i] * (rspdir[sppSub2,,i] == 2), na.rm = T))
+       maxSumz[i, 1] <- (bSrtEnv[(minSplt +   sumzBoot[i,1]) - 1,] + bSrtEnv[(minSplt +   sumzBoot[i,1]),])/2
+       maxSumz[i, 2] <- (bSrtEnv[(minSplt +   sumzBoot[i,2]) - 1,] + bSrtEnv[(minSplt +   sumzBoot[i,2]),])/2
+      maxFsumz[i, 1] <- (bSrtEnv[(minSplt + sumzBoot.f[i,1]) - 1,] + bSrtEnv[(minSplt + sumzBoot.f[i,1]),])/2
+      maxFsumz[i, 2] <- (bSrtEnv[(minSplt + sumzBoot.f[i,2]) - 1,] + bSrtEnv[(minSplt + sumzBoot.f[i,2]),])/2
     }
   }
   list(sppSub1, sppSub2, sppmax, maxSumz, maxFsumz, metricArray)

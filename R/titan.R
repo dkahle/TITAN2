@@ -1,9 +1,9 @@
-#' The primary function call for package TITAN
+#' Perform a threshold indicator taxa analysis
 #'
-#' The primary wrapper function controlling operation of all
-#' subfunctions (txa.screen, env.part, getivz, ivzsums, obs.summ,
-#' boot.titan, small/big.boot, sumz.tab) apart from plotting
-#' functions within TITAN.
+#' titan() is the primary wrapper function controlling operation of
+#' all subfunctions (txa.screen, env.part, getivz, ivzsums,
+#' obs.summ, boot.titan, small/big.boot, sumz.tab) apart from
+#' plotting functions within TITAN.
 #'
 #' @param env A vector of environmental values.
 #' @param txa A site by taxon matrix containing observed counts at
@@ -30,9 +30,10 @@
 #'   processing.  If greater than 1, TITAN will load and use the
 #'   package 'snow' to perform parallel processing on each core.
 #' @param memory A logical indicating whether temporary files should
-#'   be written to a scrath directory during bootstrap processing to
-#'   preserve active memory.  This fucntion is sometimes necessary
-#'   for large data files (e.g., >400 sampling sites and >100 taxa).
+#'   be written to a scratch directory during bootstrap processing to
+#'   preserve active memory.  This function is sometimes necessary
+#'   for large data files (e.g. >400 sampling sites and >100 taxa).
+#' @param messaging If \code{TRUE}, provide progress messages.
 #' @return A list with 13 items:
 #' \itemize{
 #'   \item{sppmax}{Description of 'comp1'}
@@ -71,7 +72,7 @@
 #' data(glades.taxa)
 #' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
 #'   numPerm = 250, boot = TRUE, nBoot = 500, imax = FALSE,
-#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
 #' )
 #'
 #' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
@@ -83,29 +84,21 @@
 #'
 titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   nBoot = 500, imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
-  ncpus = 1, memory = FALSE) {
+  ncpus = 1, memory = FALSE, messaging = TRUE) {
 
-  # --------------------------------------------------------------------------
-  # PART 1: Data Screen
-  # --------------------------------------------------------------------------
+  ## screen data
+  ############################################################
 
-  ## Load 'parallel' library for parallel processing
-  ## if(ncpus>1){library(parallel)} Not necessary in package build
-  ## because it is already imported.
-
-  ## Run Preliminary Checks and Input Filters
-
-  ## Abundance matrix (txa) should contain samples(rows) x
-  ## species(columns)
-  taxa <- txa.screen(txa, minSplt = minSplt)
+  # run preliminary checks and input filters
+  # abundance matrix (txa) should contain samples(rows) x species(columns)
+  taxa <- txa.screen(txa, minSplt = minSplt, messaging = messaging)
 
   # if env is a data frame of one column, convert to vector
   if(is.data.frame(env) && ncol(env) == 1) env <- env[[1]]
 
-  ## Environmental vector (env) should have same length as samples
-  ## Sort sites by env, ensure candidate threshold group size
-  ## always >= minsplit
-  e.prt <- env.part(env, taxa, minSplt = minSplt)
+  # environmental vector (env) should have same length as samples
+  # sort sites by env, ensure candidate threshold group size always >= minsplit
+  e.prt <- env.part(env, taxa, minSplt = minSplt, messaging = messaging)
   env      <- e.prt[[1]]
   numUnit  <- e.prt[[2]]
   numTxa   <- e.prt[[3]]
@@ -113,42 +106,40 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   srtEnv   <- e.prt[[5]]
   envcls   <- e.prt[[6]]
   eclass   <- e.prt[[7]]
-message("Part 1 Done")
-  # --------------------------------------------------------------------------
-  # PART 2: Obtain IndVals, z-scores, and sum(z) values
-  # --------------------------------------------------------------------------
 
-  ## Run IndVal calculation and permute for z score computations,
-  ## track processing time
+
+  ## obtain IndVals, z-scores, and sum(z) values
+  ############################################################
+
+  # run IndVal calculation and permute for z score computations,
+  # track processing time
   ivzScores <- getivz(eclass, taxa, ivTot, numPerm, numClass)
 
-  ## Sum IndVal z scores across all taxa
+  # sum IndVal z scores across all taxa
   ivz <- ivzsums(ivzScores)
-  message("IndVal z score calculation complete.")
 
-  ## Summarize Observed Results
+  # summarize observed results
   obs.summary <- obs.summ(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax)
-  obs1 = obs.summary[[1]]
-  obs2 = obs.summary[[2]]
-  sppmax = obs.summary[[3]]
+  obs1 <- obs.summary[[1]]
+  obs2 <- obs.summary[[2]]
+  sppmax <- obs.summary[[3]]
   rm(obs.summary)
-message("Part 2 Done")
-  # --------------------------------------------------------------------------
-  # PART 3: Bootstrap procedure for TITAN
-  # --------------------------------------------------------------------------
 
-  ## Run bootstrap procedure
+
+  ## bootstrap
+  ############################################################
+
   if (boot) {
 
-    ## Control of Bootstrap Processing (Sequential or Parallel)
+    # control of bootstrap processing (sequential or parallel)
     ivzBtSeq <- boot.titan(env, taxa, ivTot, boot, ncpus, nBoot,
       minSplt, numPerm, memory, imax, numUnit)
     bSeq <- ivzBtSeq[[1]]
     ivz.bt.list <- ivzBtSeq[[2]]
     rm(ivzBtSeq)
 
-    ## Summarize output, if file size too large write some to
-    ## temporary storage on disk
+    # ummarize output, if file size too large write some to
+    # temporary storage on disk
     if (memory) {
       boot.summ <- big.boot(ivz.bt.list, bSeq, sppmax, obs1,
         obs2, nBoot, numClass, numUnit, ncpus, pur.cut,
@@ -174,17 +165,15 @@ message("Part 2 Done")
     z.median <- 0
   }
 
-message("Part 3 Done")
-  # --------------------------------------------------------------------------
-  # PART 4: Summarize sumz TITAN output
-  # --------------------------------------------------------------------------
+  ## summarize sum(z) titan output
+  ############################################################
+
   nsumz1 <- sum(sppmax[, 16] == 1)
   nsumz2 <- sum(sppmax[, 16] == 2)
   message("Proportion of pure and reliable taxa = ",
     round(sum(nsumz2, nsumz1, na.rm = T)/nrow(sppmax), 4)
   )
-  sumz.list <- sumz.tab(ivzScores, ivz, srtEnv, sppmax, maxSumz,
-    maxFsumz, minSplt, boot)
+  sumz.list <- sumz.tab(ivzScores, ivz, srtEnv, sppmax, maxSumz, maxFsumz, minSplt, boot)
   sumz.cp <- sumz.list[[1]]
   ivz.f <- sumz.list[[2]]
 
@@ -198,11 +187,11 @@ message("Part 3 Done")
     message("Number of z- taxa = ", nsumz1, ", Number of z+ taxa = ", nsumz2)
     # message("TITAN complete.")
   }
-message("Part 4 Done")
 
-  # --------------------------------------------------------------------------
-  # PART 5: Define output lists for TITAN object
-  # --------------------------------------------------------------------------
+
+  ## format and return titan object
+  ############################################################
+
   targs <- c(minSplt, numPerm, boot, nBoot, imax, ivTot, pur.cut,
     rel.cut, ncpus, memory)
   names(targs) <- c("minSplt", "numPerm", "boot", "nBoot", "imax",

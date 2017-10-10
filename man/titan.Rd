@@ -2,7 +2,7 @@
 % Please edit documentation in R/titan.R
 \name{titan}
 \alias{titan}
-\title{The primary function call for package TITAN}
+\title{Perform a threshold indicator taxa analysis}
 \usage{
 titan(env, txa, minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500,
   imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
@@ -68,10 +68,10 @@ A list with 13 items:
 }
 }
 \description{
-The primary wrapper function controlling operation of all
-subfunctions (txa.screen, env.part, getivz, ivzsums, obs.summ,
-boot.titan, small/big.boot, sumz.tab) apart from plotting
-functions within TITAN.
+titan() is the primary wrapper function controlling operation of
+all subfunctions (txa.screen, env.part, getivz, ivzsums,
+obs.summ, boot.titan, small/big.boot, sumz.tab) apart from
+plotting functions within TITAN.
 }
 \examples{
 
