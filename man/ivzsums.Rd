@@ -47,9 +47,6 @@ used by the 'plot.sumz' function to create estimates of robust
 community change more precise than the original unfiltered sum(z)
 in TITAN v1.0.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
@@ -59,6 +56,8 @@ Baker, ME and RS King.  2010. A new method for
 \seealso{
 \code{\link{getivz}}, \code{\link{plotSumz}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{sum(z)}
-

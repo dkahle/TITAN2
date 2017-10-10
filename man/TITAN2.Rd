@@ -3,8 +3,8 @@
 \docType{package}
 \name{TITAN2}
 \alias{TITAN2}
-\alias{TITAN2-package}
 \alias{package-TITAN2}
+\alias{TITAN2-package}
 \title{Threshold Indicator Taxa Analysis}
 \description{
 Uses indicator species scores across binary partitions of a
@@ -24,4 +24,3 @@ Benthological Association 29(3):998-1008. Baker ME and RS King.
 2013. Of TITAN and straw men: an appeal for greater understanding
 of community data. Freshwater Science 32(2):489-506.
 }
-

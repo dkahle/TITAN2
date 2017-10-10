@@ -84,11 +84,13 @@ glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
 )
 
-}
+glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
+  numPerm = 250, boot = TRUE, nBoot = 2, imax = FALSE,
+  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+)
 
 }
-\author{
-M. Baker and R. King
+
 }
 \references{
 Baker, ME and RS King.  2010. A new method for
@@ -105,9 +107,11 @@ Baker ME and RS King. 2013. Of TITAN and straw men:
   an appeal for greater understanding of community data.
   Freshwater Science 32(2):489-506.
 }
+\author{
+M. Baker and R. King
+}
 \keyword{IndVal}
 \keyword{TITAN}
 \keyword{bootstrap}
 \keyword{permutation}
 \keyword{sum(z)}
-

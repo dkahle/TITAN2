@@ -142,9 +142,6 @@ data(glades.titan)
 
 
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
@@ -159,6 +156,8 @@ King, RS and ME Baker  2010. Considerations for
 \seealso{
 \code{\link{plotTaxa}}, \code{\link{plotCPs}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{sum(z)}
-

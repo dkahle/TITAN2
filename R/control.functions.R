@@ -212,8 +212,7 @@ env.part <- function(env, taxa, minSplt = minSplt) {
 #' @author M. Baker and R. King
 #' @seealso \code{\link{getivz}}, \code{\link{titan}}
 #' @keywords TITAN
-obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt,
-  imax = imax) {
+obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax) {
 
   ## Prep output table sppmax
   numTxa = ncol(taxa)
@@ -235,7 +234,7 @@ obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt,
 
   ## Write imax, zmax, freq, maxgrp, IndVal, iv.prob, zscores to
   ## table
-  for (i in 1:numTxa) {
+  for (i in 1:numTxa) {	
     sppmax[i, 1] <- (srtEnv[minSplt + (max.ival[i] - 1)] +
       srtEnv[minSplt + max.ival[i]])/2
     sppmax[i, 2] <- (srtEnv[minSplt + (max.zval[i] - 1)] +

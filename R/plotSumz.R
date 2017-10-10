@@ -140,7 +140,6 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
     ## PLOT CUMULATIVE PROBABILITY CURVE FOR GROUP 1
     if (sumz1) {
       freq1 <- table(maxPsumz[, 1])
-      freq2 <- table(maxPsumz[, 2])
       if (bootz1) {
         if (length(unique(maxPsumz[, 1])) > length(freq1)) {
           fil = matrix(0, length(unique(maxPsumz[, 1])) -
@@ -162,6 +161,7 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
 
     ## PLOT CUMULATIVE PROBABILITY CURVE FOR GROUP 2
     if (sumz2) {
+    	  freq2 <- table(maxPsumz[, 2])
       if (bootz1) {
         if (bootz2) {
           if (length(unique(maxPsumz[, 2])) > length(freq2)) {

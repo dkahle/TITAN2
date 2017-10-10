@@ -46,10 +46,17 @@
 #'   argument from the original TITAN funtion call.
 #' @return A list of four elements:
 #' \itemize{
-#'   \item{bt.metrics}{A matrix with nrow equal to number of taxa where the first column is the bootstrapped IndVal or z score maximum, the second is the environmental value, the third is the indicator direction, and the fourth is the p value at that point.}
-#'   \item{ivzs}{Z scores for all taxa across candidate change points in the replicate sample}
-#'   \item{bsrti}{A sorted version of the bootstrapped environmental gradient}
-#'   \item{rspdr}{Response direction (1 or 2) for all taxa across candidate change points in the replicate sample}
+#'   \item{bt.metrics}{A matrix with nrow equal to number of taxa
+#'     where the first column is the bootstrapped IndVal or z score
+#'     maximum, the second is the environmental value, the third is
+#'     the indicator direction, and the fourth is the p value at that
+#'     point.}
+#'   \item{ivzs}{Z scores for all taxa across candidate change points
+#'     in the replicate sample}
+#'   \item{bsrti}{A sorted version of the bootstrapped environmental
+#'     gradient}
+#'   \item{rspdr}{Response direction (1 or 2) for all taxa across
+#'     candidate change points in the replicate sample}
 #' }
 #' @references Baker, ME and RS King.  2010. A new method for
 #'   detecting and interpreting biodiversity and ecological
@@ -71,7 +78,7 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
 
   for (i in 1:length(bSeq)) {
     ## Resample data with replacement, repeat part 1
-    ## preliabiminaries
+    ## preliminaries
     nuid <- sample(numUnit, replace = TRUE)
     bTxa <- taxa[nuid, ]
     numTxa <- ncol(bTxa)

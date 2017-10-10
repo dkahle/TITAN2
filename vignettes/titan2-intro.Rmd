@@ -1,15 +1,21 @@
 ---
-title: "Glades.TITAN"
+title: "An Introduction to TITAN2"
 author: "Matthew Baker (UMBC),  Ryan King (Baylor), and David Kahle (Baylor)"
-date: "`r Sys.Date()`"
+date: "`r ip <- as.data.frame(installed.packages()); paste('Version', ip[ip$Package == 'TITAN2',]$Version[[1]])`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Glades.TITAN}
+  %\VignetteIndexEntry{titan2-intro}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-### An Introduction to Threshold Indicator Taxa Analysis with **TITAN2** (v2.1)
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, collapse=TRUE, error=TRUE, comment = "#")
+```
+
+### An Introduction to Threshold Indicator Taxa Analysis with **TITAN2**
 
 The purpose of this vignette is to walk users through the basic functionality of the package **TITAN2** for analysis of taxon-specific contributions to community change along an environmental gradient.  The Everglades data for this vignette was described in [Baker and King (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full) first published by [King and Richardson (2003)](http://link.springer.com/article/10.1007/s00267-002-0036-4#/page-1).
 
@@ -55,7 +61,7 @@ For users familiar with the original version of `titan()` and associated functio
 For users new to **TITAN2**, the package can be loaded like any other R package downloaded from CRAN with the `install.packages()` function: i.e. `install.packages("TITAN2")`. The package can then be loaded into an active R session using the `library()` function:
 
 ```{r}
-library(TITAN2)
+library("TITAN2")
 ```
 
 As with the first version of the project, the function `titan()` requires a site by taxa matrix as well as an environmental gradient.  To facilitate this discussion, we have included in **TITAN2** examples of both: the datasets `glades.taxa` and `glades.env`.  This is the same data included with the original version in [Baker and King (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full).  Users can load the taxa data with the `data()` function:
@@ -71,7 +77,7 @@ The `data()` function loads the site by taxa matrix of 126 rows and 164 columns 
 
 Loading the sample environmental gradient data is done similarly:
 
-```{r}
+```{r, }
 data(glades.env)
 str(glades.env)
 ```

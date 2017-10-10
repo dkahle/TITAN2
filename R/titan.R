@@ -74,6 +74,11 @@
 #'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
 #' )
 #'
+#' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
+#'   numPerm = 250, boot = TRUE, nBoot = 2, imax = FALSE,
+#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+#' )
+#'
 #' }
 #'
 titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
@@ -101,14 +106,14 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   ## Sort sites by env, ensure candidate threshold group size
   ## always >= minsplit
   e.prt <- env.part(env, taxa, minSplt = minSplt)
-  env <- e.prt[[1]]
-  numUnit <- e.prt[[2]]
-  numTxa <- e.prt[[3]]
+  env      <- e.prt[[1]]
+  numUnit  <- e.prt[[2]]
+  numTxa   <- e.prt[[3]]
   numClass <- e.prt[[4]]
-  srtEnv <- e.prt[[5]]
-  envcls <- e.prt[[6]]
-  eclass <- e.prt[[7]]
-
+  srtEnv   <- e.prt[[5]]
+  envcls   <- e.prt[[6]]
+  eclass   <- e.prt[[7]]
+message("Part 1 Done")
   # --------------------------------------------------------------------------
   # PART 2: Obtain IndVals, z-scores, and sum(z) values
   # --------------------------------------------------------------------------
@@ -127,7 +132,7 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   obs2 = obs.summary[[2]]
   sppmax = obs.summary[[3]]
   rm(obs.summary)
-
+message("Part 2 Done")
   # --------------------------------------------------------------------------
   # PART 3: Bootstrap procedure for TITAN
   # --------------------------------------------------------------------------
@@ -169,7 +174,7 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
     z.median <- 0
   }
 
-
+message("Part 3 Done")
   # --------------------------------------------------------------------------
   # PART 4: Summarize sumz TITAN output
   # --------------------------------------------------------------------------
@@ -193,6 +198,7 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
     message("Number of z- taxa = ", nsumz1, ", Number of z+ taxa = ", nsumz2)
     # message("TITAN complete.")
   }
+message("Part 4 Done")
 
   # --------------------------------------------------------------------------
   # PART 5: Define output lists for TITAN object

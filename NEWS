@@ -9,8 +9,8 @@ NEW FEATURES
 
 CHANGES
 
-* titan now issues messages with message()
-*
+* titan now issues messages with message().
+* vignette name changed from glades.TITAN to titan2-intro.
 
 FIXES
 

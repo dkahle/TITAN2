@@ -33,9 +33,6 @@ function also assess whether occurrence frequencies for any taxa
 fall below 3, and call attention to very small minimum split
 sizes.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
@@ -46,6 +43,8 @@ Baker ME and RS King. 2013. Of TITAN and straw men:
   an appeal for greater understanding of community data.
   Freshwater Science 32(2):489-506.
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{~kwd2}
-

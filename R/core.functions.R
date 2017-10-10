@@ -403,7 +403,7 @@ indvalps <- function(grpMatrix, spp) {
 permiv <- function(grp, spp, ivTot = ivTot, nPerm = 250) {
 
   grpRepMatrix <- matrix(grp, nrow = length(grp), ncol = nPerm)
-  grpRandMatrix <- apply(grpRepMatrix, c(2), sample)
+  grpRandMatrix <- apply(grpRepMatrix, 2, sample)
 
   if (ivTot) {
     indvalps(grpRandMatrix, spp)
@@ -525,12 +525,14 @@ getivz <- function(clss, spp, ivTot = ivTot, nPerm = 250, numClass = numClass,
 
   message("Permuting IndVal scores...")
   ## Permuted IndVal scores
-  spp = as.matrix(spp)
-  piv <- array(apply(clss, 2, permiv, spp = spp, ivTot = ivTot,
-    nPerm = nPerm), c(nPerm, numTxa, numClass))
+  spp <- as.matrix(spp)
+  piv <- array(
+    apply(clss, 2, permiv, spp = spp, ivTot = ivTot, nPerm = nPerm),
+    c(nPerm, numTxa, numClass)
+  )
 
   ## Calculate IndVal z-scores
-  mniv <- colMeans(piv, dims = 1, na.rm = T)
+  mniv <- colMeans(piv, dims = 1, na.rm = TRUE)
   sdiv <- apply(piv, c(2, 3), sd)
   sdiv[which(sdiv < 0.1)] = 1
   obsiv <- obs[(numTxa + 1):(numTxa * 2), ]
@@ -541,8 +543,7 @@ getivz <- function(clss, spp, ivTot = ivTot, nPerm = 250, numClass = numClass,
   iv.p <- matrix(NA, nrow(obsiv), ncol(obsiv))
   for (j in 1:ncol(obsiv)) {
     for (i in 1:nrow(obsiv)) {
-      iv.p[i, j] <- (sum(piv[, i, j] >= obsiv[i, j], na.rm = TRUE) +
-        1)/nPerm
+      iv.p[i, j] <- (sum(piv[, i, j] >= obsiv[i, j], na.rm = TRUE) + 1)/nPerm
     }
   }
 
@@ -565,8 +566,7 @@ getivz <- function(clss, spp, ivTot = ivTot, nPerm = 250, numClass = numClass,
 
 
 #' @rdname getivz
-b.getivz <- function(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass,
-  imax = imax) {
+b.getivz <- function(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass, imax = imax) {
   numTxa <- ncol(spp)
   numUnit <- nrow(spp)
   ## observed IndVal maxima and class values
@@ -592,8 +592,7 @@ b.getivz <- function(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClas
   iv.p <- matrix(NA, nrow(obsiv), ncol(obsiv))
   for (j in 1:ncol(obsiv)) {
     for (i in 1:nrow(obsiv)) {
-      iv.p[i, j] <- (sum(piv[, i, j] >= obsiv[i, j], na.rm = TRUE) +
-        1)/nPerm
+      iv.p[i, j] <- (sum(piv[, i, j] >= obsiv[i, j], na.rm = TRUE) + 1)/nPerm
     }
   }
 
@@ -681,26 +680,25 @@ ivzsums <- function(allivz) {
 
 #' @rdname ivzsums
 ivzsums.f <- function(allivz, sppmax) {
+
   numTxa = nrow(allivz)/4
   ivz <- allivz[(numTxa + 1):(numTxa * 2), ]
   tmp1 <- which(sppmax[, 16] == 1)
   tmp2 <- which(sppmax[, 16] == 2)
-  s1 = NA
-  s2 = NA
+  s1 <- s2 <- NA
+
   if (length(tmp1) > 1) {
-    s1 = colSums(ivz[tmp1, ], na.rm = T)
-  } else {
-    if (length(tmp1) > 0) {
-      s1 = ivz[tmp1, ]
-    }
+    s1 <- colSums(ivz[tmp1, ], na.rm = T)
+  } else if (length(tmp1) > 0) {
+    s1 <- ivz[tmp1, ]
   }
+
   if (length(tmp2) > 1) {
-    s2 = colSums(ivz[tmp2, ], na.rm = T)
-  } else {
-    if (length(tmp2) > 0) {
-      s2 = ivz[tmp2, ]
-    }
+    s2 <- colSums(ivz[tmp2, ], na.rm = T)
+  } else if (length(tmp2) > 0) {
+    s2 <- ivz[tmp2, ]
   }
+
   sumivz <- cbind(s1, s2)
 }
 

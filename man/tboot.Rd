@@ -44,10 +44,17 @@ argument from the original TITAN funtion call.}
 \value{
 A list of four elements:
 \itemize{
-  \item{bt.metrics}{A matrix with nrow equal to number of taxa where the first column is the bootstrapped IndVal or z score maximum, the second is the environmental value, the third is the indicator direction, and the fourth is the p value at that point.}
-  \item{ivzs}{Z scores for all taxa across candidate change points in the replicate sample}
-  \item{bsrti}{A sorted version of the bootstrapped environmental gradient}
-  \item{rspdr}{Response direction (1 or 2) for all taxa across candidate change points in the replicate sample}
+  \item{bt.metrics}{A matrix with nrow equal to number of taxa
+    where the first column is the bootstrapped IndVal or z score
+    maximum, the second is the environmental value, the third is
+    the indicator direction, and the fourth is the p value at that
+    point.}
+  \item{ivzs}{Z scores for all taxa across candidate change points
+    in the replicate sample}
+  \item{bsrti}{A sorted version of the bootstrapped environmental
+    gradient}
+  \item{rspdr}{Response direction (1 or 2) for all taxa across
+    candidate change points in the replicate sample}
 }
 }
 \description{
@@ -71,9 +78,6 @@ replicate (2), as well as the response direction (maxgrp) (3) and
 a sorted version of resampled environmental values (4).  These
 four items are combined as a list object.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
@@ -83,6 +87,8 @@ Baker, ME and RS King.  2010. A new method for
 \seealso{
 \code{\link{b.getivz}}, \code{\link{ivzsums}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{bootstrap}
-

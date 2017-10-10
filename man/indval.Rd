@@ -50,9 +50,6 @@ set to TRUE.  The function 'indval' is expected to be used more
 frequently, and 'indvals' is provided largely for comparative
 purposes.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Dufrene, M. and P. Legendre. 1997. Species
   assemblages and indicator species: the need for a flexible
@@ -62,7 +59,9 @@ Dufrene, M. and P. Legendre. 1997. Species
 \code{\link{indvalp}}, \code{\link{indvalps}},
   \code{\link{getivz}}, \code{\link{b.getivz}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{IndVal}
 \keyword{Indicator~Species}
 \keyword{TITAN}
-

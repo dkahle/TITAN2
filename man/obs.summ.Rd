@@ -48,9 +48,6 @@ value of 'imax'.  For further detail regarding the advantages and
 disadvantages of using imax=T or imax=F, see Baker and King
 (2013).
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
@@ -64,5 +61,7 @@ Baker ME and RS King. 2013. Of TITAN and straw men:
 \seealso{
 \code{\link{getivz}}, \code{\link{titan}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
-

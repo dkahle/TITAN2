@@ -53,9 +53,6 @@ when the argument 'ivTot' in the original TITAN function call is
 TRUE.  It is expected that 'indval' and 'indvalp' will be used
 more commonly.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Dufrene, M. and P. Legendre. 1997. Species
   assemblages and indicator species: the need for a flexible
@@ -70,7 +67,9 @@ Baker, ME and RS King.  2010. A new method for
 \code{\link{indval}}, \code{\link{indvals}},
   \code{\link{getivz}}, \code{\link{b.getivz}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{IndVal}
 \keyword{Indicator~Species}
 \keyword{TITAN}
-

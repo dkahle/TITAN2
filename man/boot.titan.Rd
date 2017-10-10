@@ -79,9 +79,6 @@ cores on a high-performance computing cluster (i.e., a
 supercomputer).  If 'ncpus'>1 evaluates to FALSE, the function
 uses 'lapply' to run 'tboot' in sequence 1:nBoot times.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
@@ -92,6 +89,8 @@ Baker, ME and RS King.  2010. A new method for
 \code{\link{tboot}}, \code{\link{small.boot}},
   \code{\link{big.boot}}, \code{\link{titan}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{bootstrap}
-

@@ -38,9 +38,6 @@ estimate change-point distributions across all permutations.  The
 output is the same as 'indvalp' and 'indvalps' because the
 function simply passes their products on.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Dufrene, M. and P. Legendre. 1997. Species
   assemblages and indicator species: the need for a flexible
@@ -55,6 +52,8 @@ Baker, ME and RS King.  2010. A new method for
 \code{\link{indvalp}}, \code{\link{indvalps}},
   \code{\link{getivz}}, \code{\link{b.getivz}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{permutation}
-
