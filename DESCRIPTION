@@ -26,8 +26,10 @@ Imports:
     ggplot2
 LinkingTo:
     Rcpp
-Suggests: knitr,
+Suggests: 
+    knitr,
     rmarkdown
 License: GPL-2
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
+Encoding: UTF-8
