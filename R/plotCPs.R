@@ -141,7 +141,7 @@ plotCPs <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
       digits = 2)
     # has quite a few non-unique values
     dens <- table(fe)/length(fe)
-    edfe = approxfun(unique(fe), dens)
+    edfe = approxfun(unique(fe), dens)  ###  Can fix by re-normalizing over integration
     for (j in 1:numUnit) {
       if (is.na(edfe(titan.out$srtEnv[j]))) {
         cp.eden[i, j] = 0
