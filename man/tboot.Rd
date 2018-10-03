@@ -4,8 +4,8 @@
 \alias{tboot}
 \title{Calculate bootstrapped IndVal z scores}
 \usage{
-tboot(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm,
-  memory = memory, imax = imax)
+tboot(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
+  nPerm = nPerm, memory = memory, imax = imax)
 }
 \arguments{
 \item{bSeq}{An index used to determine the sequence number of the

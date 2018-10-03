@@ -4,9 +4,9 @@
 \alias{titan}
 \title{Perform a threshold indicator taxa analysis}
 \usage{
-titan(env, txa, minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500,
-  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
-  ncpus = 1, memory = FALSE)
+titan(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
+  nBoot = 500, imax = FALSE, ivTot = FALSE, pur.cut = 0.95,
+  rel.cut = 0.95, ncpus = 1, memory = FALSE, messaging = TRUE)
 }
 \arguments{
 \item{env}{A vector of environmental values.}
@@ -45,9 +45,11 @@ processing.  If greater than 1, TITAN will load and use the
 package 'snow' to perform parallel processing on each core.}
 
 \item{memory}{A logical indicating whether temporary files should
-be written to a scrath directory during bootstrap processing to
-preserve active memory.  This fucntion is sometimes necessary
-for large data files (e.g., >400 sampling sites and >100 taxa).}
+be written to a scratch directory during bootstrap processing to
+preserve active memory.  This function is sometimes necessary
+for large data files (e.g. >400 sampling sites and >100 taxa).}
+
+\item{messaging}{If \code{TRUE}, provide progress messages.}
 }
 \value{
 A list with 13 items:
@@ -81,7 +83,7 @@ data(glades.env)
 data(glades.taxa)
 glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
   numPerm = 250, boot = TRUE, nBoot = 500, imax = FALSE,
-  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
 )
 
 glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,

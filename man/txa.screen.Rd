@@ -4,7 +4,7 @@
 \alias{txa.screen}
 \title{Screening of site by taxa matrix}
 \usage{
-txa.screen(txa, minSplt = minSplt)
+txa.screen(txa, minSplt = minSplt, messaging = TRUE)
 }
 \arguments{
 \item{txa}{A site by taxon matrix of sampled counts at each
@@ -13,6 +13,8 @@ sampling location.}
 \item{minSplt}{The minimum split size used for partitioning.  The
 default is to use the argument form the original TITAN function
 call.}
+
+\item{messaging}{If \code{TRUE}, provide progress messages.}
 }
 \value{
 A site by taxon matrix of sampled counts at each sampling

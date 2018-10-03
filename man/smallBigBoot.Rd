@@ -9,8 +9,8 @@
 small.boot(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot, numClass, numUnit,
   ncpus, pur.cut, rel.cut, minSplt)
 
-big.boot(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot, numClass, numUnit, ncpus,
-  pur.cut, rel.cut, minSplt)
+big.boot(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot, numClass, numUnit,
+  ncpus, pur.cut, rel.cut, minSplt)
 }
 \arguments{
 \item{ivz.bt.list}{A list of output from each bootstrap replicate

@@ -4,7 +4,7 @@
 \alias{env.part}
 \title{Partitions environmental gradient for analysis}
 \usage{
-env.part(env, taxa, minSplt = minSplt)
+env.part(env, taxa, minSplt = minSplt, messaging = TRUE)
 }
 \arguments{
 \item{env}{A vector of values for each sampling location along

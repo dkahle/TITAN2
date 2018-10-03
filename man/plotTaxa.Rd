@@ -5,13 +5,13 @@
 \title{Plots taxon-specific change points}
 \usage{
 plotTaxa(titan.out, z1 = T, z2 = T, interval = T, prob95 = F,
-  z.med = F, xlabel = "Environmental Gradient", log = "", at = NULL,
-  xmin = min(titan.out$sppmax[, 8]), xmax = max(titan.out$sppmax[, 12]) *
-  1.05, tck = 0.025, bty = "u", ntick = 6, prtty = T, dig = 1,
-  leg.x = 0.8, leg.y = 10, cex.taxa = 0.75, cex = 1.25,
-  cex.axis = 1.25, cex.leg = 1.25, cex.lab = 1.25, legend = T,
-  col1 = "black", fil1 = "black", col2 = "black", fil2 = "white",
-  write = F, all = F, ...)
+  z.med = F, xlabel = "Environmental Gradient", log = "",
+  at = NULL, xmin = min(titan.out$sppmax[, 8]),
+  xmax = max(titan.out$sppmax[, 12]) * 1.05, tck = 0.025, bty = "u",
+  ntick = 6, prtty = T, dig = 1, leg.x = 0.8, leg.y = 10,
+  cex.taxa = 0.75, cex = 1.25, cex.axis = 1.25, cex.leg = 1.25,
+  cex.lab = 1.25, legend = T, col1 = "black", fil1 = "black",
+  col2 = "black", fil2 = "white", write = F, all = F, ...)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}

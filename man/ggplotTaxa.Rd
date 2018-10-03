@@ -7,11 +7,12 @@
 ggplotTaxa(titan.out, z1 = TRUE, z2 = TRUE, interval = TRUE,
   prob95 = FALSE, z.med = FALSE, xlabel = "Environmental Gradient",
   log = "", at = NULL, xmin = min(titan.out$sppmax[, "5\%"]),
-  xmax = 1.05 * max(titan.out$sppmax[, "95\%"]), tck = 0.025, bty = "u",
-  ntick = 6, prtty = TRUE, dig = 1, leg.x = 0.8, leg.y = 10,
-  cex.taxa = 0.75, cex = 1.25, cex.axis = 1.25, cex.leg = 1.25,
-  cex.lab = 1.25, legend = TRUE, col1 = "black", fil1 = "black",
-  col2 = "black", fil2 = "white", write = FALSE, all = FALSE, ...)
+  xmax = 1.05 * max(titan.out$sppmax[, "95\%"]), tck = 0.025,
+  bty = "u", ntick = 6, prtty = TRUE, dig = 1, leg.x = 0.8,
+  leg.y = 10, cex.taxa = 0.75, cex = 1.25, cex.axis = 1.25,
+  cex.leg = 1.25, cex.lab = 1.25, legend = TRUE, col1 = "black",
+  fil1 = "black", col2 = "black", fil2 = "white", write = FALSE,
+  all = FALSE, ...)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}

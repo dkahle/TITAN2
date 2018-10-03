@@ -9,8 +9,8 @@ permuted values}
 getivz(clss, spp, ivTot = ivTot, nPerm = 250, numClass = numClass,
   imax = imax)
 
-b.getivz(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass,
-  imax = imax)
+b.getivz(clss, spp, ivTot = ivTot, nPerm = nPerm,
+  numClass = numClass, imax = imax)
 }
 \arguments{
 \item{clss}{A matrix of binary (0,1) group membership based on
