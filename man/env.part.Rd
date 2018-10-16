@@ -16,6 +16,8 @@ each sampling location.}
 \item{minSplt}{The  minimum split size used in binary
 partitioning.  The default is to use the argument from the
 original TITAN function call.}
+
+\item{messaging}{message user?}
 }
 \value{
 A list of seven objects: \itemize{ \item{env}{an

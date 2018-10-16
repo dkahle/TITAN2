@@ -23,7 +23,11 @@ Imports:
     Rcpp (>= 0.12.4),
     parallel,
     dplyr,
-    ggplot2
+    ggplot2,
+    glue,
+    cowplot,
+    ggridges,
+    purrr
 LinkingTo:
     Rcpp
 Suggests: 

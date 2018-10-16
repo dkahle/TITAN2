@@ -21,8 +21,13 @@
 #' @importFrom Rcpp evalCpp
 #' @importFrom graphics axis box legend mtext par plot points polygon segments
 #'   symbols
-#' @importFrom stats approxfun median quantile runif sd
+#' @importFrom stats approxfun median quantile runif sd reorder
 #' @importFrom utils read.table write.table
+#' @importFrom glue glue
+#' @importFrom cowplot plot_grid
+#' @importFrom dplyr %>% data_frame as_data_frame mutate filter case_when slice bind_rows
+#' @importFrom purrr pluck map
+#' @importFrom ggridges geom_density_ridges
 #' @useDynLib TITAN2
 #' @aliases TITAN2 package-TITAN2
 NULL

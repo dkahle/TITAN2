@@ -76,13 +76,15 @@ include screens for inappropriate data.
 ### First Steps
 
 For users new to **TITAN2**, the package can be loaded like any other
-R package downloaded from CRAN with `install.packages("TITAN2")`; this only needs to be done once. The package can then be loaded into an active R session using the `library()` function:
+R package downloaded from CRAN with `install.packages("TITAN2")`; this only
+needs to be done once. The package can then be loaded into an active R session
+with `library()`:
 ```{r}
 library("TITAN2")
 ```
 Note that the package needs to be loaded once per R session.
 
-As with the first version of the project, the function `titan()`
+As with the first version of the project, `titan()`
 requires 1) a site by taxa matrix and 2) an environmental gradient.
 To facilitate this discussion, we have included in **TITAN2** examples
 of both: the datasets `glades.taxa` and `glades.env`.  This is the
@@ -129,8 +131,10 @@ they can be customized to the user's circumstance by direct
 specification.  The default values assumed by the above call are
 
 ```{r, eval = F}
-glades.titan <- titan(glades.env, glades.taxa, minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500, 
-  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE)
+glades.titan <- titan(glades.env, glades.taxa, 
+  minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500, imax = FALSE, 
+  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+)
 ```
 
 `titan()`'s extensive computations often require long run times,
@@ -247,7 +251,7 @@ message("100% occurrence detected 1 times (0.8% of taxa), use of TITAN less than
 message("Taxa frequency screen complete")
 ```
 
-The first screen checks for excessively rare or common taxa
+The first screening checks for excessively rare or common taxa
 occurrences and returns a warning if 100% or below minimum number of
 occurrences are detected.  In some cases where analysis would be
 nonsensical, `titan()` will end its run.  The second screen checks to

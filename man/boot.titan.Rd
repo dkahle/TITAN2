@@ -9,81 +9,72 @@ boot.titan(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
   imax = imax, numUnit = numUnit)
 }
 \arguments{
-\item{env}{A vector of values for each sampling location along
-the environmental gradient.}
+\item{env}{A vector of values for each sampling location along the
+environmental gradient.}
 
-\item{taxa}{A site-by-taxon matrix of taxa counts at each
-sampling location.}
+\item{taxa}{A site-by-taxon matrix of taxa counts at each sampling location.}
 
-\item{ivTot}{A logical indicating whether IndVal scores should be
-calculated using total relative abundance or the mean relative
-abundace originally proposed by Dufrene and Legendre (1997).
-The default is to pass on the argument from the original TITAN
-funtion call.}
+\item{ivTot}{A logical indicating whether IndVal scores should be calculated
+using total relative abundance or the mean relative abundace originally
+proposed by Dufrene and Legendre (1997). The default is to pass on the
+argument from the original TITAN funtion call.}
 
-\item{boot}{A logical specifying whether or not to implement
-TITAN's' boostrap procedure. The default is to use the value
-specified in the original TITAN function call.}
-
-\item{ncpus}{An argument specifying the number of processing
-cores used by the TITAN function call.  If ncpus>1 then
-parallel processing is implemented.  The default is to use the
-value specified in the original TITAN function call.}
-
-\item{nBoot}{An argument specifying the number of bootstrap
-replicates.  The default is to use the value specified in the
+\item{boot}{A logical specifying whether or not to implement TITAN's'
+boostrap procedure. The default is to use the value specified in the
 original TITAN function call.}
 
-\item{minSplt}{An argument specifying minimum split size for
-partitioning along the environmental gradient.  The default is
-to use the value specified in the original TITAN function call.}
+\item{ncpus}{An argument specifying the number of processing cores used by
+the TITAN function call.  If ncpus>1 then parallel processing is
+implemented.  The default is to use the value specified in the original
+TITAN function call.}
 
-\item{nPerm}{The number of replicates used by the permutation
-procedure (not to be confused with the number of bootstrap
-replicates).}
+\item{nBoot}{An argument specifying the number of bootstrap replicates.  The
+default is to use the value specified in the original TITAN function call.}
 
-\item{memory}{A logical indicating whether scratch files should
-be used to store temporary data in order to conserve active
-memory during bootstrapping of large data sets.  The default is
-to pass on the argument from the original TITAN funtion call.}
+\item{minSplt}{An argument specifying minimum split size for partitioning
+along the environmental gradient.  The default is to use the value
+specified in the original TITAN function call.}
 
-\item{imax}{A logical indicating whether taxon-specific change
-points should be determined by IndVal maxima or z-score maxima
-(as in TITAN v1.0). The default is to pass on the argument from
-the original TITAN funtion call.}
+\item{nPerm}{The number of replicates used by the permutation procedure (not
+to be confused with the number of bootstrap replicates).}
 
-\item{numUnit}{An argument specifying the number of values along
-the environmental gradient.}
+\item{memory}{A logical indicating whether scratch files should be used to
+store temporary data in order to conserve active memory during
+bootstrapping of large data sets.  The default is to pass on the argument
+from the original TITAN funtion call.}
+
+\item{imax}{A logical indicating whether taxon-specific change points should
+be determined by IndVal maxima or z-score maxima (as in TITAN v1.0). The
+default is to pass on the argument from the original TITAN funtion call.}
+
+\item{numUnit}{An argument specifying the number of values along the
+environmental gradient.}
 }
 \value{
 A list of two items:
 \itemize{
-  \item{bSeq}{An index of the sequence of bootstrap replicates.
-    The structure of bSeq will differ for sequential or
-    parallel processing.}
-  \item{ivz.bt.list}{Itself a list of four items comprising output
-  passed on from function \code{\link{tboot}}}
+  \item{bSeq}{An index of the sequence of bootstrap replicates. The structure
+  of bSeq will differ for sequential or parallel processing.}
+  \item{ivz.bt.list}{Itself a list of four items comprising output passed on
+  from function \code{\link{tboot}}}
 }
 }
 \description{
-A wrapper function for controlling the implementation of
-bootstrap replicates using the function 'tboot' by sequential or
-parallel processing.
+A wrapper function for controlling the implementation of bootstrap replicates
+using the function 'tboot' by sequential or parallel processing.
 }
 \details{
-If 'ncpus'>1 evaluates to TRUE, the function employs the package
-'snow' to implement parallel processing on multicore processors
-common in modern desktop computers.  With some minor modification
-it is possible to configure this code to allocate processes to
-cores on a high-performance computing cluster (i.e., a
-supercomputer).  If 'ncpus'>1 evaluates to FALSE, the function
-uses 'lapply' to run 'tboot' in sequence 1:nBoot times.
+If 'ncpus'>1 evaluates to TRUE, the function employs the package 'snow' to
+implement parallel processing on multicore processors common in modern
+desktop computers.  With some minor modification it is possible to configure
+this code to allocate processes to cores on a high-performance computing
+cluster (i.e., a supercomputer).  If 'ncpus'>1 evaluates to FALSE, the
+function uses 'lapply' to run 'tboot' in sequence 1:nBoot times.
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds. Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+  interpreting biodiversity and ecological community thresholds. Methods in
+  Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
 \code{\link{tboot}}, \code{\link{small.boot}},

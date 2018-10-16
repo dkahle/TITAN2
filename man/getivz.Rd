@@ -2,88 +2,75 @@
 % Please edit documentation in R/core.functions.R
 \name{getivz}
 \alias{getivz}
-\alias{b.getivz}
-\title{Performs calculation of IndVal z scores from observed and
-permuted values}
+\title{Performs calculation of IndVal z scores from observed and permuted values}
 \usage{
-getivz(clss, spp, ivTot = ivTot, nPerm = 250, numClass = numClass,
-  imax = imax)
-
-b.getivz(clss, spp, ivTot = ivTot, nPerm = nPerm,
-  numClass = numClass, imax = imax)
+getivz(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass,
+  imax = imax, messaging = FALSE)
 }
 \arguments{
-\item{clss}{A matrix of binary (0,1) group membership based on
-partitions of sampling sites ranked along an environmental
-gradient.}
+\item{clss}{A matrix of binary (0,1) group membership based on partitions of
+sampling sites ranked along an environmental gradient.}
 
-\item{spp}{A site-by-taxon matrix of taxa counts at each sampling
-location.}
+\item{spp}{A site-by-taxon matrix of taxa counts at each sampling location.}
 
-\item{ivTot}{A logical indicating whether IndVal scores should be
-calculated using total relative abundance or the mean relative
-abundace originally proposed by Dufrene and Legendre (1997).}
+\item{ivTot}{A logical indicating whether IndVal scores should be calculated
+using total relative abundance or the mean relative abundace originally
+proposed by Dufrene and Legendre (1997).}
 
 \item{nPerm}{The number of permutations to be used by 'permiv'.}
 
-\item{numClass}{The number of classes used to partition samples
-along the enviorinmental gradient. The default is the total
-number of observations less two times the minimum split size
-('minSplt').}
+\item{numClass}{The number of classes used to partition samples along the
+enviorinmental gradient. The default is the total number of observations
+less two times the minimum split size ('minSplt').}
 
-\item{imax}{A logical indicating whether taxon-specific change
-points should be determined using IndVal maxima or z-score
-maxima (as in TITAN v1.0).}
+\item{imax}{A logical indicating whether taxon-specific change points should
+be determined using IndVal maxima or z-score maxima (as in TITAN v1.0).}
+
+\item{messaging}{message user?}
 }
 \value{
 A matrix containing four submatrices (the first from
-  \code{[1:numTxa,]}, the second from
-  \code{[(numTxa+1):(2*numTxa),]}, etc.), the first two of which
-  include indicator direction and z scores. \itemize{ \item{Group
-  Membership }{A vector for every taxon showing decreasing (1) or
+  \code{[1:numTxa,]}, the second from \code{[(numTxa+1):(2*numTxa),]}, etc.),
+  the first two of which include indicator direction and z scores.
+  \itemize{
+  \item{Group Membership }{A vector for every taxon showing decreasing (1) or
   increasing (2) group membership at each value of 'envcls'}
-  \item{z scores }{A vector for every taxon showing IndVal z
-  scores at each value of 'envcls'} \item{IndVals }{A vector for
-  every taxon showing IndVal scores at each value of 'envcls'}
-  \item{p values }{A vector for every taxon showing IndVal p
-  values at each value of 'envcls'} }
+  \item{z scores }{A vector for every taxon showing IndVal z scores at each
+  value of 'envcls'}
+  \item{IndVals }{A vector for every taxon showing IndVal scores at each
+  value of 'envcls'}
+  \item{p values }{A vector for every taxon showing IndVal p values at each
+  value of 'envcls'}
+  }
 }
 \description{
-A wrapper function that calls 'indval' or 'indvals' to obtain
-observed IndVal scores and 'permiv' to generate permuted values,
-then calculates z scores and associated p-values.
+A wrapper function that calls 'indval' or 'indvals' to obtain observed IndVal
+scores and 'permiv' to generate permuted values, then calculates z scores and
+associated p-values.
 }
 \details{
-This function calls two subfunctions to first calculate IndVals
-and their associated direction (i.e., a decreasing taxon [group
-1] is associated with the left side of any partition, whereas an
-increasing taxon [group 2] is associated with the right) and
-second to develop permuted values for each candidate partition.
-Output includes the indicator direction (1 or 2), z scores,
-IndVal scores, and associated p value (obtained by the fraction
-of times an observed IndVal is greater than those obtained from
-numPerm randomizations of equivalent group sizes).  For more
-detail regarding the relative benefits and potential drawbacks of
-using imax=T or imax=F, see Baker and King (2013).
-
-The alternative function 'b.getivz' is a streamlined version used
-within the bootstrap procedure that does not print its status to
-the console.
+This function calls two subfunctions to first calculate IndVals and their
+associated direction (i.e., a decreasing taxon [group 1] is associated with
+the left side of any partition, whereas an increasing taxon [group 2] is
+associated with the right) and second to develop permuted values for each
+candidate partition. Output includes the indicator direction (1 or 2), z
+scores, IndVal scores, and associated p value (obtained by the fraction of
+times an observed IndVal is greater than those obtained from numPerm
+randomizations of equivalent group sizes).  For more detail regarding the
+relative benefits and potential drawbacks of using imax=T or imax=F, see
+Baker and King (2013).
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds. Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+  interpreting biodiversity and ecological community thresholds. Methods in
+  Ecology and Evolution 1(1): 25:37.
 
-Baker ME and RS King. 2013. Of TITAN and straw men:
-  an appeal for greater understanding of community data.
-  Freshwater Science 32(2):489-506.
+Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
+  greater understanding of community data. Freshwater Science 32(2):489-506.
 }
 \seealso{
-\code{\link{indval}}, \code{\link{indvals}},
-  \code{\link{indvalp}}, \code{\link{indvalps}},
-  \code{\link{permiv}}, \code{\link{ivzsums}}
+\code{\link{indval}}, \code{\link{indvals}}, \code{\link{indvalp}},
+  \code{\link{indvalps}}, \code{\link{permiv}}, \code{\link{ivzsums}}
 }
 \author{
 M. Baker and R. King

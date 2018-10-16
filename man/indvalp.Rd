@@ -10,62 +10,54 @@ indvalp(grpMatrix, spp)
 indvalps(grpMatrix, spp)
 }
 \arguments{
-\item{grpMatrix}{A site-by-permutation matrix of binary (0,1)
-assignments indicating group membership for successive
-randomizations of rows of 'spp' according to a ranks of an
-environmental variable.}
+\item{grpMatrix}{A site-by-permutation matrix of binary (0,1) assignments
+indicating group membership for successive randomizations of rows of 'spp'
+according to a ranks of an environmental variable.}
 
-\item{spp}{A site-by-taxon matrix of taxa counts at each sampling
-location.}
+\item{spp}{A site-by-taxon matrix of taxa counts at each sampling location.}
 }
 \value{
-A matrix (ivmax) of IndVal maxima across each partition
-  with nrow equal to the number of permutations and ncol equal to
-  the number of taxa in 'spp'.
+A matrix (ivmax) of IndVal maxima across each partition with nrow
+  equal to the number of permutations and ncol equal to the number of taxa in
+  'spp'.
 }
 \description{
-This function performs the same calculations as 'indval' or
-'indvals', but does so using matrix operations on a set of binary
-group assignments in matrix form. Function 'indvalps' calculates
-indicator value scores using a modification of Dufrene and
-Legendre (1997), whereby relative abundance is computed as total
-relative abundance across groups rather than as mean relative
-abundance.
+This function performs the same calculations as 'indval' or 'indvals', but
+does so using matrix operations on a set of binary group assignments in
+matrix form. Function 'indvalps' calculates indicator value scores using a
+modification of Dufrene and Legendre (1997), whereby relative abundance is
+computed as total relative abundance across groups rather than as mean
+relative abundance.
 }
 \details{
-Although the 'indval' function is reasonably efficient for a
-single calculation, when repeated during permutations (default =
-250) and again during for each bootstrap replicate (default =
-500), small differences in processing time can quickly become
-unwieldy. Even with the matrix operation, the permutation
-accounts for > 3/4 of processing time for most data sets (due to
-the fact that it is repeated for each bootstrap replicate).
+Although the 'indval' function is reasonably efficient for a single
+calculation, when repeated during permutations (default = 250) and again
+during for each bootstrap replicate (default = 500), small differences in
+processing time can quickly become unwieldy. Even with the matrix operation,
+the permutation accounts for > 3/4 of processing time for most data sets (due
+to the fact that it is repeated for each bootstrap replicate).
 
-The output matrix does not include information about the group
-membership of indval maxima because this information is not used
-in the permutation procedure (i.e., only the distribution of
-IndVal magnitudes is relevant).
+The output matrix does not include information about the group membership of
+indval maxima because this information is not used in the permutation
+procedure (i.e., only the distribution of IndVal magnitudes is relevant).
 
-Modification of the original IndVal method was developed to
-address potential for bias in change point identification for
-highly skewed samples. This and the function 'indvals' are run
-when the argument 'ivTot' in the original TITAN function call is
-TRUE.  It is expected that 'indval' and 'indvalp' will be used
-more commonly.
+Modification of the original IndVal method was developed to address potential
+for bias in change point identification for highly skewed samples. This and
+the function 'indvals' are run when the argument 'ivTot' in the original
+TITAN function call is TRUE.  It is expected that 'indval' and 'indvalp' will
+be used more commonly.
 }
 \references{
-Dufrene, M. and P. Legendre. 1997. Species
-  assemblages and indicator species: the need for a flexible
-  asymmetrical approach. Ecol. Mon. 67:345-366.
+Dufrene, M. and P. Legendre. 1997. Species assemblages and
+  indicator species: the need for a flexible asymmetrical approach. Ecol.
+  Mon. 67:345-366.
 
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds. Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+  interpreting biodiversity and ecological community thresholds. Methods in
+  Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
-\code{\link{indval}}, \code{\link{indvals}},
-  \code{\link{getivz}}, \code{\link{b.getivz}}
+\code{\link{indval}}, \code{\link{indvals}}, \code{\link{getivz}}
 }
 \author{
 M. Baker and R. King

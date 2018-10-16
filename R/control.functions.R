@@ -109,6 +109,7 @@ txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
 #' @param minSplt The  minimum split size used in binary
 #'   partitioning.  The default is to use the argument from the
 #'   original TITAN function call.
+#' @param messaging message user?
 #' @return A list of seven objects: \itemize{ \item{env}{an
 #'   environmental vector} \item{numUnit}{the number of sample units
 #'   in env} \item{numTxa}{the number of distinct taxonomic units in

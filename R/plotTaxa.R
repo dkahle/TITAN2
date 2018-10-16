@@ -1,99 +1,74 @@
 #' Plots taxon-specific change points
 #'
-#' Creates a plot of taxon-specific change points with optional
-#' quantiles conveying uncertainty resulting from bootstrapped
-#' samples and optional filtering by pure and reliable taxa.
+#' Creates a plot of taxon-specific change points with optional quantiles
+#' conveying uncertainty resulting from bootstrapped samples and optional
+#' filtering by pure and reliable taxa.
 #'
-#' The fuction assumes that TITAN objects contain bootstrap
-#' summaries and filtering information and automatically determines
-#' whether this is the case.  Without bootstrap summaries, only
-#' observed change-point locations and z-score magnitudes will be
-#' plotted.  The plotting function automatically interprets whether
-#' observed change-point values were obtained using IndVal or
-#' z-score maxima.  The interval option is for turning off the
-#' intervals for TITAN objects that contain bootstrap information.
-#' The prob95 is recommended for communicating uncertainty involving
-#' management or policy action, whereas the z.med option is
-#' recommended for increasingly robust estimates (by incorporating
-#' uncertainty associated with the sample) of taxon-specific
-#' change-point locations beyond those provided by the default
-#' (i.e., observed values).
+#' The fuction assumes that TITAN objects contain bootstrap summaries and
+#' filtering information and automatically determines whether this is the case.
+#' Without bootstrap summaries, only observed change-point locations and z-score
+#' magnitudes will be plotted.  The plotting function automatically interprets
+#' whether observed change-point values were obtained using IndVal or z-score
+#' maxima.  The interval option is for turning off the intervals for TITAN
+#' objects that contain bootstrap information. The prob95 is recommended for
+#' communicating uncertainty involving management or policy action, whereas the
+#' z.med option is recommended for increasingly robust estimates (by
+#' incorporating uncertainty associated with the sample) of taxon-specific
+#' change-point locations beyond those provided by the default (i.e., observed
+#' values).
 #'
 #' @param titan.out A TITAN output object.
-#' @param z1 A logical specifying whether decreasing taxa should be
-#'   plotted.
-#' @param z2 A logical specifying whether decreasing taxa should be
-#'   plotted.
-#' @param interval A logical specifying whether quantiles of
-#'   bootstrapped change points should be plotted.
-#' @param prob95 A logical specifying whether change-point locations
-#'   should be plotted on the basis of their 5th (for increasers)
-#'   and 95th (for decreasers) quantile versus their observed
-#'   values.
-#' @param z.med A logical specifying whether (1) change point
-#'   magnitudes should be obtained from the median z score across
-#'   bootstrap replicates and (2) whether the locations should be
-#'   plotted on the basis of the 50th quantile of change-point
-#'   locations (i.e., if prob95=FALSE).
+#' @param z1 A logical specifying whether decreasing taxa should be plotted.
+#' @param z2 A logical specifying whether decreasing taxa should be plotted.
+#' @param interval A logical specifying whether quantiles of bootstrapped change
+#'   points should be plotted.
+#' @param prob95 A logical specifying whether change-point locations should be
+#'   plotted on the basis of their 5th (for increasers) and 95th (for
+#'   decreasers) quantile versus their observed values.
+#' @param z.med A logical specifying whether (1) change point magnitudes should
+#'   be obtained from the median z score across bootstrap replicates and (2)
+#'   whether the locations should be plotted on the basis of the 50th quantile
+#'   of change-point locations (i.e., if prob95=FALSE).
 #' @param xlabel A character string for the x axis label.
-#' @param log A graphical argument specifying whether an axis should
-#'   be log scaled.
-#' @param at A graphical argument controlling the locatino of the x
-#'   axis label.
-#' @param xmin A graphical argument specifying the value of the x
-#'   axis minimum.
-#' @param xmax A graphical argument specifying the value of the x
-#'   axis maximum.
-#' @param tck A graphical argument specifying the scale of axis tick
+#' @param log A graphical argument specifying whether an axis should be log
+#'   scaled.
+#' @param at A graphical argument controlling the locatino of the x axis label.
+#' @param xmin A graphical argument specifying the value of the x axis minimum.
+#' @param xmax A graphical argument specifying the value of the x axis maximum.
+#' @param tck A graphical argument specifying the scale of axis tick marks.
+#' @param bty A graphical argument specyfying the box type around the plot.
+#' @param ntick A graphical argument specifying the default number of axis tick
 #'   marks.
-#' @param bty A graphical argument specyfying the box type around
-#'   the plot.
-#' @param ntick A graphical argument specifying the default number
-#'   of axis tick marks.
-#' @param prtty A logical specifying whether pretty() should be used
-#'   for axis plotting.
-#' @param dig A numeric argument controlling the number of decimal
-#'   digits in axis labels.
-#' @param leg.x A graphical argument specifying the x coordinate of
-#'   the legend.
-#' @param leg.y A graphical argument specifying the y coordinate of
-#'   the legend.
-#' @param cex.taxa A graphical argument specifying the scaling of
-#'   the taxa names.
-#' @param cex A graphical argument specifying the scaling of the
-#'   figure.
-#' @param cex.axis A graphical argument specifying the scaling of
-#'   the axes.
-#' @param cex.leg A graphical argument specifying the scaling of the
-#'   legend.
-#' @param cex.lab A graphical argument specifying the scaling of the
-#'   lables.
-#' @param legend A logical specifying whether or not to plot the
-#'   legend.
-#' @param col1 A graphical argument specifying the color of group 1
-#'   symbols.
-#' @param fil1 A graphical argument specifying the color of group 1
-#'   fills.
-#' @param col2 A graphical argument specifying the color of group 2
-#'   symbols.
-#' @param fil2 A graphical argument specifying the color of group 2
-#'   fills.
-#' @param write A logical specifying whether summary tables are
-#'   written to screen.
-#' @param all A logical specifying whether all taxa with p<0.05
-#'   should be plotted.
-#' @param ... An argument for passing generic plotting function
-#'   parameters.
-#' @return A plot of decreasing and/or increasing taxon-specific
-#'   change points along the environmental gradient.
-#' @references Baker, ME and RS King.  2010. A new method for
-#'   detecting and interpreting biodiversity and ecological
-#'   community thresholds.  Methods in Ecology and Evolution 1(1):
-#'   25:37.
-#' @references King, RS and ME Baker  2010. Considerations for
-#'   identifying and interpreting ecological community thresholds.
-#'   Journal of the North American Benthological Association
-#'   29(3):998-1008.
+#' @param prtty A logical specifying whether pretty() should be used for axis
+#'   plotting.
+#' @param dig A numeric argument controlling the number of decimal digits in
+#'   axis labels.
+#' @param leg.x A graphical argument specifying the x coordinate of the legend.
+#' @param leg.y A graphical argument specifying the y coordinate of the legend.
+#' @param cex.taxa A graphical argument specifying the scaling of the taxa
+#'   names.
+#' @param cex A graphical argument specifying the scaling of the figure.
+#' @param cex.axis A graphical argument specifying the scaling of the axes.
+#' @param cex.leg A graphical argument specifying the scaling of the legend.
+#' @param cex.lab A graphical argument specifying the scaling of the lables.
+#' @param legend A logical specifying whether or not to plot the legend.
+#' @param col1 A graphical argument specifying the color of group 1 symbols.
+#' @param fil1 A graphical argument specifying the color of group 1 fills.
+#' @param col2 A graphical argument specifying the color of group 2 symbols.
+#' @param fil2 A graphical argument specifying the color of group 2 fills.
+#' @param write A logical specifying whether summary tables are written to
+#'   screen.
+#' @param all A logical specifying whether all taxa with p<0.05 should be
+#'   plotted.
+#' @param ... An argument for passing generic plotting function parameters.
+#' @return A plot of decreasing and/or increasing taxon-specific change points
+#'   along the environmental gradient.
+#' @references Baker, ME and RS King.  2010. A new method for detecting and
+#'   interpreting biodiversity and ecological community thresholds.  Methods in
+#'   Ecology and Evolution 1(1): 25:37.
+#' @references King, RS and ME Baker  2010. Considerations for identifying and
+#'   interpreting ecological community thresholds. Journal of the North American
+#'   Benthological Association 29(3):998-1008.
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker and R. King
 #' @seealso \code{\link{plotSumz}}, \code{\link{plotCPs}}

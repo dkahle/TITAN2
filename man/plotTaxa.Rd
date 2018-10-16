@@ -16,124 +16,101 @@ plotTaxa(titan.out, z1 = T, z2 = T, interval = T, prob95 = F,
 \arguments{
 \item{titan.out}{A TITAN output object.}
 
-\item{z1}{A logical specifying whether decreasing taxa should be
-plotted.}
+\item{z1}{A logical specifying whether decreasing taxa should be plotted.}
 
-\item{z2}{A logical specifying whether decreasing taxa should be
-plotted.}
+\item{z2}{A logical specifying whether decreasing taxa should be plotted.}
 
-\item{interval}{A logical specifying whether quantiles of
-bootstrapped change points should be plotted.}
+\item{interval}{A logical specifying whether quantiles of bootstrapped change
+points should be plotted.}
 
-\item{prob95}{A logical specifying whether change-point locations
-should be plotted on the basis of their 5th (for increasers)
-and 95th (for decreasers) quantile versus their observed
-values.}
+\item{prob95}{A logical specifying whether change-point locations should be
+plotted on the basis of their 5th (for increasers) and 95th (for
+decreasers) quantile versus their observed values.}
 
-\item{z.med}{A logical specifying whether (1) change point
-magnitudes should be obtained from the median z score across
-bootstrap replicates and (2) whether the locations should be
-plotted on the basis of the 50th quantile of change-point
-locations (i.e., if prob95=FALSE).}
+\item{z.med}{A logical specifying whether (1) change point magnitudes should
+be obtained from the median z score across bootstrap replicates and (2)
+whether the locations should be plotted on the basis of the 50th quantile
+of change-point locations (i.e., if prob95=FALSE).}
 
 \item{xlabel}{A character string for the x axis label.}
 
-\item{log}{A graphical argument specifying whether an axis should
-be log scaled.}
+\item{log}{A graphical argument specifying whether an axis should be log
+scaled.}
 
-\item{at}{A graphical argument controlling the locatino of the x
-axis label.}
+\item{at}{A graphical argument controlling the locatino of the x axis label.}
 
-\item{xmin}{A graphical argument specifying the value of the x
-axis minimum.}
+\item{xmin}{A graphical argument specifying the value of the x axis minimum.}
 
-\item{xmax}{A graphical argument specifying the value of the x
-axis maximum.}
+\item{xmax}{A graphical argument specifying the value of the x axis maximum.}
 
-\item{tck}{A graphical argument specifying the scale of axis tick
+\item{tck}{A graphical argument specifying the scale of axis tick marks.}
+
+\item{bty}{A graphical argument specyfying the box type around the plot.}
+
+\item{ntick}{A graphical argument specifying the default number of axis tick
 marks.}
 
-\item{bty}{A graphical argument specyfying the box type around
-the plot.}
+\item{prtty}{A logical specifying whether pretty() should be used for axis
+plotting.}
 
-\item{ntick}{A graphical argument specifying the default number
-of axis tick marks.}
+\item{dig}{A numeric argument controlling the number of decimal digits in
+axis labels.}
 
-\item{prtty}{A logical specifying whether pretty() should be used
-for axis plotting.}
+\item{leg.x}{A graphical argument specifying the x coordinate of the legend.}
 
-\item{dig}{A numeric argument controlling the number of decimal
-digits in axis labels.}
+\item{leg.y}{A graphical argument specifying the y coordinate of the legend.}
 
-\item{leg.x}{A graphical argument specifying the x coordinate of
-the legend.}
+\item{cex.taxa}{A graphical argument specifying the scaling of the taxa
+names.}
 
-\item{leg.y}{A graphical argument specifying the y coordinate of
-the legend.}
+\item{cex}{A graphical argument specifying the scaling of the figure.}
 
-\item{cex.taxa}{A graphical argument specifying the scaling of
-the taxa names.}
+\item{cex.axis}{A graphical argument specifying the scaling of the axes.}
 
-\item{cex}{A graphical argument specifying the scaling of the
-figure.}
+\item{cex.leg}{A graphical argument specifying the scaling of the legend.}
 
-\item{cex.axis}{A graphical argument specifying the scaling of
-the axes.}
+\item{cex.lab}{A graphical argument specifying the scaling of the lables.}
 
-\item{cex.leg}{A graphical argument specifying the scaling of the
-legend.}
+\item{legend}{A logical specifying whether or not to plot the legend.}
 
-\item{cex.lab}{A graphical argument specifying the scaling of the
-lables.}
+\item{col1}{A graphical argument specifying the color of group 1 symbols.}
 
-\item{legend}{A logical specifying whether or not to plot the
-legend.}
+\item{fil1}{A graphical argument specifying the color of group 1 fills.}
 
-\item{col1}{A graphical argument specifying the color of group 1
-symbols.}
+\item{col2}{A graphical argument specifying the color of group 2 symbols.}
 
-\item{fil1}{A graphical argument specifying the color of group 1
-fills.}
+\item{fil2}{A graphical argument specifying the color of group 2 fills.}
 
-\item{col2}{A graphical argument specifying the color of group 2
-symbols.}
+\item{write}{A logical specifying whether summary tables are written to
+screen.}
 
-\item{fil2}{A graphical argument specifying the color of group 2
-fills.}
+\item{all}{A logical specifying whether all taxa with p<0.05 should be
+plotted.}
 
-\item{write}{A logical specifying whether summary tables are
-written to screen.}
-
-\item{all}{A logical specifying whether all taxa with p<0.05
-should be plotted.}
-
-\item{...}{An argument for passing generic plotting function
-parameters.}
+\item{...}{An argument for passing generic plotting function parameters.}
 }
 \value{
-A plot of decreasing and/or increasing taxon-specific
-  change points along the environmental gradient.
+A plot of decreasing and/or increasing taxon-specific change points
+  along the environmental gradient.
 }
 \description{
-Creates a plot of taxon-specific change points with optional
-quantiles conveying uncertainty resulting from bootstrapped
-samples and optional filtering by pure and reliable taxa.
+Creates a plot of taxon-specific change points with optional quantiles
+conveying uncertainty resulting from bootstrapped samples and optional
+filtering by pure and reliable taxa.
 }
 \details{
-The fuction assumes that TITAN objects contain bootstrap
-summaries and filtering information and automatically determines
-whether this is the case.  Without bootstrap summaries, only
-observed change-point locations and z-score magnitudes will be
-plotted.  The plotting function automatically interprets whether
-observed change-point values were obtained using IndVal or
-z-score maxima.  The interval option is for turning off the
-intervals for TITAN objects that contain bootstrap information.
-The prob95 is recommended for communicating uncertainty involving
-management or policy action, whereas the z.med option is
-recommended for increasingly robust estimates (by incorporating
-uncertainty associated with the sample) of taxon-specific
-change-point locations beyond those provided by the default
-(i.e., observed values).
+The fuction assumes that TITAN objects contain bootstrap summaries and
+filtering information and automatically determines whether this is the case.
+Without bootstrap summaries, only observed change-point locations and z-score
+magnitudes will be plotted.  The plotting function automatically interprets
+whether observed change-point values were obtained using IndVal or z-score
+maxima.  The interval option is for turning off the intervals for TITAN
+objects that contain bootstrap information. The prob95 is recommended for
+communicating uncertainty involving management or policy action, whereas the
+z.med option is recommended for increasingly robust estimates (by
+incorporating uncertainty associated with the sample) of taxon-specific
+change-point locations beyond those provided by the default (i.e., observed
+values).
 }
 \note{
 Should not be used with output objects from TITAN v1.0.
@@ -145,15 +122,13 @@ plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds.  Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+  interpreting biodiversity and ecological community thresholds.  Methods in
+  Ecology and Evolution 1(1): 25:37.
 
-King, RS and ME Baker  2010. Considerations for
-  identifying and interpreting ecological community thresholds.
-  Journal of the North American Benthological Association
-  29(3):998-1008.
+King, RS and ME Baker  2010. Considerations for identifying and
+  interpreting ecological community thresholds. Journal of the North American
+  Benthological Association 29(3):998-1008.
 }
 \seealso{
 \code{\link{plotSumz}}, \code{\link{plotCPs}}

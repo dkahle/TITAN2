@@ -1,107 +1,94 @@
 #' Calculate bootstrapped IndVal z scores
 #'
-#' This function implements resampling (with replacement) of the
-#' observed environmental gradient and site-by-taxon matrix, and
-#' then calls the function \code{b.getivz} to obtain
-#' bootstrapped scores.
+#' This function implements resampling (with replacement) of the observed
+#' environmental gradient and site-by-taxon matrix, and then calls the function
+#' \code{\link{getivz}} to obtain bootstrapped scores.
 #'
-#' Four pieces of information are obtained from every taxon during
-#' each bootstrap replicate. If the argument 'imax' is TRUE,
-#' bootstrapped change points are identified based on IndVal maxima,
-#' whereas if 'imax' is FALSE z-score maxima are used instead.  In
-#' addition to the IndVal or z score maxima, the value of the
-#' environmental gradient, the indicator direction, and the p value
-#' are also retained for that point.
+#' Four pieces of information are obtained from every taxon during each
+#' bootstrap replicate. If the argument 'imax' is TRUE, bootstrapped change
+#' points are identified based on IndVal maxima, whereas if 'imax' is FALSE
+#' z-score maxima are used instead.  In addition to the IndVal or z score
+#' maxima, the value of the environmental gradient, the indicator direction, and
+#' the p value are also retained for that point.
 #'
-#' In addition to the above metric matrix for each taxon (1), the z
-#' scores across all candidate chnage points are retained from each
-#' replicate (2), as well as the response direction (maxgrp) (3) and
-#' a sorted version of resampled environmental values (4).  These
-#' four items are combined as a list object.
+#' In addition to the above metric matrix for each taxon (1), the z scores
+#' across all candidate chnage points are retained from each replicate (2), as
+#' well as the response direction (maxgrp) (3) and a sorted version of resampled
+#' environmental values (4).  These four items are combined as a list object.
 #'
-#' @param bSeq An index used to determine the sequence number of the
-#'   current bootstrap replicate.
+#' @param bSeq An index used to determine the sequence number of the current
+#'   bootstrap replicate.
 #' @param env An environmental gradient.
-#' @param taxa A site-by-taxon matrix of taxa counts at each
-#'   sampling location.
-#' @param ivTot A logical indicating whether IndVal scores should be
-#'   calculated using total relative abundance or the mean relative
-#'   abundace originally proposed by Dufrene and Legendre (1997).
-#'   The default is to pass on the argument from the original TITAN
-#'   funtion call.
-#' @param minSplt The minimum bin size for partitioning along the
-#'   environmental gradient.  The default is to pass on the argument
-#'   from the original TITAN funtion call.
-#' @param nPerm The number of replicates used by the permutation
-#'   procedure (not to be confused with the number of bootstrap
-#'   replicates). The default is to pass on the argument from the
-#'   original TITAN funtion call.
-#' @param memory A logical indicating whether scratch files should
-#'   be used to store temporary data in order to preserve RAM during
-#'   bootstrapping of large data sets.  The default is to pass on
-#'   the argument from the original TITAN funtion call.
-#' @param imax A logical indicating whether taxon-specific change
-#'   points should be determined by IndVal maxima or z-score maxima
-#'   (as in Baker and King 2010). The default is to pass on the
+#' @param taxa A site-by-taxon matrix of taxa counts at each sampling location.
+#' @param ivTot A logical indicating whether IndVal scores should be calculated
+#'   using total relative abundance or the mean relative abundace originally
+#'   proposed by Dufrene and Legendre (1997). The default is to pass on the
 #'   argument from the original TITAN funtion call.
+#' @param minSplt The minimum bin size for partitioning along the environmental
+#'   gradient.  The default is to pass on the argument from the original TITAN
+#'   funtion call.
+#' @param nPerm The number of replicates used by the permutation procedure (not
+#'   to be confused with the number of bootstrap replicates). The default is to
+#'   pass on the argument from the original TITAN funtion call.
+#' @param memory A logical indicating whether scratch files should be used to
+#'   store temporary data in order to preserve RAM during bootstrapping of large
+#'   data sets.  The default is to pass on the argument from the original TITAN
+#'   funtion call.
+#' @param imax A logical indicating whether taxon-specific change points should
+#'   be determined by IndVal maxima or z-score maxima (as in Baker and King
+#'   2010). The default is to pass on the argument from the original TITAN
+#'   funtion call.
 #' @return A list of four elements:
 #' \itemize{
-#'   \item{bt.metrics}{A matrix with nrow equal to number of taxa
-#'     where the first column is the bootstrapped IndVal or z score
-#'     maximum, the second is the environmental value, the third is
-#'     the indicator direction, and the fourth is the p value at that
-#'     point.}
-#'   \item{ivzs}{Z scores for all taxa across candidate change points
-#'     in the replicate sample}
-#'   \item{bsrti}{A sorted version of the bootstrapped environmental
-#'     gradient}
-#'   \item{rspdr}{Response direction (1 or 2) for all taxa across
-#'     candidate change points in the replicate sample}
+#'   \item{bt.metrics}{A matrix with nrow equal to number of taxa where the
+#'   first column is the bootstrapped IndVal or z score maximum, the second is
+#'   the environmental value, the third is the indicator direction, and the
+#'   fourth is the p value at that point.}
+#'   \item{ivzs}{Z scores for all taxa across candidate change points in the
+#'   replicate sample}
+#'   \item{bsrti}{A sorted version of the bootstrapped environmental gradient}
+#'   \item{rspdr}{Response direction (1 or 2) for all taxa across candidate
+#'   change points in the replicate sample}
 #' }
-#' @references Baker, ME and RS King.  2010. A new method for
-#'   detecting and interpreting biodiversity and ecological
-#'   community thresholds. Methods in Ecology and Evolution 1(1):
-#'   25:37.
-#' @seealso \code{\link{b.getivz}}, \code{\link{ivzsums}}
+#' @references Baker, ME and RS King.  2010. A new method for detecting and
+#'   interpreting biodiversity and ecological community thresholds. Methods in
+#'   Ecology and Evolution 1(1): 25:37.
+#' @seealso \code{\link{getivz}}, \code{\link{ivzsums}}
 #' @author M. Baker and R. King
 #' @keywords TITAN bootstrap
-tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
-  nPerm = nPerm, memory = memory, imax = imax) {
+tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax) {
 
   message(bSeq, ".. ", appendLF = FALSE)
-  ## Create empty arrays for storing sum(z-) and sum(z+) across
-  ## envcls by replicate
+
+  # create empty arrays for storing sum(z-) and sum(z+) across envcls by replicate
   boot.metrics <- rep(NA, length(bSeq))
   numUnit <- length(env)
   rnum <- runif(1, 0, 100)
   max.btSumz <- rep(NA, 2)
 
   for (i in 1:length(bSeq)) {
-    ## Resample data with replacement, repeat part 1
-    ## preliminaries
-    nuid <- sample(numUnit, replace = TRUE)
-    bTxa <- taxa[nuid, ]
-    numTxa <- ncol(bTxa)
-    bEnv <- env[nuid]
-    bRankEnv <- rank(bEnv, ties.method = "random")
-    bSrti <- sort(bEnv)
+
+    # resample data with replacement, repeat part 1 preliminaries
+    permuted_row_ndcs <- sample(1:numUnit, replace = TRUE) # generate permutation of row indices
+    booted_taxa <- taxa[permuted_row_ndcs, ]
+    n_taxa <- ncol(booted_taxa)
+    permuted_env <- env[permuted_row_ndcs]
+    bRankEnv <- rank(permuted_env, ties.method = "random")
+    bSrti <- sort(permuted_env)
     bSrti2 <- sort(bRankEnv)
     bEnvCls <- bSrti[(minSplt):(numUnit - minSplt)]
     nClass <- length(bEnvCls)
-    bEclass <- matrix(NA, numUnit, nClass)
+    boot.env <- matrix(NA, numUnit, nClass)
     for (c in 1:nClass) {
-      bEclass[, c] <- ((bRankEnv > bSrti2[minSplt + (c - 1)]) * 1) + 1
+      boot.env[, c] <- (bRankEnv > bSrti2[minSplt + (c - 1)]) + 1
     }
-    boot.env <- bEclass
-    boot.taxa <- bTxa
+    booted_taxa <- booted_taxa
 
-    ## Create temporary matrix for storing z scores and group
-    ## assignments
-    ivzScores.bt <- b.getivz(boot.env, boot.taxa, ivTot, nPerm = nPerm,
-      imax = imax, numClass = nClass)
+    # create temporary matrix for storing z scores and group assignments
+    ivzScores.bt <- getivz(boot.env, booted_taxa, ivTot, nPerm = nPerm, imax = imax, numClass = nClass)
 
-    ## Replace NaNs with 0s
-    for (k in (numTxa + 1):(numTxa * 3)) {
+    # replace NaNs with 0s
+    for (k in (n_taxa + 1):(n_taxa * 3)) {
       for (j in 1:nClass) {
         if (is.nan(ivzScores.bt[k, j])) {
           ivzScores.bt[k, j] <- 0
@@ -110,57 +97,39 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
     }
 
 
-    bt.metrics <- matrix(NA, numTxa, 4)  #output matrix of metrics
+    bt.metrics <- matrix(NA, n_taxa, 4)  #output matrix of metrics
 
-    ## Obtain env level for IndVal maxima and group assignment for
-    ## each replicate bt.metric 1:4 include maxgrp, env.cp (either
-    ## imax or zmax),z.score,iv.p
-    for (j in 1:numTxa) {
+    # obtain env level for IndVal maxima and group assignment for
+    # each replicate bt.metric 1:4 include maxgrp, env.cp (either
+    # imax or zmax), z.score, iv.p
+    for (j in 1:n_taxa) {
       if (imax == FALSE) {
-        maxSplt <- which.max(abs(ivzScores.bt[j + (numTxa),]))
+        maxSplt <- which.max(abs(ivzScores.bt[j + (n_taxa),]))
       } else {
-        maxSplt <- which.max(abs(ivzScores.bt[j + (numTxa * 2), ]))
+        maxSplt <- which.max(abs(ivzScores.bt[j + (n_taxa * 2), ]))
       }
       bt.metrics[j, 1] <- ivzScores.bt[j, maxSplt]
-      bt.metrics[j, 2] <- (bSrti[minSplt + maxSplt - 1] +
-        bSrti[minSplt + maxSplt])/2
-      bt.metrics[j, 3] <- ivzScores.bt[j + numTxa, maxSplt]
-      bt.metrics[j, 4] <- ivzScores.bt[(j + (numTxa * 3)),
-        maxSplt]
+      bt.metrics[j, 2] <- (bSrti[minSplt + maxSplt - 1] + bSrti[minSplt + maxSplt])/2
+      bt.metrics[j, 3] <- ivzScores.bt[j + n_taxa, maxSplt]
+      bt.metrics[j, 4] <- ivzScores.bt[(j + (n_taxa * 3)), maxSplt]
     }
 
-    ## Obtain z scores and response direction
-    ivzs <- ivzScores.bt[(numTxa + 1):(numTxa * 2), ]
-    rspdr <- ivzScores.bt[1:numTxa, ]
+    # obtain z scores and response direction
+    ivzs <- ivzScores.bt[(n_taxa+1):(2*n_taxa),]
+    rspdr <- ivzScores.bt[1:n_taxa,]
     if (memory) {
-      if (file.exists("temp.dir")) {
-        write.table(ivzs, paste("temp.dir/boot.z.", rnum,
-          ".", i, ".txt", sep = ""), append = F, row.names = F,
-          col.names = F)
-        write.table(rspdr, paste("temp.dir/boot.rd.", rnum,
-          ".", i, ".txt", sep = ""), append = F, row.names = F,
-          col.names = F)
-        write.table(bSrti, paste("temp.dir/bSrti.", rnum,
-          ".", i, ".txt", sep = ""), append = F, row.names = F,
-          col.names = F)
-      } else {
-        dir.create("temp.dir")
-        write.table(ivzs, paste("temp.dir/boot.z.", rnum,
-          ".", i, ".txt", sep = ""), append = F, row.names = F,
-          col.names = F)
-        write.table(rspdr, paste("temp.dir/boot.rd.", rnum,
-          ".", i, ".txt", sep = ""), append = F, row.names = F,
-          col.names = F)
-        write.table(bSrti, paste("temp.dir/bSrti.", rnum,
-          ".", i, ".txt", sep = ""), append = F, row.names = F,
-          col.names = F)
-      }
+      if (!file.exists("temp.dir")) dir.create("temp.dir")
+      write.table(ivzs, glue("temp.dir/boot.z.{rnum}.{i}.txt"), append = F, row.names = F, col.names = F)
+      write.table(rspdr, glue("temp.dir/boot.rd.{rnum}.{i}.txt"), append = F, row.names = F, col.names = F)
+      write.table(bSrti, glue("temp.dir/bSrti.{rnum}.{i}.txt"), append = F, row.names = F, col.names = F)
       bt.list <- list(bt.metrics, rnum)
     } else {
       bt.list <- list(bt.metrics, ivzs, bSrti, rspdr)
     }
     boot.metrics[i] <- list(bt.list)
   }
+
+
   boot.metrics
 }
 
@@ -195,65 +164,56 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt,
 
 #' Controls the allocation of bootstrap replicates
 #'
-#' A wrapper function for controlling the implementation of
-#' bootstrap replicates using the function 'tboot' by sequential or
-#' parallel processing.
+#' A wrapper function for controlling the implementation of bootstrap replicates
+#' using the function 'tboot' by sequential or parallel processing.
 #'
-#' If 'ncpus'>1 evaluates to TRUE, the function employs the package
-#' 'snow' to implement parallel processing on multicore processors
-#' common in modern desktop computers.  With some minor modification
-#' it is possible to configure this code to allocate processes to
-#' cores on a high-performance computing cluster (i.e., a
-#' supercomputer).  If 'ncpus'>1 evaluates to FALSE, the function
-#' uses 'lapply' to run 'tboot' in sequence 1:nBoot times.
+#' If 'ncpus'>1 evaluates to TRUE, the function employs the package 'snow' to
+#' implement parallel processing on multicore processors common in modern
+#' desktop computers.  With some minor modification it is possible to configure
+#' this code to allocate processes to cores on a high-performance computing
+#' cluster (i.e., a supercomputer).  If 'ncpus'>1 evaluates to FALSE, the
+#' function uses 'lapply' to run 'tboot' in sequence 1:nBoot times.
 #'
-#' @param env A vector of values for each sampling location along
-#'   the environmental gradient.
-#' @param taxa A site-by-taxon matrix of taxa counts at each
-#'   sampling location.
-#' @param ivTot A logical indicating whether IndVal scores should be
-#'   calculated using total relative abundance or the mean relative
-#'   abundace originally proposed by Dufrene and Legendre (1997).
-#'   The default is to pass on the argument from the original TITAN
-#'   funtion call.
-#' @param boot A logical specifying whether or not to implement
-#'   TITAN's' boostrap procedure. The default is to use the value
-#'   specified in the original TITAN function call.
-#' @param ncpus An argument specifying the number of processing
-#'   cores used by the TITAN function call.  If ncpus>1 then
-#'   parallel processing is implemented.  The default is to use the
-#'   value specified in the original TITAN function call.
-#' @param nBoot An argument specifying the number of bootstrap
-#'   replicates.  The default is to use the value specified in the
+#' @param env A vector of values for each sampling location along the
+#'   environmental gradient.
+#' @param taxa A site-by-taxon matrix of taxa counts at each sampling location.
+#' @param ivTot A logical indicating whether IndVal scores should be calculated
+#'   using total relative abundance or the mean relative abundace originally
+#'   proposed by Dufrene and Legendre (1997). The default is to pass on the
+#'   argument from the original TITAN funtion call.
+#' @param boot A logical specifying whether or not to implement TITAN's'
+#'   boostrap procedure. The default is to use the value specified in the
 #'   original TITAN function call.
-#' @param minSplt An argument specifying minimum split size for
-#'   partitioning along the environmental gradient.  The default is
-#'   to use the value specified in the original TITAN function call.
-#' @param nPerm The number of replicates used by the permutation
-#'   procedure (not to be confused with the number of bootstrap
-#'   replicates).
-#' @param memory A logical indicating whether scratch files should
-#'   be used to store temporary data in order to conserve active
-#'   memory during bootstrapping of large data sets.  The default is
-#'   to pass on the argument from the original TITAN funtion call.
-#' @param imax A logical indicating whether taxon-specific change
-#'   points should be determined by IndVal maxima or z-score maxima
-#'   (as in TITAN v1.0). The default is to pass on the argument from
-#'   the original TITAN funtion call.
-#' @param numUnit An argument specifying the number of values along
-#'   the environmental gradient.
+#' @param ncpus An argument specifying the number of processing cores used by
+#'   the TITAN function call.  If ncpus>1 then parallel processing is
+#'   implemented.  The default is to use the value specified in the original
+#'   TITAN function call.
+#' @param nBoot An argument specifying the number of bootstrap replicates.  The
+#'   default is to use the value specified in the original TITAN function call.
+#' @param minSplt An argument specifying minimum split size for partitioning
+#'   along the environmental gradient.  The default is to use the value
+#'   specified in the original TITAN function call.
+#' @param nPerm The number of replicates used by the permutation procedure (not
+#'   to be confused with the number of bootstrap replicates).
+#' @param memory A logical indicating whether scratch files should be used to
+#'   store temporary data in order to conserve active memory during
+#'   bootstrapping of large data sets.  The default is to pass on the argument
+#'   from the original TITAN funtion call.
+#' @param imax A logical indicating whether taxon-specific change points should
+#'   be determined by IndVal maxima or z-score maxima (as in TITAN v1.0). The
+#'   default is to pass on the argument from the original TITAN funtion call.
+#' @param numUnit An argument specifying the number of values along the
+#'   environmental gradient.
 #' @return A list of two items:
 #' \itemize{
-#'   \item{bSeq}{An index of the sequence of bootstrap replicates.
-#'     The structure of bSeq will differ for sequential or
-#'     parallel processing.}
-#'   \item{ivz.bt.list}{Itself a list of four items comprising output
-#'   passed on from function \code{\link{tboot}}}
+#'   \item{bSeq}{An index of the sequence of bootstrap replicates. The structure
+#'   of bSeq will differ for sequential or parallel processing.}
+#'   \item{ivz.bt.list}{Itself a list of four items comprising output passed on
+#'   from function \code{\link{tboot}}}
 #' }
-#' @references Baker, ME and RS King.  2010. A new method for
-#'   detecting and interpreting biodiversity and ecological
-#'   community thresholds. Methods in Ecology and Evolution 1(1):
-#'   25:37.
+#' @references Baker, ME and RS King.  2010. A new method for detecting and
+#'   interpreting biodiversity and ecological community thresholds. Methods in
+#'   Ecology and Evolution 1(1): 25:37.
 #' @seealso \code{\link{tboot}}, \code{\link{small.boot}},
 #'   \code{\link{big.boot}}, \code{\link{titan}}
 #' @author M. Baker and R. King
@@ -265,25 +225,17 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
   ## If multiple cores are available, take advantage of parallel
   ## processing
   if (ncpus > 1) {
-    message("Bootstrap resampling in parallel using ",
-      ncpus, " CPUs", "...no index will be printed to screen"
-    )
+    message(glue::glue("Bootstrap resampling in parallel using {ncpus} CPUs... no index will be printed to screen"))
     cores <- rep("localhost", ncpus)
     cl <- parallel::makeCluster(cores, type = "SOCK")
-    # parallel::clusterExport(cl,
-    # c('indval','indvals','permiv','b.getivz','indvalp','indvalps','ivzsums'))
     bSeq <- parallel::clusterSplit(cl, 1:nBoot)
-    ivz.bt.list <- parallel::clusterApply(cl, bSeq, tboot, env = env,
-      taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm,
-      memory = memory, imax = imax)
+    ivz.bt.list <- parallel::clusterApply(cl, bSeq, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
     parallel::stopCluster(cl)
   } else {
     ## otherwise run bootstrap in sequence
     message("Bootstrap resampling in sequence...")
-    bSeq = 0
-    ivz.bt.list = lapply(1:nBoot, tboot, env = env, taxa = taxa,
-      ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory,
-      imax = imax)
+    bSeq <- 0
+    ivz.bt.list = lapply(1:nBoot, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
   }
 
   list(bSeq, ivz.bt.list)
@@ -313,87 +265,83 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 
 #' Summarizes raw output from TITAN's bootstrap procedure
 #'
-#' A function to take output from TITAN's bootstrap procedure and
-#' process it for summary output.  The default is to perform this
-#' processing entirely within active memory, but in the event of
-#' overflowing system capacity, an optional program writes temporary
-#' files to a scratch directory to circumvent memory limits.
+#' A function to take output from TITAN's bootstrap procedure and process it for
+#' summary output.  The default is to perform this processing entirely within
+#' active memory, but in the event of overflowing system capacity, an optional
+#' program writes temporary files to a scratch directory to circumvent memory
+#' limits.
 #'
-#' Use of 'small.boot' versus 'big.boot' is controlled by the
-#' argument 'memory' in the original TITAN function call and passed
-#' to the wrapper function 'titan'.  The two progams have identical
-#' functionality, but they accomplish those functions differently to
-#' deal with memory limitations.
+#' Use of 'small.boot' versus 'big.boot' is controlled by the argument 'memory'
+#' in the original TITAN function call and passed to the wrapper function
+#' 'titan'.  The two progams have identical functionality, but they accomplish
+#' those functions differently to deal with memory limitations.
 #'
-#' For sequential processing of the bootsrtap, the index 'bSeq' is
-#' simply a sequence from 1:nBoot that is printed to the screen. For
-#' parallel processing, 'bSeq' is a list of length equal to 'ncpus',
-#' where each item is a segment of the sequence allocated to each
-#' processing core.  Thus, depending on whether 'ncpus'>1, the value
-#' of 'bSeq' is used differently to extract values from the
+#' For sequential processing of the bootsrtap, the index 'bSeq' is simply a
+#' sequence from 1:nBoot that is printed to the screen. For parallel processing,
+#' 'bSeq' is a list of length equal to 'ncpus', where each item is a segment of
+#' the sequence allocated to each processing core.  Thus, depending on whether
+#' 'ncpus'>1, the value of 'bSeq' is used differently to extract values from the
 #' bootstrap output list.
 #'
-#' The first part of each function consists of defining output
-#' matrices, the second involves extraction of output from the
-#' bootstrap list, the third part involves calculating purity,
-#' reliability, the median z score, and quantiles of the
-#' bootstrapped change points for each taxon.  These values are used
-#' to complete the 'sppmax' output table and to identify the taxa
-#' that meet purity and reliability criteria.  The final portion of
-#' each function finds the maximum sum(z-), sum(z+), f.sum(z-), and
-#' f.sum(z+) for each bootstrap replicate for later estimation of
-#' confidence intervals.  The final portion of the summary involves
-#' calculating the filtered and unfiltered sum(z) scores for each
-#' bootstrap replicate from the matrix of z scores and response
-#' directions passed from the function boot.titan() within
-#' ivz.bt.list
+#' The first part of each function consists of defining output matrices, the
+#' second involves extraction of output from the bootstrap list, the third part
+#' involves calculating purity, reliability, the median z score, and quantiles
+#' of the bootstrapped change points for each taxon.  These values are used to
+#' complete the 'sppmax' output table and to identify the taxa that meet purity
+#' and reliability criteria.  The final portion of each function finds the
+#' maximum sum(z-), sum(z+), f.sum(z-), and f.sum(z+) for each bootstrap
+#' replicate for later estimation of confidence intervals.  The final portion of
+#' the summary involves calculating the filtered and unfiltered sum(z) scores
+#' for each bootstrap replicate from the matrix of z scores and response
+#' directions passed from the function boot.titan() within ivz.bt.list
 #'
-#' @param ivz.bt.list A list of output from each bootstrap replicate
-#'   passed from \code{\link{boot.titan}}.
+#' @param ivz.bt.list A list of output from each bootstrap replicate passed from
+#'   \code{\link{boot.titan}}.
 #' @param bSeq An index of the sequence of bootstrap replicates.
 #' @param sppmax A taxon-specific summary output table for TITAN.
-#' @param obs1 A binary vector indicating membership in the
-#'   decreasing group of taxa.
-#' @param obs2 A binary vector indicating membership in the
-#'   increasing group of taxa.
-#' @param nBoot An argument specifying the number of bootstrap
-#'   replicates.  The default is to use the value specified in the
-#'   original TITAN function call.
-#' @param numClass An argument specifying the number of candidate
-#'   partitions along the environmental gradient.
-#' @param numUnit An argument specifying the number of values along
-#'   the environmental gradient.
-#' @param ncpus An argument specifying the number of processing
-#'   cores used by the TITAN function call.  If ncpus>1 then
-#'   parallel processing is indicated.  The default is to use the
-#'   value specified in the original TITAN function call.
-#' @param pur.cut An argument specifying the cutoff value for
-#'   determining purity.  The default is to use the value specified
-#'   in the original TITAN function call.
-#' @param rel.cut An argument specifying the cutoff value for
-#'   determining reliability.  The default is to use the value
+#' @param obs1 A binary vector indicating membership in the decreasing group of
+#'   taxa.
+#' @param obs2 A binary vector indicating membership in the increasing group of
+#'   taxa.
+#' @param nBoot An argument specifying the number of bootstrap replicates.  The
+#'   default is to use the value specified in the original TITAN function call.
+#' @param numClass An argument specifying the number of candidate partitions
+#'   along the environmental gradient.
+#' @param numUnit An argument specifying the number of values along the
+#'   environmental gradient.
+#' @param ncpus An argument specifying the number of processing cores used by
+#'   the TITAN function call.  If ncpus>1 then parallel processing is indicated.
+#'   The default is to use the value specified in the original TITAN function
+#'   call.
+#' @param pur.cut An argument specifying the cutoff value for determining
+#'   purity.  The default is to use the value specified in the original TITAN
+#'   function call.
+#' @param rel.cut An argument specifying the cutoff value for determining
+#'   reliability.  The default is to use the value specified in the original
+#'   TITAN function call.
+#' @param minSplt An argument specifying minimum split size of partitioning
+#'   along the environmental gradient.  The default is to use the value
 #'   specified in the original TITAN function call.
-#' @param minSplt An argument specifying minimum split size of
-#'   partitioning along the environmental gradient.  The default is
-#'   to use the value specified in the original TITAN function call.
 #' @return A list of six items:
 #' \itemize{
-#'   \item{sppSub1}{A vector of taxon index numbers for pure and reliable decreasers}
-#'   \item{sppSub2}{A vector of taxon index numbers for pure and reliable increasers}
+#'   \item{sppSub1}{A vector of taxon index numbers for pure and reliable
+#'   decreasers}
+#'   \item{sppSub2}{A vector of taxon index numbers for pure and reliable
+#'   increasers}
 #'   \item{sppmax}{The completed taxon-specific summary output table for TITAN}
-#'   \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and sum(z+) maxima across all bootstrap replicates}
-#'   \item{maxFsumz}{A 2-column matrix of environmental values at filtered sum(z-) and sum(z+) maxima across all bootstrap replicates}
-#'   \item{metricArray}{An array of group membership, env change points, z scores, and p values for passing to 'plot.IVecdf'}
+#'   \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and
+#'   sum(z+) maxima across all bootstrap replicates}
+#'   \item{maxFsumz}{A 2-column matrix of environmental values at filtered
+#'   sum(z-) and sum(z+) maxima across all bootstrap replicates}
+#'   \item{metricArray}{An array of group membership, env change points, z
+#'   scores, and p values for passing to 'plot.IVecdf'}
 #' }
-#' @references Baker, ME and RS King.  2010. A new method for
-#'   detecting and interpreting biodiversity and ecological
-#'   community thresholds. Methods in Ecology and Evolution 1(1):
-#'   25:37.
-#' @references Baker ME and RS King. 2013. Of TITAN and straw men:
-#'   an appeal for greater understanding of community data.
-#'   Freshwater Science 32(2):489-506.
-#' @seealso \code{\link{boot.titan}}, \code{\link{tboot}},
-#'   \code{\link{titan}}
+#' @references Baker, ME and RS King.  2010. A new method for detecting and
+#'   interpreting biodiversity and ecological community thresholds. Methods in
+#'   Ecology and Evolution 1(1): 25:37.
+#' @references Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
+#'   greater understanding of community data. Freshwater Science 32(2):489-506.
+#' @seealso \code{\link{boot.titan}}, \code{\link{tboot}}, \code{\link{titan}}
 #' @author M. Baker and R. King
 #' @keywords TITAN purity reliability sum(z)
 #' @name smallBigBoot
@@ -451,54 +399,38 @@ small.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   purity2 <- rowMeans(metricArray[, 1, ] == 2, na.rm = T)
   reliab <- rowMeans(metricArray[, 4, ] < 0.05, na.rm = T)
   z.median <- apply(metricArray[, 3, ], 1, median, na.rm = T)
-  quantiles <- t(apply(metricArray[, 2, ], 1, quantile, probs = c(0.05,
-    0.1, 0.5, 0.9, 0.95), na.rm = T))
+  quantiles <- t(apply(metricArray[, 2, ], 1, quantile, probs = c(0.05, 0.1, 0.5, 0.9, 0.95), na.rm = T))
   sppmax[, 14] <- reliab
   sppmax[, 15] <- z.median
-  sppmax[which(purity1 >= pur.cut & reliab >= rel.cut & obs1),
-    16] <- 1
-  sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2),
-    16] <- sppmax[which(purity2 >= pur.cut & reliab >= rel.cut &
-    obs2), 16] + 2
-  sppmax[which(sppmax[, 4] == 1), 13] <- purity1[which(sppmax[,
-    4] == 1)]
-  sppmax[which(sppmax[, 4] == 2), 13] <- purity2[which(sppmax[,
-    4] == 2)]
+  sppmax[which(purity1 >= pur.cut & reliab >= rel.cut & obs1), 16] <- 1
+  sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] <- sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] + 2
+  sppmax[which(sppmax[, 4] == 1), 13] <- purity1[which(sppmax[, 4] == 1)]
+  sppmax[which(sppmax[, 4] == 2), 13] <- purity2[which(sppmax[, 4] == 2)]
   sppmax[, 8:12] <- quantiles
   sppSub1 <- which(sppmax[, 16] == 1)
   sppSub2 <- which(sppmax[, 16] == 2)
 
   for (i in 1:nBoot) {
-    sumzBoot[i, 1] <- which.max(colSums(zArray[, , i] * (rspdir[,
-      , i] == 1), na.rm = T))
+    sumzBoot[i, 1] <- which.max(colSums(zArray[, , i] * (rspdir[, , i] == 1), na.rm = T))
     if (length(sppSub1) > 1) {
-      sumzBoot.f[i, 1] <- which.max(colSums(zArray[sppSub1,
-        , i] * (rspdir[sppSub1, , i] == 1), na.rm = T))
+      sumzBoot.f[i, 1] <- which.max(colSums(zArray[sppSub1, , i] * (rspdir[sppSub1, , i] == 1), na.rm = T))
     } else {
       if (length(sppSub1) > 0) {
-        sumzBoot.f[i, 1] <- which.max(zArray[sppSub1, ,
-          i] * (rspdir[sppSub1, , i] == 1))
+        sumzBoot.f[i, 1] <- which.max(zArray[sppSub1, , i] * (rspdir[sppSub1, , i] == 1))
       }
     }
-    sumzBoot[i, 2] <- which.max(colSums(zArray[, , i] * (rspdir[,
-      , i] == 2), na.rm = T))
+    sumzBoot[i, 2] <- which.max(colSums(zArray[, , i] * (rspdir[, , i] == 2), na.rm = T))
     if (length(sppSub2) > 1) {
-      sumzBoot.f[i, 2] <- which.max(colSums(zArray[sppSub2,
-        , i] * (rspdir[sppSub2, , i] == 2), na.rm = T))
+      sumzBoot.f[i, 2] <- which.max(colSums(zArray[sppSub2, , i] * (rspdir[sppSub2, , i] == 2), na.rm = T))
     } else {
       if (length(sppSub2) > 0) {
-        sumzBoot.f[i, 2] <- which.max(zArray[sppSub2, ,
-          i] * (rspdir[sppSub2, , i] == 2))
+        sumzBoot.f[i, 2] <- which.max(zArray[sppSub2, , i] * (rspdir[sppSub2, , i] == 2))
       }
     }
-    maxSumz[i, 1] <- (bEnvMatrix[i, (minSplt + sumzBoot[i,
-      1]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot[i, 1])])/2
-    maxSumz[i, 2] <- (bEnvMatrix[i, (minSplt + sumzBoot[i,
-      2]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot[i, 2])])/2
-    maxFsumz[i, 1] <- (bEnvMatrix[i, (minSplt + sumzBoot.f[i,
-      1]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot.f[i, 1])])/2
-    maxFsumz[i, 2] <- (bEnvMatrix[i, (minSplt + sumzBoot.f[i,
-      2]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot.f[i, 2])])/2
+     maxSumz[i, 1] <- (bEnvMatrix[i,   (minSplt + sumzBoot[i, 1]) - 1] + bEnvMatrix[i,   (minSplt + sumzBoot[i, 1])])/2
+     maxSumz[i, 2] <- (bEnvMatrix[i,   (minSplt + sumzBoot[i, 2]) - 1] + bEnvMatrix[i,   (minSplt + sumzBoot[i, 2])])/2
+    maxFsumz[i, 1] <- (bEnvMatrix[i, (minSplt + sumzBoot.f[i, 1]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot.f[i, 1])])/2
+    maxFsumz[i, 2] <- (bEnvMatrix[i, (minSplt + sumzBoot.f[i, 2]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot.f[i, 2])])/2
   }
   list(sppSub1, sppSub2, sppmax, maxSumz, maxFsumz, metricArray)
 }
@@ -518,8 +450,7 @@ small.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
 
 
 #' @rdname smallBigBoot
-big.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
-  numClass, numUnit, ncpus, pur.cut, rel.cut, minSplt) {
+big.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot, numClass, numUnit, ncpus, pur.cut, rel.cut, minSplt) {
 
   numTxa <- nrow(sppmax)
   # create empty matrix for storing IndVal maxima and group assignments
@@ -554,14 +485,12 @@ big.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   purity2 <- rowMeans(metricArray[,1,] == 2, na.rm = T)
   reliab  <- rowMeans(metricArray[,4,] < 0.05, na.rm = T)
   z.median <- apply(metricArray[, 3, ], 1, median, na.rm = T)
-  quantiles <- t(apply(metricArray[, 2, ], 1, quantile, probs = c(0.05,
-    0.1, 0.5, 0.9, 0.95), na.rm = T))
+  quantiles <- t(apply(metricArray[, 2, ], 1, quantile, probs = c(0.05, 0.1, 0.5, 0.9, 0.95), na.rm = T))
 
   sppmax[, 14] <- reliab
   sppmax[, 15] <- z.median
   sppmax[which(purity1 >= pur.cut & reliab >= rel.cut & obs1), 16] <- 1
-  sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] <-
-    sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] + 2
+  sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] <- sppmax[which(purity2 >= pur.cut & reliab >= rel.cut & obs2), 16] + 2
   sppmax[which(sppmax[, 4] == 1), 13] <- purity1[which(sppmax[,4] == 1)]
   sppmax[which(sppmax[, 4] == 2), 13] <- purity2[which(sppmax[,4] == 2)]
   sppmax[, 8:12] <- quantiles
