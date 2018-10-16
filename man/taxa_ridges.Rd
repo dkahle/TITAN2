@@ -2,7 +2,7 @@
 % Please edit documentation in R/taxa_ridges.R
 \name{taxa_ridges}
 \alias{taxa_ridges}
-\title{Plots taxon-specific change points}
+\title{Taxon change point ridge plots}
 \usage{
 taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE, prob95 = FALSE,
   z.med = FALSE, xlabel = "Environmental Gradient", all = FALSE,
@@ -38,23 +38,7 @@ A plot of decreasing and/or increasing taxon-specific change points
   along the environmental gradient.
 }
 \description{
-Creates a plot of taxon-specific change points with optional quantiles
-conveying uncertainty resulting from bootstrapped samples and optional
-filtering by pure and reliable taxa.
-}
-\details{
-The fuction assumes that TITAN objects contain bootstrap summaries and
-filtering information and automatically determines whether this is the case.
-Without bootstrap summaries, only observed change-point locations and z-score
-magnitudes will be plotted.  The plotting function automatically interprets
-whether observed change-point values were obtained using IndVal or z-score
-maxima.  The interval option is for turning off the intervals for TITAN
-objects that contain bootstrap information. The prob95 is recommended for
-communicating uncertainty involving management or policy action, whereas the
-z.med option is recommended for increasingly robust estimates (by
-incorporating uncertainty associated with the sample) of taxon-specific
-change-point locations beyond those provided by the default (i.e., observed
-values).
+Taxon change point ridge plots
 }
 \note{
 Should not be used with output objects from TITAN v1.0.

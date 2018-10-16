@@ -1,21 +1,6 @@
-#' Plots taxon-specific change points
+#' Taxon change point ridge plots
 #'
-#' Creates a plot of taxon-specific change points with optional quantiles
-#' conveying uncertainty resulting from bootstrapped samples and optional
-#' filtering by pure and reliable taxa.
-#'
-#' The fuction assumes that TITAN objects contain bootstrap summaries and
-#' filtering information and automatically determines whether this is the case.
-#' Without bootstrap summaries, only observed change-point locations and z-score
-#' magnitudes will be plotted.  The plotting function automatically interprets
-#' whether observed change-point values were obtained using IndVal or z-score
-#' maxima.  The interval option is for turning off the intervals for TITAN
-#' objects that contain bootstrap information. The prob95 is recommended for
-#' communicating uncertainty involving management or policy action, whereas the
-#' z.med option is recommended for increasingly robust estimates (by
-#' incorporating uncertainty associated with the sample) of taxon-specific
-#' change-point locations beyond those provided by the default (i.e., observed
-#' values).
+#' Taxon change point ridge plots
 #'
 #' @param titan.out A TITAN output object.
 #' @param z1 A logical specifying whether decreasing taxa should be plotted.
