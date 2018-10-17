@@ -20,7 +20,6 @@ Description: Uses indicator species scores across binary partitions of
 VignetteBuilder: knitr
 Depends: R (>= 2.15.0)
 Imports:
-    Rcpp (>= 0.12.4),
     parallel,
     dplyr,
     ggplot2,
@@ -28,8 +27,6 @@ Imports:
     cowplot,
     ggridges,
     purrr
-LinkingTo:
-    Rcpp
 Suggests: 
     knitr,
     rmarkdown
