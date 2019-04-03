@@ -15,6 +15,10 @@
 #' @param xlabel A character string for the x axis label.
 #' @param all A logical specifying whether all taxa with p<0.05 should be
 #'   plotted.
+#' @param ytxt.sz The relative size of the taxa label along the y axis.
+#' @param n_ytaxa The maximum number of taxa to be plotted.
+#' @param printspp A logical specifying whether the sppmax table should be
+#'   printed.
 #' @param xlim X axis limits.
 #' @param ... ...
 #' @return A plot of decreasing and/or increasing taxon-specific change points
@@ -39,8 +43,9 @@
 #' taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)")
 #' taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", xlim = c(0, 125))
 #'
-taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, prob95 = FALSE,
-  z.med = FALSE, xlabel = "Environmental Gradient", all = FALSE, xlim, ...) {
+
+
+taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, pur.cut=titan.out$arguments[[7]], rel.cut=titan.out$arguments[[8]], xlabel = "Environmental Gradient", n_ytaxa=90, ytxt.sz=10, all = FALSE, printspp=T, xlim, ...) {
 
   filter <- NULL; rm(filter)
   maxgrp <- NULL; rm(maxgrp)
@@ -61,6 +66,21 @@ taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, prob95 = FALSE,
     pluck("sppmax") %>%
     as_data_frame() %>%
     mutate(id = row.names(titan.out$sppmax))
+
+  sppmax$filter <- 0
+  sppmax$filter[which(sppmax$purity>=pur.cut & sppmax$reliability>=rel.cut)] <- sppmax$maxgrp[which(sppmax$purity>=pur.cut & sppmax$reliability>=rel.cut)]
+
+
+  num.dcr <- sum(sppmax$filter==1)
+  num.ncr <- sum(sppmax$filter==2)
+
+  message(paste("There are", sum(num.dcr,num.ncr), "indicator taxa of", n_ytaxa, "possible for plotting",sep=" "))
+  message(paste("Number of Decreasers=", num.dcr,sep=""))
+  message(paste("Number of Increasers=", num.ncr,sep=""))
+
+  sppmax <- sppmax %>%
+   arrange(desc(purity),desc(reliability),desc(z.median)) %>%
+   slice(1:min(n(),n_ytaxa))
 
   reliable_taxa_ndcs <- which(sppmax$filter > 0)
 
@@ -86,16 +106,13 @@ taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, prob95 = FALSE,
   gdf %>%
     filter(filter == -1) %>%
     ggplot(aes(x = chk_pts, y = reorder(id, -chk_pts, median), fill = zscore)) +
-      geom_density_ridges(
-        scale = 2, alpha = 0.6, size = 0.05, color="gray50",
-        quantile_lines = TRUE, quantiles = 2, vline_color = "black", vline_size = .25
-      ) +
-      scale_x_continuous("", limits = xlim) +
-      scale_y_discrete("Taxa") +
+      stat_density_ridges(quantile_lines=T, vline_size=0.25, geom="density_ridges",quantiles=2, vline_color="black", size=0.05, color="gray50",alpha=0.6) +
+      #xlim=xlim+
+      scale_y_discrete("") +
       scale_fill_gradient("Z-Score", low = "light blue", high = "blue") +
       theme(
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank(),
+        axis.text.y = element_text(size=ytxt.sz),
+	      axis.text.x = element_blank(),
         axis.title.x = element_blank(),
         plot.margin = structure(c(5.5, 5.5, 0, 5.5), class = c("margin", "unit"), valid.unit = 8L, unit = "pt")
       ) ->
@@ -104,19 +121,17 @@ taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, prob95 = FALSE,
   gdf %>%
     filter(filter == +1) %>%
     ggplot(aes(x = chk_pts, y = reorder(id, chk_pts, median), fill = zscore)) +
-      geom_density_ridges(
-        scale = 2, alpha = 0.6, size = 0.05, color="gray50",
-        quantile_lines = TRUE, quantiles = 2, vline_color = "black", vline_size = .25
-      ) +
-      scale_x_continuous(xlabel,  limits = xlim) +
-      scale_y_discrete("Taxa") +
+      stat_density_ridges(quantile_lines=T, vline_size=0.25, geom="density_ridges",quantiles=2, vline_color="black", size=0.05, color="gray50",alpha=0.6) +
+      theme(axis.text.y = element_text(size=ytxt.sz)) +
+      #xlim=xlim+
+      labs(x=xlabel)+
+      scale_y_discrete("") +
       scale_fill_gradient("Z-Score", low = "pink", high = "red") ->
     pbottom
 
+  if(printspp) {print(as.data.frame(sppmax))}
 
-  plot_grid(ptop, pbottom, ncol = 1, align = "v")
+  plot_grid(ptop, pbottom, ncol = 1, rel_heights=c(num.dcr,num.ncr), align = "v")
 
+  #invisible(list(ptop,pbottom))
 }
-
-
-
