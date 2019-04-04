@@ -35,6 +35,7 @@ txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
   if(messaging) message("Screening taxa...")
   taxa <- data.matrix(txa)
   numUnit <- nrow(txa)
+  numSpp <- ncol(txa)
   if (numUnit < 10) stop("Number of observations too small")
   if (numUnit < 20) warning("Low number of observations")
 
@@ -42,7 +43,7 @@ txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
   minTaxa <- min(ocrnc)
   if (max(ocrnc) == numUnit) {
     detected_times <- sum(ocrnc == numUnit)
-    pct_of_taxa <- round((length(which(ocrnc == numUnit))/numUnit) * 100, digits = 1)
+    pct_of_taxa <- round((detected_times/numSpp) * 100, digits = 1)
     if(messaging) message(sprintf(
       "  100%% occurrence detected %i times (%.1f%% of taxa),", detected_times, pct_of_taxa
     ))
