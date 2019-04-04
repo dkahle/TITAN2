@@ -27,11 +27,11 @@ first published by [King and Richardson
 
 For users familiar with the original version of `titan()` and
 associated functions, released as a text file for R 2.9.2 in Appendix
-3 of [Baker and King
-(2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full),
-there are a number of updates included in the R package **TITAN2**,
+3 of [Baker and King (2010)]
+(http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full),
+there are a number of updates included in this R package **TITAN2**,
 some of which may break your code.  First, the original scripts have
-been broken into modular component functions to facilitate
+been divided into modular component functions to facilitate
 dissemination through CRAN.  Second, a number of functions have been
 added to reduce run time and allow for the handling of large datasets.
 Third, several new analyses and plotting functions have been included,
