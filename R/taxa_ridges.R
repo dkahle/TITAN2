@@ -45,7 +45,13 @@
 #'
 
 
-taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, pur.cut=titan.out$arguments[[7]], rel.cut=titan.out$arguments[[8]], xlabel = "Environmental Gradient", n_ytaxa=90, ytxt.sz=10, all = FALSE, printspp=T, xlim, ...) {
+###REQUIRES tidyverse, cowplot, ggridges
+
+##z1, z2 not functional
+##xlim problem
+##scale x log10, sqrt, or continuous
+
+taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, z1_fill_low="light blue", z1_fill_high="black", z2_fill_low="pink", z2_fill_high="red", pur.cut=titan.out$arguments[[7]], rel.cut=titan.out$arguments[[8]], xlabel = "Environmental Gradient", n_ytaxa=90, ytxt.sz=10, all = FALSE, printspp=T, xmin, xmax, ...) {
 
   filter <- NULL; rm(filter)
   maxgrp <- NULL; rm(maxgrp)
@@ -101,37 +107,57 @@ taxa_ridges <- function(titan.out, z1 = TRUE, z2 = TRUE, pur.cut=titan.out$argum
   # taxa = sppmax$id[.x],
   # z.Scores =
 
-  if (missing(xlim)) xlim <- range(gdf$chk_pts)
+  ####if (missing(xlim)) xlim <- range(gdf$chk_pts)
 
-  gdf %>%
-    filter(filter == -1) %>%
-    ggplot(aes(x = chk_pts, y = reorder(id, -chk_pts, median), fill = zscore)) +
+  if(z2){
+    gdf %>%
+      filter(filter == -1) %>%
+      ggplot(aes(x = chk_pts, y = reorder(id, -chk_pts, median), fill = zscore)) +
       stat_density_ridges(quantile_lines=T, vline_size=0.25, geom="density_ridges",quantiles=2, vline_color="black", size=0.05, color="gray50",alpha=0.6) +
-      #xlim=xlim+
+      xlim(xmin, xmax) +
       scale_y_discrete("") +
-      scale_fill_gradient("Z-Score", low = "light blue", high = "blue") +
+      scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
       theme(
         axis.text.y = element_text(size=ytxt.sz),
-	      axis.text.x = element_blank(),
+        axis.text.x = element_blank(),
         axis.title.x = element_blank(),
         plot.margin = structure(c(5.5, 5.5, 0, 5.5), class = c("margin", "unit"), valid.unit = 8L, unit = "pt")
       ) ->
-    ptop
+      ptop
 
-  gdf %>%
-    filter(filter == +1) %>%
-    ggplot(aes(x = chk_pts, y = reorder(id, chk_pts, median), fill = zscore)) +
+    gdf %>%
+      filter(filter == +1) %>%
+      ggplot(aes(x = chk_pts, y = reorder(id, chk_pts, median), fill = zscore)) +
       stat_density_ridges(quantile_lines=T, vline_size=0.25, geom="density_ridges",quantiles=2, vline_color="black", size=0.05, color="gray50",alpha=0.6) +
       theme(axis.text.y = element_text(size=ytxt.sz)) +
-      #xlim=xlim+
+      xlim(xmin, xmax) +
       labs(x=xlabel)+
       scale_y_discrete("") +
-      scale_fill_gradient("Z-Score", low = "pink", high = "red") ->
-    pbottom
+      scale_fill_gradient("Z-Score", low = z2_fill_low, high = z2_fill_high) ->
+      pbottom
+  }else{
+    if(z1){
+      gdf %>%
+        filter(filter == -1) %>%
+        ggplot(aes(x = chk_pts, y = reorder(id, -chk_pts, median), fill = zscore)) +
+        stat_density_ridges(quantile_lines=T, vline_size=0.25, geom="density_ridges",quantiles=2, vline_color="black", size=0.05, color="gray50",alpha=0.6) +
+        xlim(xmin, xmax) +
+        scale_y_discrete("") +
+        scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
+        theme(axis.text.y = element_text(size=ytxt.sz)) +
+        labs(x=xlabel) ->
+        ptop
+    }
+    }
 
   if(printspp) {print(as.data.frame(sppmax))}
 
-  plot_grid(ptop, pbottom, ncol = 1, rel_heights=c(num.dcr,num.ncr), align = "v")
-
-  #invisible(list(ptop,pbottom))
-}
+  if(z1){
+    if(z2){
+      plot_grid(ptop, pbottom, ncol = 1, rel_heights=c(num.dcr,num.ncr), align = "v")
+    }else{
+      plot_grid(ptop)
+    } }else{
+      if(z2){plot_grid(pbottom)}
+    }
+  }
