@@ -53,9 +53,6 @@ The function locates the env values of sum(z) maxima, then if
 provides bootstrap quantiles of both filtered and unfiltered
 distributions.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
@@ -71,6 +68,8 @@ King, RS and ME Baker  2010. Considerations for
 \code{\link{ivzsums}}, \code{\link{ivzsums.f}},
   \code{\link{getivz}}, \code{\link{titan}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{sum(z)}
-

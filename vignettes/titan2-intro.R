@@ -1,5 +1,8 @@
+## ----setup, include=FALSE------------------------------------------------
+knitr::opts_chunk$set(echo=TRUE, collapse=TRUE, error=TRUE, comment = "#")
+
 ## ------------------------------------------------------------------------
-library(TITAN2)
+library("TITAN2")
 
 ## ------------------------------------------------------------------------
 data(glades.taxa)
@@ -13,8 +16,10 @@ str(glades.env)
 #  glades.titan <- titan(glades.env, glades.taxa)
 
 ## ---- eval = F-----------------------------------------------------------
-#  glades.titan <- titan(glades.env, glades.taxa, minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500,
-#    imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE)
+#  glades.titan <- titan(glades.env, glades.taxa,
+#    minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500, imax = FALSE,
+#    ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+#  )
 
 ## ------------------------------------------------------------------------
 data(glades.titan)

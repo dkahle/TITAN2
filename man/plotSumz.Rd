@@ -7,12 +7,13 @@ gradient}
 \usage{
 plotSumz(titan.out, filter = F, cumfrq = T, bootz1 = T, bootz2 = T,
   sumz1 = T, sumz2 = T, xmin = min(titan.out$env),
-  xmax = max(titan.out$envcls) * 1.25, xlabel = "Environmental Gradient",
-  y1label = NULL, y2label = "Cumulative Frequency", log = "", at = NULL,
-  tck = 0.025, bty = "u", ntick = 6, prtty = T, dig = 1, cex = 1.75,
-  cex.axis = 1.75, cex.leg = 1.5, cex.lab = 1.75, leg.x = 0.8,
-  leg.y = 0.8, legend = TRUE, pch1 = 16, pch2 = 1, col1 = "black",
-  col2 = "black", ...)
+  xmax = max(titan.out$envcls) * 1.25,
+  xlabel = "Environmental Gradient", y1label = NULL,
+  y2label = "Cumulative Frequency", log = "", at = NULL,
+  tck = 0.025, bty = "u", ntick = 6, prtty = T, dig = 1,
+  cex = 1.75, cex.axis = 1.75, cex.leg = 1.5, cex.lab = 1.75,
+  leg.x = 0.8, leg.y = 0.8, legend = TRUE, pch1 = 16, pch2 = 1,
+  col1 = "black", col2 = "black", ...)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
@@ -139,11 +140,9 @@ Should not be used with output objects from TITAN v1.0.
 \examples{
 
 data(glades.titan)
+plotSumz(glades.titan, filter = FALSE)
 
 
-}
-\author{
-M. Baker and R. King
 }
 \references{
 Baker, ME and RS King.  2010. A new method for
@@ -159,6 +158,8 @@ King, RS and ME Baker  2010. Considerations for
 \seealso{
 \code{\link{plotTaxa}}, \code{\link{plotCPs}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{sum(z)}
-

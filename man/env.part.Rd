@@ -4,7 +4,7 @@
 \alias{env.part}
 \title{Partitions environmental gradient for analysis}
 \usage{
-env.part(env, taxa, minSplt = minSplt)
+env.part(env, taxa, minSplt = minSplt, messaging = TRUE)
 }
 \arguments{
 \item{env}{A vector of values for each sampling location along
@@ -16,6 +16,8 @@ each sampling location.}
 \item{minSplt}{The  minimum split size used in binary
 partitioning.  The default is to use the argument from the
 original TITAN function call.}
+
+\item{messaging}{message user?}
 }
 \value{
 A list of seven objects: \itemize{ \item{env}{an
@@ -34,14 +36,13 @@ are compatible.  It then uses the rank order of environmental
 values at each sampling location to determine group membership of
 all sampling sites at each level of partitioning.
 }
-\author{
-M. Baker and R. King
-}
 \references{
 Baker, ME and RS King.  2010. A new method for
   detecting and interpreting biodiversity and ecological
   community thresholds.  Methods in Ecology and Evolution 1(1):
   25:37.
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
-

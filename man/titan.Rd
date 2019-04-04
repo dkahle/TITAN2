@@ -2,83 +2,84 @@
 % Please edit documentation in R/titan.R
 \name{titan}
 \alias{titan}
-\title{The primary function call for package TITAN}
+\title{Perform a threshold indicator taxa analysis}
 \usage{
-titan(env, txa, minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500,
-  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
-  ncpus = 1, memory = FALSE)
+titan(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
+  nBoot = 500, imax = FALSE, ivTot = FALSE, pur.cut = 0.95,
+  rel.cut = 0.95, ncpus = 1, memory = FALSE, messaging = TRUE)
 }
 \arguments{
 \item{env}{A vector of environmental values.}
 
-\item{txa}{A site by taxon matrix containing observed counts at
-each sampling location.}
+\item{txa}{A site by taxon matrix containing observed counts at each sampling
+location.}
 
-\item{minSplt}{The  minimum split size to be used in
-partitioning.}
+\item{minSplt}{The  minimum split size to be used in partitioning.}
 
-\item{numPerm}{The number of replicates to be used during
-permutation.}
+\item{numPerm}{The number of replicates to be used during permutation.}
 
-\item{boot}{A logical indicating whether bootstrap resampling
-should be performed.}
+\item{boot}{A logical indicating whether bootstrap resampling should be
+performed.}
 
-\item{nBoot}{The number of replicates to be used during bootstrap
-resampling.}
+\item{nBoot}{The number of replicates to be used during bootstrap resampling.}
 
-\item{imax}{A logical indication whether taxon-specific change
-points should be determined using IndVal maxima or z-score
-maxima (as in Baker and King 2010, 2013).}
+\item{imax}{A logical indication whether taxon-specific change points should
+be determined using IndVal maxima or z-score maxima (as in Baker and King
+2010, 2013).}
 
-\item{ivTot}{A logical indicating whether IndVal scores should be
-calculated using total relative abundance or the mean relative
-abundace originally proposed by Dufrene and Legendre (1997).}
+\item{ivTot}{A logical indicating whether IndVal scores should be calculated
+using total relative abundance or the mean relative abundace originally
+proposed by Dufrene and Legendre (1997).}
 
-\item{pur.cut}{A proportion specifying the cutoff value for
-determining purity across all bootstrap replicates.}
+\item{pur.cut}{A proportion specifying the cutoff value for determining
+purity across all bootstrap replicates.}
 
-\item{rel.cut}{A proportion specifying the cutoff value for
-determining reliability across all bootstrap replicates.}
+\item{rel.cut}{A proportion specifying the cutoff value for determining
+reliability across all bootstrap replicates.}
 
-\item{ncpus}{The number of processing cores to be used during
-processing.  If greater than 1, TITAN will load and use the
-package 'snow' to perform parallel processing on each core.}
+\item{ncpus}{The number of processing cores to be used during processing.  If
+greater than 1, TITAN will load and use the package 'snow' to perform
+parallel processing on each core.}
 
-\item{memory}{A logical indicating whether temporary files should
-be written to a scrath directory during bootstrap processing to
-preserve active memory.  This fucntion is sometimes necessary
-for large data files (e.g., >400 sampling sites and >100 taxa).}
+\item{memory}{A logical indicating whether temporary files should be written
+to a scratch directory during bootstrap processing to preserve active
+memory.  This function is sometimes necessary for large data files (e.g.
+>400 sampling sites and >100 taxa).}
+
+\item{messaging}{If \code{TRUE}, provide progress messages.}
 }
 \value{
-A list with 13 items: \itemize{ \item{sppmax
-  }{Description of 'comp1'} \item{sumz.cp }{Description of
-  'comp1'} \item{env }{The vector of environmental values used in
-  the TITAN function call} \item{taxa }{The site-by-taxon matrix
-  used in the TITAN function call} \item{envlcs }{A vector of
-  candidate partitions derived from subtracting 'minSplt' from
-  'env'} \item{srtEnv }{A sorted version of environmental values}
-  \item{ivzScores }{A matrix containing group membership, z
-  scores, IndVals, and p values for each taxon at every candidate
-  partition in 'envcls'} \item{ivz }{A 2-column matrix containing
-  parallel vectors of sum(z-) and sum(z+ scores for every
-  candidate partition in 'envcls')} \item{ivz.f }{A 2-column
-  matrix containing parallel vectors of sum(z-) and sum(z+ scores
-  filtered by pure and reliable taxa for every candidate
-  partition in 'envcls')} \item{maxSumz }{A 2-column matrix of
-  environmental values at sum(z-) and sum(z+) maxima across all
-  bootstrap replicates} \item{maxFsumz }{A 2-column matrix of
-  environmental values at filtered sum(z-) and sum(z+) maxima
-  across all bootstrap replicates} \item{metricArray }{An array
-  of group membership, env change points, z scores, and p values
-  equivalent to 'ivzScores' for each bootstrap replicate}
-  \item{targs }{A vector of arguments used in the TITAN function
-  call} }
+A list with 13 items:
+\itemize{
+  \item{sppmax}{Description of 'comp1'}
+  \item{sumz.cp}{Description of 'comp1'}
+  \item{env}{The vector of environmental values used in the TITAN function
+  call}
+  \item{taxa}{The site-by-taxon matrix used in the TITAN function call}
+  \item{envlcs}{A vector of candidate partitions derived from subtracting
+  'minSplt' from 'env'}
+  \item{srtEnv}{A sorted version of environmental values}
+  \item{ivzScores}{A matrix containing group membership, z scores, IndVals,
+  and p values for each taxon at every candidate partition in 'envcls'}
+  \item{ivz}{A 2-column matrix containing parallel vectors of sum(z-) and
+  sum(z+ scores for every candidate partition in 'envcls')}
+  \item{ivz.f}{A 2-column matrix containing parallel vectors of sum(z-) and
+  sum(z+ scores filtered by pure and reliable taxa for every candidate
+  partition in 'envcls')}
+  \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and
+  sum(z+) maxima across all bootstrap replicates}
+  \item{maxFsumz}{A 2-column matrix of environmental values at filtered
+  sum(z-) and sum(z+) maxima across all bootstrap replicates}
+  \item{metricArray}{An array of group membership, env change points, z
+  scores, and p values equivalent to 'ivzScores' for each bootstrap
+  replicate}
+  \item{targs}{A vector of arguments used in the TITAN function call}
+}
 }
 \description{
-The primary wrapper function controlling operation of all
-subfunctions (txa.screen, env.part, getivz, ivzsums, obs.summ,
-boot.titan, small/big.boot, sumz.tab) apart from plotting
-functions within TITAN.
+titan() is the primary wrapper function controlling operation of all
+subfunctions (txa.screen, env.part, getivz, ivzsums, obs.summ, boot.titan,
+small/big.boot, sumz.tab) apart from plotting functions within TITAN.
 }
 \examples{
 
@@ -87,34 +88,35 @@ functions within TITAN.
 data(glades.env)
 data(glades.taxa)
 glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
-  numPerm = 250, boot = TRUE, nBoot = 500, imax = FALSE,
+  numPerm = 250, boot = TRUE, nBoot = 100, imax = FALSE,
+  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
+)
+
+glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
+  numPerm = 250, boot = TRUE, nBoot = 2, imax = FALSE,
   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
 )
 
 }
 
 }
+\references{
+Baker, ME and RS King.  2010. A new method for detecting and
+  interpreting biodiversity and ecological community thresholds.  Methods in
+  Ecology and Evolution 1(1): 25:37.
+
+King, RS and ME Baker  2010. Considerations for identifying and
+  interpreting ecological community thresholds. Journal of the North American
+  Benthological Association 29(3):998-1008.
+
+Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
+  greater understanding of community data. Freshwater Science 32(2):489-506.
+}
 \author{
 M. Baker and R. King
-}
-\references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds.  Methods in Ecology and Evolution 1(1):
-  25:37.
-
-King, RS and ME Baker  2010. Considerations for
-  identifying and interpreting ecological community thresholds.
-  Journal of the North American Benthological Association
-  29(3):998-1008.
-
-Baker ME and RS King. 2013. Of TITAN and straw men:
-  an appeal for greater understanding of community data.
-  Freshwater Science 32(2):489-506.
 }
 \keyword{IndVal}
 \keyword{TITAN}
 \keyword{bootstrap}
 \keyword{permutation}
 \keyword{sum(z)}
-

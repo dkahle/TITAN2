@@ -3,13 +3,16 @@ Version 2.2
 
 NEW FEATURES
 
-*
+* TITAN2 is now more or less tidyverse compliant; it imports the tidyverse
+  packages dplyr and ggplot2.
+* new function ggplotTaxa() plots taxa using the ggplot2 framework.
+  TITAN2 now imports ggplot2.
 *
 
 CHANGES
 
-* titan now issues messages with message()
-*
+* titan now issues messages with message().
+* vignette name changed from glades.TITAN to titan2-intro.
 
 FIXES
 

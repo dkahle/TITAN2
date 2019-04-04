@@ -10,55 +10,49 @@ ivzsums(allivz)
 ivzsums.f(allivz, sppmax)
 }
 \arguments{
-\item{allivz}{The output matrix from the function 'getivz' that
-contains four submatrices, the first two of which include
-indicator direction and z scores.}
+\item{allivz}{The output matrix from the function 'getivz' that contains four
+submatrices, the first two of which include indicator direction and z
+scores.}
 
-\item{sppmax}{A completed summary output table for all taxa, used
-to ascertain which taxa should be filtered and which retained.}
+\item{sppmax}{A completed summary output table for all taxa, used to
+ascertain which taxa should be filtered and which retained.}
 }
 \value{
-A matrix of two (z- and z+) parallel vectors with length
-  (nrow) equal to the number of candidate partitions of an
-  environmental gradient.
+A matrix of two (z- and z+) parallel vectors with length (nrow) equal
+  to the number of candidate partitions of an environmental gradient.
 }
 \description{
-This function uses the output of 'getivz' (and, optionally,
-similar output from the bootstrap procedure) to sum z scores
-across taxa associated with each indicator direction (- or +) at
-each level of the environmental gradient.
+This function uses the output of 'getivz' (and, optionally, similar output
+from the bootstrap procedure) to sum z scores across taxa associated with
+each indicator direction (- or +) at each level of the environmental
+gradient.
 }
 \details{
-The function selects taxa identified as either increasing or
-decreasing at each level of the environmental gradient and
-combines their IndVal z scores to generate an assemblage-wide
-sum.  The sum(z) scores are interpreted as the magnitude of
-community change at each level of the environmental gradient.
+The function selects taxa identified as either increasing or decreasing at
+each level of the environmental gradient and combines their IndVal z scores
+to generate an assemblage-wide sum.  The sum(z) scores are interpreted as the
+magnitude of community change at each level of the environmental gradient.
 
-The alias 'ivzsums.f' uses the output of 'getivz' to sum z scores
-across taxa filtered by purity and reliability associated with
-each indicator direction (- or +) at each level of the
-environmental gradient.  Filters are provided by the final column
-("filter") in the 'sppmax' table that is part of each TITAN
-object and an argument for 'ivzsums.f'.  All taxa with a value of
-either 1 or 2 are pure and reliable decreasers or increasers,
-respectively, and are selected for summation.  Filtered sums are
-used by the 'plot.sumz' function to create estimates of robust
-community change more precise than the original unfiltered sum(z)
-in TITAN v1.0.
-}
-\author{
-M. Baker and R. King
+The alias 'ivzsums.f' uses the output of 'getivz' to sum z scores across taxa
+filtered by purity and reliability associated with each indicator direction
+(- or +) at each level of the environmental gradient.  Filters are provided
+by the final column ("filter") in the 'sppmax' table that is part of each
+TITAN object and an argument for 'ivzsums.f'.  All taxa with a value of
+either 1 or 2 are pure and reliable decreasers or increasers, respectively,
+and are selected for summation.  Filtered sums are used by the 'plot.sumz'
+function to create estimates of robust community change more precise than the
+original unfiltered sum(z) in TITAN v1.0.
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds. Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+  interpreting biodiversity and ecological community thresholds. Methods in
+  Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
 \code{\link{getivz}}, \code{\link{plotSumz}}
 }
+\author{
+M. Baker and R. King
+}
 \keyword{TITAN}
 \keyword{sum(z)}
-

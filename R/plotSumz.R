@@ -100,6 +100,7 @@
 #' @examples
 #'
 #' data(glades.titan)
+#' plotSumz(glades.titan, filter = FALSE)
 #'
 #'
 plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
@@ -129,18 +130,13 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
   boot <- titan.out$arguments[[3]] > 0.5
 
 
-  if (sum(maxPsumz[, 1], na.rm = T) < 1) {
-    sumz1 = F
-  }
-  if (sum(maxPsumz[, 2], na.rm = T) < 1) {
-    sumz2 = F
-  }
+  if (sum(maxPsumz[,1], na.rm = TRUE) < 1) sumz1 <- FALSE
+  if (sum(maxPsumz[,2], na.rm = TRUE) < 1) sumz2 <- FALSE
 
   if (boot & cumfrq) {
     ## PLOT CUMULATIVE PROBABILITY CURVE FOR GROUP 1
     if (sumz1) {
       freq1 <- table(maxPsumz[, 1])
-      freq2 <- table(maxPsumz[, 2])
       if (bootz1) {
         if (length(unique(maxPsumz[, 1])) > length(freq1)) {
           fil = matrix(0, length(unique(maxPsumz[, 1])) -
@@ -162,6 +158,7 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
 
     ## PLOT CUMULATIVE PROBABILITY CURVE FOR GROUP 2
     if (sumz2) {
+    	  freq2 <- table(maxPsumz[, 2])
       if (bootz1) {
         if (bootz2) {
           if (length(unique(maxPsumz[, 2])) > length(freq2)) {
@@ -208,33 +205,27 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
 
     ## FIND MINIMUM AND MAX VALUES TO COMPLETE CURVES
 
-    sumz1.min <- min(maxPsumz[, 1])
-    sumz2.min <- min(maxPsumz[, 2])
-    sumz1.max <- max(maxPsumz[, 1])
-    sumz2.max <- max(maxPsumz[, 2])
+    sumz1.min <- min(maxPsumz[,1])
+    sumz2.min <- min(maxPsumz[,2])
+    sumz1.max <- max(maxPsumz[,1])
+    sumz2.max <- max(maxPsumz[,2])
 
 
     ## COMPLETE PROBABILITY CURVES
     if (bootz1) {
-      segments(sumz1.max, 1, xmax, 1, col = col1, lty = 1,
-        lwd = 2)
-      segments(xmin, 0, sumz1.min, 0, col = col1, lty = 1,
-        lwd = 2)
+      segments(sumz1.max, 1, xmax, 1, col = col1, lty = 1, lwd = 2)
+      segments(xmin, 0, sumz1.min, 0, col = col1, lty = 1, lwd = 2)
     }
 
     if (bootz2) {
-      segments(xmin, 0, sumz2.min, 0, col = col2, lty = 2,
-        lwd = 2)
-      segments(sumz2.max, 1, xmax, 1, col = col2, lty = 2,
-        lwd = 2)
+      segments(xmin, 0, sumz2.min, 0, col = col2, lty = 2, lwd = 2)
+      segments(sumz2.max, 1, xmax, 1, col = col2, lty = 2, lwd = 2)
     }
   }
 
   ## SET PLOT WINDOW TO ACCEPT NEW PARAMETERS
   if (boot & cumfrq) {
-    if (bootz1 | bootz2) {
-      par(new = TRUE)
-    }
+    if (bootz1 | bootz2) par(new = TRUE)
   }
 
   ## PLOT OBSERVED SUMZ SCORES FOR BOTH GROUPS AND ADD APPROPRIATE
