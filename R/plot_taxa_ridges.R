@@ -5,13 +5,6 @@
 #' @param titan.out A TITAN output object.
 #' @param z1 A logical specifying whether decreasing taxa should be plotted.
 #' @param z2 A logical specifying whether decreasing taxa should be plotted.
-#' @param prob95 A logical specifying whether change-point locations should be
-#'   plotted on the basis of their 5th (for increasers) and 95th (for
-#'   decreasers) quantile versus their observed values.
-#' @param z.med A logical specifying whether (1) change point magnitudes should
-#'   be obtained from the median z score across bootstrap replicates and (2)
-#'   whether the locations should be plotted on the basis of the 50th quantile
-#'   of change-point locations (i.e., if prob95=FALSE).
 #' @param xlabel A character string for the x axis label.
 #' @param all A logical specifying whether all taxa with p<0.05 should be
 #'   plotted.
@@ -19,6 +12,14 @@
 #' @param n_ytaxa The maximum number of taxa to be plotted.
 #' @param printspp A logical specifying whether the sppmax table should be
 #'   printed.
+#' @param z1_fill_low z1_fill_low
+#' @param z1_fill_high z1_fill_high
+#' @param z2_fill_low z2_fill_low
+#' @param z2_fill_high z2_fill_high
+#' @param pur.cut pur.cut
+#' @param rel.cut rel.cut
+#' @param grid grid
+#' @param bw bw
 #' @param xlim X axis limits.
 #' @param ... ...
 #' @return A plot of decreasing and/or increasing taxon-specific change points
@@ -39,13 +40,9 @@
 #' data(glades.titan)
 #'
 #' plot_taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", ytxt.sz=8)
-#' plot_taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", z2=FALSE))
-
-
-
-###REQUIRES tidyverse, cowplot, ggridges
-
-
+#' plot_taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", z2=FALSE)
+#'
+#'
 plot_taxa_ridges <- function(
   titan.out,
   z1 = TRUE, z2 = TRUE,
@@ -63,6 +60,7 @@ plot_taxa_ridges <- function(
   ...
 ) {
 
+  # cran guard
   filter <- NULL; rm(filter)
   maxgrp <- NULL; rm(maxgrp)
   obsiv.prob <- NULL; rm(obsiv.prob)
@@ -73,6 +71,12 @@ plot_taxa_ridges <- function(
   zscore <- NULL; rm(zscore)
   zenv.cp <- NULL; rm(zenv.cp)
   chk_pts <- NULL; rm(chk_pts)
+  desc <- NULL; rm(desc)
+  purity <- NULL; rm(purity)
+  reliability <- NULL; rm(reliability)
+  z.median <- NULL; rm(z.median)
+
+
 
   imax <- titan.out$arguments[["imax"]]
   boot <- titan.out$arguments[["boot"]] > 0.5
