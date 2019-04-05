@@ -173,12 +173,13 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   sumz.cp <- sumz.list[[1]]
   ivz.f <- sumz.list[[2]]
 
+
   if (nsumz1 > 2 & nsumz2 > 2) {
-    print(sppmax)
+    print(sppmax[,-6])
     print(sumz.cp)
     # message("TITAN complete.")
   } else {
-    print(sppmax)
+    print(sppmax[,-6])
     warning("Low number of pure and reliable taxa, sum(z) output should be interpreted with caution")
     message("Number of z- taxa = ", nsumz1, ", Number of z+ taxa = ", nsumz2)
     # message("TITAN complete.")
