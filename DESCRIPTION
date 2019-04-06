@@ -1,7 +1,7 @@
 Package: TITAN2
 Type: Package
 Title: Threshold Indicator Taxa Analysis
-Version: 2.2
+Version: 2.2.900
 Authors@R: c(person("Matthew E.", "Baker", email = "mbaker@umbc.edu", role = c("aut", "cph")),
   person("Ryan S.", "King",email = "Ryan_S_King@baylor.edu", role = c("aut", "cph")),
   person("David", "Kahle", email = "david.kahle@gmail.com", role = c("aut", "cph", "cre")))
@@ -34,4 +34,5 @@ Suggests:
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
 Encoding: UTF-8

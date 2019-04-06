@@ -8,10 +8,9 @@
 glades.titan description
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds.  Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+interpreting biodiversity and ecological community thresholds.  Methods in
+Ecology and Evolution 1(1): 25:37.
 }
 \author{
 M. Baker and R. King

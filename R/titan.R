@@ -1,8 +1,9 @@
 #' Perform a threshold indicator taxa analysis
 #'
-#' titan() is the primary wrapper function controlling operation of all
-#' subfunctions (txa.screen, env.part, getivz, ivzsums, obs.summ, boot.titan,
-#' small/big.boot, sumz.tab) apart from plotting functions within TITAN.
+#' [titan()] is the primary wrapper function controlling operation of all
+#' subroutines ([txa.screen()], [env.part()], [getivz()], [ivzsums()],
+#' [obs.summ()], [boot.titan()], [small.boot()]/[big.boot()], [sumz.tab()])
+#' apart from plotting functions within TITAN.
 #'
 #' @param env A vector of environmental values.
 #' @param txa A site by taxon matrix containing observed counts at each sampling
@@ -30,32 +31,45 @@
 #'   memory.  This function is sometimes necessary for large data files (e.g.
 #'   >400 sampling sites and >100 taxa).
 #' @param messaging If \code{TRUE}, provide progress messages.
-#' @return A list with 13 items:
-#' \itemize{
+#' @return A list with 13 items: \itemize{
+#'
 #'   \item{sppmax}{Description of 'comp1'}
+#'
 #'   \item{sumz.cp}{Description of 'comp1'}
+#'
 #'   \item{env}{The vector of environmental values used in the TITAN function
 #'   call}
+#'
 #'   \item{taxa}{The site-by-taxon matrix used in the TITAN function call}
+#'
 #'   \item{envlcs}{A vector of candidate partitions derived from subtracting
 #'   'minSplt' from 'env'}
+#'
 #'   \item{srtEnv}{A sorted version of environmental values}
+#'
 #'   \item{ivzScores}{A matrix containing group membership, z scores, IndVals,
 #'   and p values for each taxon at every candidate partition in 'envcls'}
+#'
 #'   \item{ivz}{A 2-column matrix containing parallel vectors of sum(z-) and
 #'   sum(z+ scores for every candidate partition in 'envcls')}
+#'
 #'   \item{ivz.f}{A 2-column matrix containing parallel vectors of sum(z-) and
 #'   sum(z+ scores filtered by pure and reliable taxa for every candidate
 #'   partition in 'envcls')}
+#'
 #'   \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and
 #'   sum(z+) maxima across all bootstrap replicates}
+#'
 #'   \item{maxFsumz}{A 2-column matrix of environmental values at filtered
 #'   sum(z-) and sum(z+) maxima across all bootstrap replicates}
+#'
 #'   \item{metricArray}{An array of group membership, env change points, z
 #'   scores, and p values equivalent to 'ivzScores' for each bootstrap
 #'   replicate}
+#'
 #'   \item{targs}{A vector of arguments used in the TITAN function call}
-#' }
+#'
+#'   }
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds.  Methods in
 #'   Ecology and Evolution 1(1): 25:37.
@@ -71,17 +85,23 @@
 #'
 #' \dontrun{ resampling is very slow
 #'
-#' data(glades.env)
-#' data(glades.taxa)
+#' data(glades.env); str(glades.env)
+#' data(glades.taxa); str(glades.taxa)
+#'
+#' # small run
+#' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
+#'   numPerm = 250, boot = TRUE, nBoot = 2, imax = FALSE,
+#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+#' )
+#' str(glades.titan, give.attr = FALSE)
+#'
+#'
+#' # typical run
 #' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
 #'   numPerm = 250, boot = TRUE, nBoot = 100, imax = FALSE,
 #'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
 #' )
 #'
-#' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
-#'   numPerm = 250, boot = TRUE, nBoot = 2, imax = FALSE,
-#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
-#' )
 #'
 #' }
 #'

@@ -111,7 +111,7 @@ parameters.}
 }
 \value{
 A plot of sum(z-) and sum(z+) profiles along the
-  environmental gradient.
+environmental gradient.
 }
 \description{
 Creates a plot of community-level sums of taxon-specific change
@@ -146,17 +146,17 @@ plotSumz(glades.titan, filter = FALSE)
 }
 \references{
 Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds.  Methods in Ecology and Evolution 1(1):
-  25:37.
+detecting and interpreting biodiversity and ecological
+community thresholds.  Methods in Ecology and Evolution 1(1):
+25:37.
 
 King, RS and ME Baker  2010. Considerations for
-  identifying and interpreting ecological community thresholds.
-  Journal of the North American Benthological Association
-  29(3):998-1008.
+identifying and interpreting ecological community thresholds.
+Journal of the North American Benthological Association
+29(3):998-1008.
 }
 \seealso{
-\code{\link{plotTaxa}}, \code{\link{plotCPs}}
+\code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plotCPs]{plotCPs()}}
 }
 \author{
 M. Baker and R. King

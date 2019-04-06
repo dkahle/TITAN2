@@ -71,7 +71,7 @@
 #'   Benthological Association 29(3):998-1008.
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker and R. King
-#' @seealso \code{\link{plotTaxa}}, \code{\link{plotSumz}}
+#' @seealso [plotTaxa()], [plotSumz()]
 #' @keywords TITAN kwd2
 #' @export
 #' @examples

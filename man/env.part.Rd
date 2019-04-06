@@ -7,40 +7,49 @@
 env.part(env, taxa, minSplt = minSplt, messaging = TRUE)
 }
 \arguments{
-\item{env}{A vector of values for each sampling location along
-the environmental gradient.}
+\item{env}{A vector of values for each sampling location along the
+environmental gradient.}
 
-\item{taxa}{A site by taxon matrix containing observed counts at
-each sampling location.}
+\item{taxa}{A site by taxon matrix containing observed counts at each
+sampling location.}
 
-\item{minSplt}{The  minimum split size used in binary
-partitioning.  The default is to use the argument from the
-original TITAN function call.}
+\item{minSplt}{The  minimum split size used in binary partitioning.  The
+default is to use the argument from the original TITAN function call.}
 
 \item{messaging}{message user?}
 }
 \value{
-A list of seven objects: \itemize{ \item{env}{an
-  environmental vector} \item{numUnit}{the number of sample units
-  in env} \item{numTxa}{the number of distinct taxonomic units in
-  taxa} \item{numClass}{the number of candidate partitions
-  (numUnit-2*minSplt)} \item{srtEnv}{a sorted version of the
-  environmental vector} \item{envcls}{a vector of environmental
-  values used to distinguish partitions} \item{eclass}{a matrix
-  of group membership relative to each partition in envcls} }
+A list of seven objects: \itemize{
+
+\item{env}{an environmental vector}
+
+\item{numUnit}{the number of sample units in env}
+
+\item{numTxa}{the number of distinct taxonomic units in taxa}
+
+\item{numClass}{the number of candidate partitions (numUnit-2*minSplt)}
+
+\item{srtEnv}{a sorted version of the environmental vector}
+
+\item{envcls}{a vector of environmental values used to distinguish
+partitions}
+
+\item{eclass}{a matrix of group membership relative to each partition in
+envcls}
+
+}
 }
 \description{
-This function compares the number of records in the environmental
-vector and the umber of rows in the taxa matrix to ensure they
-are compatible.  It then uses the rank order of environmental
-values at each sampling location to determine group membership of
-all sampling sites at each level of partitioning.
+This function compares the number of records in the environmental vector and
+the umber of rows in the taxa matrix to ensure they are compatible.  It then
+uses the rank order of environmental values at each sampling location to
+determine group membership of all sampling sites at each level of
+partitioning.
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds.  Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+interpreting biodiversity and ecological community thresholds.  Methods in
+Ecology and Evolution 1(1): 25:37.
 }
 \author{
 M. Baker and R. King

@@ -8,65 +8,65 @@ sumz.tab(ivzScores, ivz, srtEnv, sppmax, maxSumz = maxSumz,
   maxFsumz = maxFsumz, minSplt = minSplt, boot = boot)
 }
 \arguments{
-\item{ivzScores}{The product of the 'getivz' function.  A data
-matrix comprised of four submatrices including group
-membership, z scores, IndVals, and p values.}
+\item{ivzScores}{The product of the 'getivz' function.  A data matrix
+comprised of four submatrices including group membership, z scores,
+IndVals, and p values.}
 
-\item{ivz}{The product of the 'ivzsums' function.  A data matrix
-comprised of two parallel vectors of sum(z-) and sum(z+)
-scores.}
+\item{ivz}{The product of the 'ivzsums' function.  A data matrix comprised of
+two parallel vectors of sum(z-) and sum(z+) scores.}
 
 \item{srtEnv}{A sorted version of the environmental gradient.}
 
-\item{sppmax}{The taxon-specific summary output table from TITAN,
-passed to 'ivzsums.f'.}
+\item{sppmax}{The taxon-specific summary output table from TITAN, passed to
+'ivzsums.f'.}
 
-\item{maxSumz}{A vector of sum(z) maxima across bootstrap
-replicates.}
+\item{maxSumz}{A vector of sum(z) maxima across bootstrap replicates.}
 
-\item{maxFsumz}{A vector of sum(z) maxima filtered by pure and
-reliable taxa across bootstrap replicates.}
+\item{maxFsumz}{A vector of sum(z) maxima filtered by pure and reliable taxa
+across bootstrap replicates.}
 
-\item{minSplt}{The minimum split size used to partition the
-environmental gradient.  The default is to use the argument
-specified by the original TITAN function call.}
+\item{minSplt}{The minimum split size used to partition the environmental
+gradient.  The default is to use the argument specified by the original
+TITAN function call.}
 
-\item{boot}{A logical indicating whether the bootstrap procedure
-should be implemented.  The default is to use the argument
-specified by the original TITAN function call.}
+\item{boot}{A logical indicating whether the bootstrap procedure should be
+implemented.  The default is to use the argument specified by the original
+TITAN function call.}
 }
 \value{
-A list with two objects: \itemize{ \item{sumz.cp }{A
-  second summary output table from TITAN to accompany 'sppmax'.}
-  \item{ivz.f }{The product of the 'ivzsums.f' function.  A data
-  matrix comprised of two parallel vectors of filtered sum(z-)
-  and sum(z+) scores.} }
+A list with two objects:
+
+\itemize{
+
+\item{sumz.cp}{A second summary output table from TITAN to accompany
+'sppmax'.}
+
+\item{ivz.f}{The product of the 'ivzsums.f' function.  A data matrix
+comprised of two parallel vectors of filtered sum(z-) and sum(z+) scores.}
+
+}
 }
 \description{
-This function populates the sumz.cp table using the resuls from
-function 'ivzsums' and, if 'boot'=TRUE, calls 'ivsums.f' to
-compute ivz sums filtered by pure and reliable taxa.
+This function populates the sumz.cp table using the resuls from function
+'ivzsums' and, if 'boot'=TRUE, calls 'ivsums.f' to compute ivz sums filtered
+by pure and reliable taxa.
 }
 \details{
-The function locates the env values of sum(z) maxima, then if
-'boot'=TRUE, locates the the env value of the filtered sum(z) and
-provides bootstrap quantiles of both filtered and unfiltered
-distributions.
+The function locates the env values of sum(z) maxima, then if 'boot'=TRUE,
+locates the the env value of the filtered sum(z) and provides bootstrap
+quantiles of both filtered and unfiltered distributions.
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-  detecting and interpreting biodiversity and ecological
-  community thresholds.  Methods in Ecology and Evolution 1(1):
-  25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+interpreting biodiversity and ecological community thresholds.  Methods in
+Ecology and Evolution 1(1): 25:37.
 
-King, RS and ME Baker  2010. Considerations for
-  identifying and interpreting ecological community thresholds.
-  Journal of the North American Benthological Association
-  29(3):998-1008.
+King, RS and ME Baker  2010. Considerations for identifying and
+interpreting ecological community thresholds. Journal of the North American
+Benthological Association 29(3):998-1008.
 }
 \seealso{
-\code{\link{ivzsums}}, \code{\link{ivzsums.f}},
-  \code{\link{getivz}}, \code{\link{titan}}
+\code{\link[=ivzsums]{ivzsums()}}, \code{\link[=ivzsums.f]{ivzsums.f()}}, \code{\link[=getivz]{getivz()}}, \code{\link[=titan]{titan()}}
 }
 \author{
 M. Baker and R. King

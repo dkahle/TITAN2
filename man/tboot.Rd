@@ -39,23 +39,27 @@ be determined by IndVal maxima or z-score maxima (as in Baker and King
 funtion call.}
 }
 \value{
-A list of four elements:
-\itemize{
-  \item{bt.metrics}{A matrix with nrow equal to number of taxa where the
-  first column is the bootstrapped IndVal or z score maximum, the second is
-  the environmental value, the third is the indicator direction, and the
-  fourth is the p value at that point.}
-  \item{ivzs}{Z scores for all taxa across candidate change points in the
-  replicate sample}
-  \item{bsrti}{A sorted version of the bootstrapped environmental gradient}
-  \item{rspdr}{Response direction (1 or 2) for all taxa across candidate
-  change points in the replicate sample}
+A list of four elements: \itemize{
+
+\item{bt.metrics}{A matrix with nrow equal to number of taxa where the
+first column is the bootstrapped IndVal or z score maximum, the second is
+the environmental value, the third is the indicator direction, and the
+fourth is the p value at that point.}
+
+\item{ivzs}{Z scores for all taxa across candidate change points in the
+replicate sample}
+
+\item{bsrti}{A sorted version of the bootstrapped environmental gradient}
+
+\item{rspdr}{Response direction (1 or 2) for all taxa across candidate
+change points in the replicate sample}
+
 }
 }
 \description{
 This function implements resampling (with replacement) of the observed
 environmental gradient and site-by-taxon matrix, and then calls the function
-\code{\link{getivz}} to obtain bootstrapped scores.
+\code{\link[=getivz]{getivz()}} to obtain bootstrapped scores.
 }
 \details{
 Four pieces of information are obtained from every taxon during each
@@ -72,11 +76,11 @@ environmental values (4).  These four items are combined as a list object.
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds. Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds. Methods in
+Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
-\code{\link{getivz}}, \code{\link{ivzsums}}
+\code{\link[=getivz]{getivz()}}, \code{\link[=ivzsums]{ivzsums()}}
 }
 \author{
 M. Baker and R. King

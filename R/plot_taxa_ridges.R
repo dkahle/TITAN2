@@ -10,15 +10,14 @@
 #' @param n_ytaxa The maximum number of taxa to be plotted.
 #' @param printspp A logical specifying whether the sppmax table should be
 #'   printed.
-#' @param z1_fill_low z1_fill_low
-#' @param z1_fill_high z1_fill_high
-#' @param z2_fill_low z2_fill_low
-#' @param z2_fill_high z2_fill_high
+#' @param z1_fill_low,z1_fill_high,z2_fill_low,z2_fill_high Respective fill
+#'   colors passed to [scale_fill_gradient()]
 #' @param pur.cut pur.cut
 #' @param rel.cut rel.cut
-#' @param grid grid
-#' @param bw bw (bandwidth)
-#' @param xlim x axis limits, e.g. xlim=c(0,10)
+#' @param grid The \code{grid} argument of [theme_ridges()].
+#' @param bw The bandwidth of used in the kernel density estimate; see
+#'   [density()].
+#' @param xlim x axis limits, e.g. \code{xlim =c(0,10)}
 #' @param ... ...
 #' @return A plot of decreasing and/or increasing taxon-specific change points
 #'   along the environmental gradient.
@@ -29,8 +28,8 @@
 #'   interpreting ecological community thresholds. Journal of the North American
 #'   Benthological Association 29(3):998-1008.
 #' @note Should not be used with output objects from TITAN v1.0.
-#' @author M. Baker and R. King
-#' @seealso \code{\link{plotSumz}}, \code{\link{plotCPs}}
+#' @author M. Baker, R. King, D. Kahle
+#' @seealso [plotSumz()], [plotCPs()]
 #' @keywords TITAN kwd2
 #' @export
 #' @examples

@@ -25,9 +25,9 @@ returned.}
 }
 \value{
 A 2-column matrix with the same nrow as the matrix 'spp'. The first
-  column consists of a 1 (left) or 2 (right) for each taxon indicating on
-  which group produced the largest IndVal score, and the second column
-  contains the actual IndVal score.
+column consists of a 1 (left) or 2 (right) for each taxon indicating on
+which group produced the largest IndVal score, and the second column
+contains the actual IndVal score.
 }
 \description{
 Calculates indicator value scores using the original method of Dufrene and
@@ -47,11 +47,11 @@ comparative purposes.
 }
 \references{
 Dufrene, M. and P. Legendre. 1997. Species assemblages and
-  indicator species: the need for a flexible asymmetrical approach.
-  Ecological Monographs 67:345-366.
+indicator species: the need for a flexible asymmetrical approach.
+Ecological Monographs 67:345-366.
 }
 \seealso{
-\code{\link{indvalp}}, \code{\link{indvalps}}, \code{\link{getivz}}
+\code{\link[=indvalp]{indvalp()}}, \code{\link[=indvalps]{indvalps()}}, \code{\link[=getivz]{getivz()}}
 }
 \author{
 M. Baker and R. King

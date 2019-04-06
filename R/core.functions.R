@@ -31,7 +31,7 @@
 #' @references Dufrene, M. and P. Legendre. 1997. Species assemblages and
 #'   indicator species: the need for a flexible asymmetrical approach.
 #'   Ecological Monographs 67:345-366.
-#' @seealso \code{\link{indvalp}}, \code{\link{indvalps}}, \code{\link{getivz}}
+#' @seealso [indvalp()], [indvalps()], [getivz()]
 #' @author M. Baker and R. King
 #' @keywords Indicator~Species IndVal TITAN
 #' @name indval
@@ -235,7 +235,7 @@ indvals <- function(grp, spp, allscores = FALSE) {
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
-#' @seealso \code{\link{indval}}, \code{\link{indvals}}, \code{\link{getivz}}
+#' @seealso [indval()], [indvals()], [getivz()]
 #' @author M. Baker and R. King
 #' @keywords Indicator~Species IndVal TITAN
 #' @name indvalp
@@ -376,7 +376,7 @@ indvalps <- function(grpMatrix, spp) {
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
-#' @seealso \code{\link{indvalp}}, \code{\link{indvalps}}, \code{\link{getivz}}
+#' @seealso [indvalp()], [indvalps()], [getivz()]
 #' @author M. Baker and R. King
 #' @keywords permutation TITAN
 permiv <- function(grp, spp, ivTot = ivTot, nPerm = 250) {
@@ -445,23 +445,29 @@ permiv <- function(grp, spp, ivTot = ivTot, nPerm = 250) {
 #' @return A matrix containing four submatrices (the first from
 #'   \code{[1:numTxa,]}, the second from \code{[(numTxa+1):(2*numTxa),]}, etc.),
 #'   the first two of which include indicator direction and z scores.
+#'
 #'   \itemize{
+#'
 #'   \item{Group Membership }{A vector for every taxon showing decreasing (1) or
 #'   increasing (2) group membership at each value of 'envcls'}
+#'
 #'   \item{z scores }{A vector for every taxon showing IndVal z scores at each
 #'   value of 'envcls'}
+#'
 #'   \item{IndVals }{A vector for every taxon showing IndVal scores at each
 #'   value of 'envcls'}
+#'
 #'   \item{p values }{A vector for every taxon showing IndVal p values at each
 #'   value of 'envcls'}
+#'
 #'   }
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
 #' @references Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
 #'   greater understanding of community data. Freshwater Science 32(2):489-506.
-#' @seealso \code{\link{indval}}, \code{\link{indvals}}, \code{\link{indvalp}},
-#'   \code{\link{indvalps}}, \code{\link{permiv}}, \code{\link{ivzsums}}
+#' @seealso [indval()], [indvals()], [indvalp()], [indvalps()], [permiv()],
+#'   [ivzsums()]
 #' @author M. Baker and R. King
 #' @keywords TITAN Threshold~Indicator~Taxa~Analysis Indicator~Value
 #' @export
@@ -564,7 +570,7 @@ getivz <- function(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass,
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
-#' @seealso \code{\link{getivz}}, \code{\link{plotSumz}}
+#' @seealso [getivz()], [plotSumz()]
 #' @author M. Baker and R. King
 #' @keywords TITAN sum(z)
 #' @name ivzsums

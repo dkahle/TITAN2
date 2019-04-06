@@ -1,100 +1,76 @@
-#' Plots the pattern of community change along an environmental
-#' gradient
+#' Plots the pattern of community change along an environmental gradient
 #'
-#' Creates a plot of community-level sums of taxon-specific change
-#' along an environmental gradient and optionally conveys
-#' uncertainty associated with the maximum community change derived
-#' from decreasers or increasers.
+#' Creates a plot of community-level sums of taxon-specific change along an
+#' environmental gradient and optionally conveys uncertainty associated with the
+#' maximum community change derived from decreasers or increasers.
 #'
-#' This function assumes that the TITAN object contains bootstrap
-#' summaries and filtering information and automatically determines
-#' whether this is the case.  Without the bootstrap summaries, only
-#' unfiltered change magnitudes are plotted.
+#' This function assumes that the TITAN object contains bootstrap summaries and
+#' filtering information and automatically determines whether this is the case.
+#' Without the bootstrap summaries, only unfiltered change magnitudes are
+#' plotted.
 #'
-#' The original sum(z) plots (v1.0) did not filter taxa using purity
-#' and reliability.  Because these taxa often have small z scores,
-#' they are unlikely to contribute significantly to the sum(z)
-#' profiles.  However, subsequent investigation has demonstrated
-#' that when sufficient numbers of taxa are involved, it is possible
-#' for noisy data to generate artifactual peaks in low-magnitude
-#' sum(z) profiles or plateaus.  Therefore, we recommend evaluating
-#' filtered versions of the sum(z) to assess this potential in v2.0.
+#' The original sum(z) plots (v1.0) did not filter taxa using purity and
+#' reliability.  Because these taxa often have small z scores, they are unlikely
+#' to contribute significantly to the sum(z) profiles.  However, subsequent
+#' investigation has demonstrated that when sufficient numbers of taxa are
+#' involved, it is possible for noisy data to generate artifactual peaks in
+#' low-magnitude sum(z) profiles or plateaus.  Therefore, we recommend
+#' evaluating filtered versions of the sum(z) to assess this potential in v2.0.
 #'
 #' @param titan.out A TITAN output object.
-#' @param filter A logical indicating whether only pure and reliable
-#'   taxa should be used to create the plot.This is the recommended
-#'   as a check of the unfiltered default to assess whether impure
-#'   or unreliable taxa are substantially contributing to the
-#'   distribution of sum(z) scores.
-#' @param cumfrq A logical specifying whether cumulative frequencies
-#'   of sum(z) maxima across bootstrap replicates should be plotted.
-#' @param bootz1 A logical specifying whether decreasing cumulative
-#'   frequencies exist or should be plotted.
-#' @param bootz2 A logical specifying whether increasing cumulative
-#'   frequencies exist or should be plotted.
-#' @param sumz1 A logical specifying whether decreasing changes
-#'   should be plotted.
-#' @param sumz2 A logical specifying whether increasing changes
-#'   should be plotted.
-#' @param xmin A graphical argument specifying the value of the x
-#'   axis minimum.
-#' @param xmax A graphical argument specifying the value of the x
-#'   axis maximum.
+#' @param filter A logical indicating whether only pure and reliable taxa should
+#'   be used to create the plot.This is the recommended as a check of the
+#'   unfiltered default to assess whether impure or unreliable taxa are
+#'   substantially contributing to the distribution of sum(z) scores.
+#' @param cumfrq A logical specifying whether cumulative frequencies of sum(z)
+#'   maxima across bootstrap replicates should be plotted.
+#' @param bootz1 A logical specifying whether decreasing cumulative frequencies
+#'   exist or should be plotted.
+#' @param bootz2 A logical specifying whether increasing cumulative frequencies
+#'   exist or should be plotted.
+#' @param sumz1 A logical specifying whether decreasing changes should be
+#'   plotted.
+#' @param sumz2 A logical specifying whether increasing changes should be
+#'   plotted.
+#' @param xmin A graphical argument specifying the value of the x axis minimum.
+#' @param xmax A graphical argument specifying the value of the x axis maximum.
 #' @param xlabel A character string for the x axis label.
-#' @param y1label A character specifying the label of the second y
-#'   axis
-#' @param y2label A character specifying the label of the second y
-#'   axis
-#' @param log A graphical argument specifying whether an axis should
-#'   be log scaled.
-#' @param at A graphical argument for controling placement of the x
-#'   axis label
-#' @param tck A graphical argument specifying the scale of axis tick
-#'   marks.
+#' @param y1label A character specifying the label of the second y axis
+#' @param y2label A character specifying the label of the second y axis
+#' @param log A graphical argument specifying whether an axis should be log
+#'   scaled.
+#' @param at A graphical argument for controling placement of the x axis label
+#' @param tck A graphical argument specifying the scale of axis tick marks.
 #' @param bty A graphical argument.
-#' @param ntick A graphical argument specifying the default number
-#'   of axis tick marks.
-#' @param prtty A logical specifying whether pretty() should be used
-#'   to plot axis labels.
-#' @param dig A numeric argument specifying the number of decimal
-#'   digits in axes.
-#' @param cex A graphical argument specifying the scaling of the
-#'   figure.
-#' @param cex.axis A graphical argument specifying the scaling of
-#'   the axes.
-#' @param cex.leg A graphical argument specifying the scaling of the
-#'   legend.
-#' @param cex.lab A graphical argument specifying the scaling of the
-#'   lables.
-#' @param leg.x A graphical argument specifying the x coordinate of
-#'   the legend.
-#' @param leg.y A graphical argument specifying the y coordinate of
-#'   the legend.
-#' @param legend A logical specifying whether or not to plot the
-#'   legend.
-#' @param pch1 A graphical argument specifying the type of group 1
-#'   symbols.
-#' @param pch2 A graphical argument specifying the type of group 2
-#'   symbols.
-#' @param col1 A graphical argument specifying the color of group 1
-#'   symbols.
-#' @param col2 A graphical argument specifying the color of group 2
-#'   symbols.
-#' @param ... An argument for passing generic plotting function
-#'   parameters.
-#' @return A plot of sum(z-) and sum(z+) profiles along the
-#'   environmental gradient.
-#' @references Baker, ME and RS King.  2010. A new method for
-#'   detecting and interpreting biodiversity and ecological
-#'   community thresholds.  Methods in Ecology and Evolution 1(1):
-#'   25:37.
-#' @references King, RS and ME Baker  2010. Considerations for
-#'   identifying and interpreting ecological community thresholds.
-#'   Journal of the North American Benthological Association
-#'   29(3):998-1008.
+#' @param ntick A graphical argument specifying the default number of axis tick
+#'   marks.
+#' @param prtty A logical specifying whether pretty() should be used to plot
+#'   axis labels.
+#' @param dig A numeric argument specifying the number of decimal digits in
+#'   axes.
+#' @param cex A graphical argument specifying the scaling of the figure.
+#' @param cex.axis A graphical argument specifying the scaling of the axes.
+#' @param cex.leg A graphical argument specifying the scaling of the legend.
+#' @param cex.lab A graphical argument specifying the scaling of the lables.
+#' @param leg.x A graphical argument specifying the x coordinate of the legend.
+#' @param leg.y A graphical argument specifying the y coordinate of the legend.
+#' @param legend A logical specifying whether or not to plot the legend.
+#' @param pch1 A graphical argument specifying the type of group 1 symbols.
+#' @param pch2 A graphical argument specifying the type of group 2 symbols.
+#' @param col1 A graphical argument specifying the color of group 1 symbols.
+#' @param col2 A graphical argument specifying the color of group 2 symbols.
+#' @param ... An argument for passing generic plotting function parameters.
+#' @return A plot of sum(z-) and sum(z+) profiles along the environmental
+#'   gradient.
+#' @references Baker, ME and RS King.  2010. A new method for detecting and
+#'   interpreting biodiversity and ecological community thresholds.  Methods in
+#'   Ecology and Evolution 1(1): 25:37.
+#' @references King, RS and ME Baker  2010. Considerations for identifying and
+#'   interpreting ecological community thresholds. Journal of the North American
+#'   Benthological Association 29(3):998-1008.
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker and R. King
-#' @seealso \code{\link{plotTaxa}}, \code{\link{plotCPs}}
+#' @seealso [plotTaxa()], [plotCPs()]
 #' @keywords TITAN sum(z)
 #' @export
 #' @examples
@@ -119,13 +95,11 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
   if (filter) {
     ivz <- titan.out$ivz.f
     maxPsumz <- titan.out$maxFsumz
-    if (is.null(y1label))
-      y1label <- "Filtered Sum(z)"
+    if (is.null(y1label)) y1label <- "Filtered Sum(z)"
   } else {
     ivz <- titan.out$ivz
     maxPsumz <- titan.out$maxSumz
-    if (is.null(y1label))
-      y1label <- "Unfiltered Sum(z)"
+    if (is.null(y1label)) y1label <- "Unfiltered Sum(z)"
   }
   boot <- titan.out$arguments[[3]] > 0.5
 
@@ -280,16 +254,10 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
 
   if (sumz1) {
     leg = c("z-")
-  } else {
-    if (sumz2) {
-      leg = c("z+")
-    }
+  } else if (sumz2) {
+    leg = c("z+")
   }
-  if (sumz1) {
-    if (sumz2) {
-      leg = c("z-", "z+")
-    }
-  }
+  if (sumz1 && sumz2) leg <- c("z-", "z+")
 
   fill.leg = c(col1, ifelse(col2 == "black", "white", col2))
   if (legend) {

@@ -18,8 +18,8 @@ according to a ranks of an environmental variable.}
 }
 \value{
 A matrix (ivmax) of IndVal maxima across each partition with nrow
-  equal to the number of permutations and ncol equal to the number of taxa in
-  'spp'.
+equal to the number of permutations and ncol equal to the number of taxa in
+'spp'.
 }
 \description{
 This function performs the same calculations as 'indval' or 'indvals', but
@@ -49,15 +49,15 @@ be used more commonly.
 }
 \references{
 Dufrene, M. and P. Legendre. 1997. Species assemblages and
-  indicator species: the need for a flexible asymmetrical approach. Ecol.
-  Mon. 67:345-366.
+indicator species: the need for a flexible asymmetrical approach. Ecol.
+Mon. 67:345-366.
 
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds. Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds. Methods in
+Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
-\code{\link{indval}}, \code{\link{indvals}}, \code{\link{getivz}}
+\code{\link[=indval]{indval()}}, \code{\link[=indvals]{indvals()}}, \code{\link[=getivz]{getivz()}}
 }
 \author{
 M. Baker and R. King

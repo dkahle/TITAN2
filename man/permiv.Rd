@@ -21,7 +21,7 @@ proposed by Dufrene and Legendre (1997).}
 }
 \value{
 A matrix (ivmax) of IndVal maxima with nrow equal to the number of
-  permutations and ncol equal to the number of taxa in 'spp'.
+permutations and ncol equal to the number of taxa in 'spp'.
 }
 \description{
 Randomizes group assignments for all permutations based on ranked values of
@@ -37,15 +37,15 @@ function simply passes their products on.
 }
 \references{
 Dufrene, M. and P. Legendre. 1997. Species assemblages and
-  indicator species: the need for a flexible asymmetrical approach. Ecol.
-  Mon. 67:345-366.
+indicator species: the need for a flexible asymmetrical approach. Ecol.
+Mon. 67:345-366.
 
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds. Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds. Methods in
+Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
-\code{\link{indvalp}}, \code{\link{indvalps}}, \code{\link{getivz}}
+\code{\link[=indvalp]{indvalp()}}, \code{\link[=indvalps]{indvalps()}}, \code{\link[=getivz]{getivz()}}
 }
 \author{
 M. Baker and R. King

@@ -19,13 +19,8 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
 
 \item{z2}{A logical specifying whether increasing taxa should be plotted.}
 
-\item{z1_fill_low}{z1_fill_low}
-
-\item{z1_fill_high}{z1_fill_high}
-
-\item{z2_fill_low}{z2_fill_low}
-
-\item{z2_fill_high}{z2_fill_high}
+\item{z1_fill_low, z1_fill_high, z2_fill_low, z2_fill_high}{Respective fill
+colors passed to \code{\link[=scale_fill_gradient]{scale_fill_gradient()}}}
 
 \item{pur.cut}{pur.cut}
 
@@ -40,17 +35,18 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
 \item{printspp}{A logical specifying whether the sppmax table should be
 printed.}
 
-\item{grid}{grid}
+\item{grid}{The \code{grid} argument of \code{\link[=theme_ridges]{theme_ridges()}}.}
 
-\item{xlim}{x axis limits, e.g. xlim=c(0,10)}
+\item{xlim}{x axis limits, e.g. \code{xlim =c(0,10)}}
 
-\item{bw}{bw (bandwidth)}
+\item{bw}{The bandwidth of used in the kernel density estimate; see
+\code{\link[=density]{density()}}.}
 
 \item{...}{...}
 }
 \value{
 A plot of decreasing and/or increasing taxon-specific change points
-  along the environmental gradient.
+along the environmental gradient.
 }
 \description{
 Taxon change point ridge plots
@@ -69,18 +65,18 @@ plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total ph
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds.  Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds.  Methods in
+Ecology and Evolution 1(1): 25:37.
 
 King, RS and ME Baker  2010. Considerations for identifying and
-  interpreting ecological community thresholds. Journal of the North American
-  Benthological Association 29(3):998-1008.
+interpreting ecological community thresholds. Journal of the North American
+Benthological Association 29(3):998-1008.
 }
 \seealso{
-\code{\link{plotSumz}}, \code{\link{plotCPs}}
+\code{\link[=plotSumz]{plotSumz()}}, \code{\link[=plotCPs]{plotCPs()}}
 }
 \author{
-M. Baker and R. King
+M. Baker, R. King, D. Kahle
 }
 \keyword{TITAN}
 \keyword{kwd2}

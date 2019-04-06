@@ -30,18 +30,24 @@ be determined using IndVal maxima or z-score maxima (as in TITAN v1.0).}
 }
 \value{
 A matrix containing four submatrices (the first from
-  \code{[1:numTxa,]}, the second from \code{[(numTxa+1):(2*numTxa),]}, etc.),
-  the first two of which include indicator direction and z scores.
-  \itemize{
-  \item{Group Membership }{A vector for every taxon showing decreasing (1) or
-  increasing (2) group membership at each value of 'envcls'}
-  \item{z scores }{A vector for every taxon showing IndVal z scores at each
-  value of 'envcls'}
-  \item{IndVals }{A vector for every taxon showing IndVal scores at each
-  value of 'envcls'}
-  \item{p values }{A vector for every taxon showing IndVal p values at each
-  value of 'envcls'}
-  }
+\code{[1:numTxa,]}, the second from \code{[(numTxa+1):(2*numTxa),]}, etc.),
+the first two of which include indicator direction and z scores.
+
+\itemize{
+
+\item{Group Membership }{A vector for every taxon showing decreasing (1) or
+increasing (2) group membership at each value of 'envcls'}
+
+\item{z scores }{A vector for every taxon showing IndVal z scores at each
+value of 'envcls'}
+
+\item{IndVals }{A vector for every taxon showing IndVal scores at each
+value of 'envcls'}
+
+\item{p values }{A vector for every taxon showing IndVal p values at each
+value of 'envcls'}
+
+}
 }
 \description{
 A wrapper function that calls 'indval' or 'indvals' to obtain observed IndVal
@@ -50,8 +56,8 @@ associated p-values.
 }
 \details{
 This function calls two subfunctions to first calculate IndVals and their
-associated direction (i.e., a decreasing taxon [group 1] is associated with
-the left side of any partition, whereas an increasing taxon [group 2] is
+associated direction (i.e., a decreasing taxon \link{group 1} is associated with
+the left side of any partition, whereas an increasing taxon \link{group 2} is
 associated with the right) and second to develop permuted values for each
 candidate partition. Output includes the indicator direction (1 or 2), z
 scores, IndVal scores, and associated p value (obtained by the fraction of
@@ -62,15 +68,15 @@ Baker and King (2013).
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds. Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds. Methods in
+Ecology and Evolution 1(1): 25:37.
 
 Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
-  greater understanding of community data. Freshwater Science 32(2):489-506.
+greater understanding of community data. Freshwater Science 32(2):489-506.
 }
 \seealso{
-\code{\link{indval}}, \code{\link{indvals}}, \code{\link{indvalp}},
-  \code{\link{indvalps}}, \code{\link{permiv}}, \code{\link{ivzsums}}
+\code{\link[=indval]{indval()}}, \code{\link[=indvals]{indvals()}}, \code{\link[=indvalp]{indvalp()}}, \code{\link[=indvalps]{indvalps()}}, \code{\link[=permiv]{permiv()}},
+\code{\link[=ivzsums]{ivzsums()}}
 }
 \author{
 M. Baker and R. King

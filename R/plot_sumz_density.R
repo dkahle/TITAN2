@@ -5,9 +5,9 @@
 #' @param titan.out titan.out
 #' @param filter filter
 #' @param sumz sumz
-#' @param points  points
-#' @param ribbon  ribbon
-#' @param density  density
+#' @param points points
+#' @param ribbon ribbon
+#' @param density density
 #' @param change_points change_points
 #' @param sumz1 sumz1
 #' @param sumz2 sumz2
@@ -32,7 +32,7 @@
 #'   Benthological Association 29(3):998-1008.
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker and R. King
-#' @seealso \code{\link{plotSumz}}, \code{\link{plotCPs}}
+#' @seealso [plotSumz()], [plotCPs()]
 #' @keywords TITAN kwd2
 #' @export
 #' @examples

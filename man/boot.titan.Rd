@@ -51,12 +51,14 @@ default is to pass on the argument from the original TITAN funtion call.}
 environmental gradient.}
 }
 \value{
-A list of two items:
-\itemize{
-  \item{bSeq}{An index of the sequence of bootstrap replicates. The structure
-  of bSeq will differ for sequential or parallel processing.}
-  \item{ivz.bt.list}{Itself a list of four items comprising output passed on
-  from function \code{\link{tboot}}}
+A list of two items: \itemize{
+
+\item{bSeq}{An index of the sequence of bootstrap replicates. The structure
+of bSeq will differ for sequential or parallel processing.}
+
+\item{ivz.bt.list}{Itself a list of four items comprising output passed on
+from function \code{\link[=tboot]{tboot()}}}
+
 }
 }
 \description{
@@ -73,12 +75,11 @@ function uses 'lapply' to run 'tboot' in sequence 1:nBoot times.
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds. Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds. Methods in
+Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
-\code{\link{tboot}}, \code{\link{small.boot}},
-  \code{\link{big.boot}}, \code{\link{titan}}
+\code{\link[=tboot]{tboot()}}, \code{\link[=small.boot]{small.boot()}}, \code{\link[=big.boot]{big.boot()}}, \code{\link[=titan]{titan()}}
 }
 \author{
 M. Baker and R. King

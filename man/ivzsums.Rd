@@ -19,7 +19,7 @@ ascertain which taxa should be filtered and which retained.}
 }
 \value{
 A matrix of two (z- and z+) parallel vectors with length (nrow) equal
-  to the number of candidate partitions of an environmental gradient.
+to the number of candidate partitions of an environmental gradient.
 }
 \description{
 This function uses the output of 'getivz' (and, optionally, similar output
@@ -45,11 +45,11 @@ original unfiltered sum(z) in TITAN v1.0.
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds. Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds. Methods in
+Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
-\code{\link{getivz}}, \code{\link{plotSumz}}
+\code{\link[=getivz]{getivz()}}, \code{\link[=plotSumz]{plotSumz()}}
 }
 \author{
 M. Baker and R. King

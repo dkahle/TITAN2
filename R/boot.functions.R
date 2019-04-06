@@ -2,7 +2,7 @@
 #'
 #' This function implements resampling (with replacement) of the observed
 #' environmental gradient and site-by-taxon matrix, and then calls the function
-#' \code{\link{getivz}} to obtain bootstrapped scores.
+#' [getivz()] to obtain bootstrapped scores.
 #'
 #' Four pieces of information are obtained from every taxon during each
 #' bootstrap replicate. If the argument 'imax' is TRUE, bootstrapped change
@@ -38,22 +38,26 @@
 #'   be determined by IndVal maxima or z-score maxima (as in Baker and King
 #'   2010). The default is to pass on the argument from the original TITAN
 #'   funtion call.
-#' @return A list of four elements:
-#' \itemize{
+#' @return A list of four elements: \itemize{
+#'
 #'   \item{bt.metrics}{A matrix with nrow equal to number of taxa where the
 #'   first column is the bootstrapped IndVal or z score maximum, the second is
 #'   the environmental value, the third is the indicator direction, and the
 #'   fourth is the p value at that point.}
+#'
 #'   \item{ivzs}{Z scores for all taxa across candidate change points in the
 #'   replicate sample}
+#'
 #'   \item{bsrti}{A sorted version of the bootstrapped environmental gradient}
+#'
 #'   \item{rspdr}{Response direction (1 or 2) for all taxa across candidate
 #'   change points in the replicate sample}
-#' }
+#'
+#'   }
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
-#' @seealso \code{\link{getivz}}, \code{\link{ivzsums}}
+#' @seealso [getivz()], [ivzsums()]
 #' @author M. Baker and R. King
 #' @keywords TITAN bootstrap
 tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax) {
@@ -204,26 +208,26 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPe
 #'   default is to pass on the argument from the original TITAN funtion call.
 #' @param numUnit An argument specifying the number of values along the
 #'   environmental gradient.
-#' @return A list of two items:
-#' \itemize{
+#' @return A list of two items: \itemize{
+#'
 #'   \item{bSeq}{An index of the sequence of bootstrap replicates. The structure
 #'   of bSeq will differ for sequential or parallel processing.}
+#'
 #'   \item{ivz.bt.list}{Itself a list of four items comprising output passed on
-#'   from function \code{\link{tboot}}}
-#' }
+#'   from function [tboot()]}
+#'
+#'   }
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
-#' @seealso \code{\link{tboot}}, \code{\link{small.boot}},
-#'   \code{\link{big.boot}}, \code{\link{titan}}
+#' @seealso [tboot()], [small.boot()], [big.boot()], [titan()]
 #' @author M. Baker and R. King
 #' @keywords TITAN bootstrap
 boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
   nBoot = nBoot, minSplt = minSplt, nPerm = 250, memory = memory,
   imax = imax, numUnit = numUnit) {
 
-  ## If multiple cores are available, take advantage of parallel
-  ## processing
+  # if multiple cores are available, take advantage of parallel processing
   if (ncpus > 1) {
     message(glue::glue("Bootstrap resampling in parallel using {ncpus} CPUs... no index will be printed to screen"))
     cores <- rep("localhost", ncpus)
@@ -296,7 +300,7 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 #' directions passed from the function boot.titan() within ivz.bt.list
 #'
 #' @param ivz.bt.list A list of output from each bootstrap replicate passed from
-#'   \code{\link{boot.titan}}.
+#'   [boot.titan()].
 #' @param bSeq An index of the sequence of bootstrap replicates.
 #' @param sppmax A taxon-specific summary output table for TITAN.
 #' @param obs1 A binary vector indicating membership in the decreasing group of
@@ -322,26 +326,32 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 #' @param minSplt An argument specifying minimum split size of partitioning
 #'   along the environmental gradient.  The default is to use the value
 #'   specified in the original TITAN function call.
-#' @return A list of six items:
-#' \itemize{
+#' @return A list of six items: \itemize{
+#'
 #'   \item{sppSub1}{A vector of taxon index numbers for pure and reliable
 #'   decreasers}
+#'
 #'   \item{sppSub2}{A vector of taxon index numbers for pure and reliable
 #'   increasers}
+#'
 #'   \item{sppmax}{The completed taxon-specific summary output table for TITAN}
+#'
 #'   \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and
 #'   sum(z+) maxima across all bootstrap replicates}
+#'
 #'   \item{maxFsumz}{A 2-column matrix of environmental values at filtered
 #'   sum(z-) and sum(z+) maxima across all bootstrap replicates}
+#'
 #'   \item{metricArray}{An array of group membership, env change points, z
 #'   scores, and p values for passing to 'plot.IVecdf'}
-#' }
+#'
+#'   }
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
 #' @references Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
 #'   greater understanding of community data. Freshwater Science 32(2):489-506.
-#' @seealso \code{\link{boot.titan}}, \code{\link{tboot}}, \code{\link{titan}}
+#' @seealso [boot.titan()], [tboot()], [titan()]
 #' @author M. Baker and R. King
 #' @keywords TITAN purity reliability sum(z)
 #' @name smallBigBoot

@@ -75,15 +75,15 @@ marks.}
 }
 \value{
 Three types of plots are possible outcomes of this function.  The
-  first (taxa.dist=T, taxID=NULL) is a matrix of histograms showing empirical
-  distributions of bootstrapped change-point locations (as probability
-  densities) for all pure and reliable taxa.  The value of the probability
-  densities can be weighted by the median z score for each taxon
-  (z.weights=T). The second plot (taxa.dist=T, taxID>0 or a taxon label)
-  overlays a taxon-specific histogram on an abundance scatter plot and the
-  observed change-point location.  The third plot (taxa.dist=F) shows the sum
-  of probability densities across all pure and reliable taxa, optionally
-  weighted by median z scores (z.weights=T) or stacked (stacked=T).
+first (taxa.dist=T, taxID=NULL) is a matrix of histograms showing empirical
+distributions of bootstrapped change-point locations (as probability
+densities) for all pure and reliable taxa.  The value of the probability
+densities can be weighted by the median z score for each taxon
+(z.weights=T). The second plot (taxa.dist=T, taxID>0 or a taxon label)
+overlays a taxon-specific histogram on an abundance scatter plot and the
+observed change-point location.  The third plot (taxa.dist=F) shows the sum
+of probability densities across all pure and reliable taxa, optionally
+weighted by median z scores (z.weights=T) or stacked (stacked=T).
 }
 \description{
 This function allows more detailed exploration of taxon-specific response
@@ -119,15 +119,15 @@ plotCPs(glades.titan,
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds.  Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds.  Methods in
+Ecology and Evolution 1(1): 25:37.
 
 King, RS and ME Baker  2010. Considerations for identifying and
-  interpreting ecological community thresholds. Journal of the North American
-  Benthological Association 29(3):998-1008.
+interpreting ecological community thresholds. Journal of the North American
+Benthological Association 29(3):998-1008.
 }
 \seealso{
-\code{\link{plotTaxa}}, \code{\link{plotSumz}}
+\code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plotSumz]{plotSumz()}}
 }
 \author{
 M. Baker and R. King

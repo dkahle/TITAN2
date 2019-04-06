@@ -91,7 +91,7 @@ plotted.}
 }
 \value{
 A plot of decreasing and/or increasing taxon-specific change points
-  along the environmental gradient.
+along the environmental gradient.
 }
 \description{
 Creates a plot of taxon-specific change points with optional quantiles
@@ -123,15 +123,15 @@ plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds.  Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds.  Methods in
+Ecology and Evolution 1(1): 25:37.
 
 King, RS and ME Baker  2010. Considerations for identifying and
-  interpreting ecological community thresholds. Journal of the North American
-  Benthological Association 29(3):998-1008.
+interpreting ecological community thresholds. Journal of the North American
+Benthological Association 29(3):998-1008.
 }
 \seealso{
-\code{\link{plotSumz}}, \code{\link{plotCPs}}
+\code{\link[=plotSumz]{plotSumz()}}, \code{\link[=plotCPs]{plotCPs()}}
 }
 \author{
 M. Baker and R. King

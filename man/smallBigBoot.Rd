@@ -14,7 +14,7 @@ big.boot(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot, numClass, numUnit,
 }
 \arguments{
 \item{ivz.bt.list}{A list of output from each bootstrap replicate passed from
-\code{\link{boot.titan}}.}
+\code{\link[=boot.titan]{boot.titan()}}.}
 
 \item{bSeq}{An index of the sequence of bootstrap replicates.}
 
@@ -53,19 +53,25 @@ along the environmental gradient.  The default is to use the value
 specified in the original TITAN function call.}
 }
 \value{
-A list of six items:
-\itemize{
-  \item{sppSub1}{A vector of taxon index numbers for pure and reliable
-  decreasers}
-  \item{sppSub2}{A vector of taxon index numbers for pure and reliable
-  increasers}
-  \item{sppmax}{The completed taxon-specific summary output table for TITAN}
-  \item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and
-  sum(z+) maxima across all bootstrap replicates}
-  \item{maxFsumz}{A 2-column matrix of environmental values at filtered
-  sum(z-) and sum(z+) maxima across all bootstrap replicates}
-  \item{metricArray}{An array of group membership, env change points, z
-  scores, and p values for passing to 'plot.IVecdf'}
+A list of six items: \itemize{
+
+\item{sppSub1}{A vector of taxon index numbers for pure and reliable
+decreasers}
+
+\item{sppSub2}{A vector of taxon index numbers for pure and reliable
+increasers}
+
+\item{sppmax}{The completed taxon-specific summary output table for TITAN}
+
+\item{maxSumz}{A 2-column matrix of environmental values at sum(z-) and
+sum(z+) maxima across all bootstrap replicates}
+
+\item{maxFsumz}{A 2-column matrix of environmental values at filtered
+sum(z-) and sum(z+) maxima across all bootstrap replicates}
+
+\item{metricArray}{An array of group membership, env change points, z
+scores, and p values for passing to 'plot.IVecdf'}
+
 }
 }
 \description{
@@ -102,14 +108,14 @@ directions passed from the function boot.titan() within ivz.bt.list
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
-  interpreting biodiversity and ecological community thresholds. Methods in
-  Ecology and Evolution 1(1): 25:37.
+interpreting biodiversity and ecological community thresholds. Methods in
+Ecology and Evolution 1(1): 25:37.
 
 Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
-  greater understanding of community data. Freshwater Science 32(2):489-506.
+greater understanding of community data. Freshwater Science 32(2):489-506.
 }
 \seealso{
-\code{\link{boot.titan}}, \code{\link{tboot}}, \code{\link{titan}}
+\code{\link[=boot.titan]{boot.titan()}}, \code{\link[=tboot]{tboot()}}, \code{\link[=titan]{titan()}}
 }
 \author{
 M. Baker and R. King
