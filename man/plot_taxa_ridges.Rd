@@ -10,7 +10,7 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
   pur.cut = titan.out$arguments[[7]],
   rel.cut = titan.out$arguments[[8]],
   xlabel = "Environmental Gradient", n_ytaxa = 90, ytxt.sz = 10,
-  printspp = FALSE, grid = TRUE, xlim, bw, ...)
+  printspp = FALSE, grid = TRUE, xaxis = !grid, xlim, bw, ...)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
@@ -37,6 +37,8 @@ printed.}
 
 \item{grid}{The \code{grid} argument of \code{\link[=theme_ridges]{theme_ridges()}}.}
 
+\item{xaxis}{Logical; should the x-axis be plotted?}
+
 \item{xlim}{x axis limits, e.g. \code{xlim =c(0,10)}}
 
 \item{bw}{The bandwidth of used in the kernel density estimate; see
@@ -59,6 +61,8 @@ Should not be used with output objects from TITAN v1.0.
 data(glades.titan)
 
 plot_taxa_ridges(glades.titan, ytxt.sz=8)
+plot_taxa_ridges(glades.titan, ytxt.sz=8, grid = FALSE)
+plot_taxa_ridges(glades.titan, ytxt.sz=8, xaxis = TRUE)
 
 plot_taxa_ridges(glades.titan,
   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")),

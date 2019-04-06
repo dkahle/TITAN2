@@ -15,6 +15,7 @@
 #' @param pur.cut pur.cut
 #' @param rel.cut rel.cut
 #' @param grid The \code{grid} argument of [theme_ridges()].
+#' @param xaxis Logical; should the x-axis be plotted?
 #' @param bw The bandwidth of used in the kernel density estimate; see
 #'   [density()].
 #' @param xlim x axis limits, e.g. \code{xlim =c(0,10)}
@@ -37,6 +38,8 @@
 #' data(glades.titan)
 #'
 #' plot_taxa_ridges(glades.titan, ytxt.sz=8)
+#' plot_taxa_ridges(glades.titan, ytxt.sz=8, grid = FALSE)
+#' plot_taxa_ridges(glades.titan, ytxt.sz=8, xaxis = TRUE)
 #'
 #' plot_taxa_ridges(glades.titan,
 #'   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")),
@@ -56,6 +59,7 @@ plot_taxa_ridges <- function(
   ytxt.sz = 10,
   printspp = FALSE,
   grid = TRUE,
+  xaxis = !grid,
   xlim, bw,
   ...
 ) {
@@ -159,7 +163,6 @@ plot_taxa_ridges <- function(
       filter(gdf, filter == +1L),
       aes(x = chk_pts, y = reorder(id, chk_pts, median), fill = zscore)
     ) +
-    ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
     ggridges::geom_density_ridges(
       quantile_lines = TRUE,
       vline_size = 0.25,
@@ -170,7 +173,16 @@ plot_taxa_ridges <- function(
       from = xmin, to = xmax, bandwidth = bw,
       ...
     ) +
-    theme(axis.text.y = element_text(size=ytxt.sz)) +
+    ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
+    theme(
+      axis.text.y = element_text(size=ytxt.sz),
+      axis.line = (if (xaxis) {
+        do.call(element_line, theme_get()$axis.line)
+      } else {
+        element_blank()
+      }),
+      axis.line.y = element_blank()
+    ) +
     scale_x_continuous(xlabel, limits = xlim, expand = c(0,0)) +
     scale_y_discrete("") +
     labs(x = xlabel, y = "") +
