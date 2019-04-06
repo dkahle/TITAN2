@@ -30,7 +30,8 @@ Imports:
     tibble
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    tidyverse
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 6.1.1

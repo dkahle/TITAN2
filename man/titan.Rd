@@ -50,8 +50,7 @@ memory.  This function is sometimes necessary for large data files (e.g.
 \item{messaging}{If \code{TRUE}, provide progress messages.}
 }
 \value{
-A list with 13 items:
-\itemize{
+A list with 13 items: \itemize{
 
 \item{sppmax}{Description of 'comp1'}
 
@@ -92,27 +91,33 @@ replicate}
 }
 }
 \description{
-titan() is the primary wrapper function controlling operation of all
-subfunctions (txa.screen, env.part, getivz, ivzsums, obs.summ, boot.titan,
-small/big.boot, sumz.tab) apart from plotting functions within TITAN.
+\code{\link[=titan]{titan()}} is the primary wrapper function controlling operation of all
+subroutines (\code{\link[=txa.screen]{txa.screen()}}, \code{\link[=env.part]{env.part()}}, \code{\link[=getivz]{getivz()}}, \code{\link[=ivzsums]{ivzsums()}},
+\code{\link[=obs.summ]{obs.summ()}}, \code{\link[=boot.titan]{boot.titan()}}, \code{\link[=small.boot]{small.boot()}}/\code{\link[=big.boot]{big.boot()}}, \code{\link[=sumz.tab]{sumz.tab()}})
+apart from plotting functions within TITAN.
 }
 \examples{
 
-\dontrun{ resampling is very slow
+data(glades.env); str(glades.env)
+data(glades.taxa); str(glades.taxa)
 
-data(glades.env)
-data(glades.taxa)
+# small run to illustrate data structure
+glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
+  numPerm = 25, boot = TRUE, nBoot = 2, imax = FALSE,
+  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+)
+str(glades.titan, give.attr = FALSE)
+
+
+# typical run
+if (FALSE) {
 glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
   numPerm = 250, boot = TRUE, nBoot = 100, imax = FALSE,
   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
 )
-
-glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
-  numPerm = 250, boot = TRUE, nBoot = 2, imax = FALSE,
-  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
-)
-
 }
+
+
 
 }
 \references{

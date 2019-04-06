@@ -419,8 +419,8 @@ permiv <- function(grp, spp, ivTot = ivTot, nPerm = 250) {
 #' associated p-values.
 #'
 #' This function calls two subfunctions to first calculate IndVals and their
-#' associated direction (i.e., a decreasing taxon [group 1] is associated with
-#' the left side of any partition, whereas an increasing taxon [group 2] is
+#' associated direction (i.e., a decreasing taxon, group 1, is associated with
+#' the left side of any partition, whereas an increasing taxon, group 2, is
 #' associated with the right) and second to develop permuted values for each
 #' candidate partition. Output includes the indicator direction (1 or 2), z
 #' scores, IndVal scores, and associated p value (obtained by the fraction of
@@ -448,8 +448,9 @@ permiv <- function(grp, spp, ivTot = ivTot, nPerm = 250) {
 #'
 #'   \itemize{
 #'
-#'   \item{Group Membership }{A vector for every taxon showing decreasing (1) or
-#'   increasing (2) group membership at each value of 'envcls'}
+#'   \item{Group Membership }{A vector for every taxon showing decreasing
+#'   (\code{1}) or increasing (\code{2}) group membership at each value of
+#'   'envcls'}
 #'
 #'   \item{z scores }{A vector for every taxon showing IndVal z scores at each
 #'   value of 'envcls'}

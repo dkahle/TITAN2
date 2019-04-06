@@ -59,7 +59,11 @@ Should not be used with output objects from TITAN v1.0.
 data(glades.titan)
 
 plot_taxa_ridges(glades.titan, ytxt.sz=8)
-plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), z2=FALSE)
+
+plot_taxa_ridges(glades.titan,
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")),
+  z2 = FALSE
+)
 
 
 }

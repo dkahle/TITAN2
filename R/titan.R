@@ -83,27 +83,26 @@
 #' @export
 #' @examples
 #'
-#' \dontrun{ resampling is very slow
-#'
 #' data(glades.env); str(glades.env)
 #' data(glades.taxa); str(glades.taxa)
 #'
-#' # small run
+#' # small run to illustrate data structure
 #' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
-#'   numPerm = 250, boot = TRUE, nBoot = 2, imax = FALSE,
+#'   numPerm = 25, boot = TRUE, nBoot = 2, imax = FALSE,
 #'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
 #' )
 #' str(glades.titan, give.attr = FALSE)
 #'
 #'
 #' # typical run
+#' if (FALSE) {
 #' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
 #'   numPerm = 250, boot = TRUE, nBoot = 100, imax = FALSE,
 #'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
 #' )
-#'
-#'
 #' }
+#'
+#'
 #'
 titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   nBoot = 500, imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,

@@ -35,8 +35,9 @@ the first two of which include indicator direction and z scores.
 
 \itemize{
 
-\item{Group Membership }{A vector for every taxon showing decreasing (1) or
-increasing (2) group membership at each value of 'envcls'}
+\item{Group Membership }{A vector for every taxon showing decreasing
+(\code{1}) or increasing (\code{2}) group membership at each value of
+'envcls'}
 
 \item{z scores }{A vector for every taxon showing IndVal z scores at each
 value of 'envcls'}
@@ -56,8 +57,8 @@ associated p-values.
 }
 \details{
 This function calls two subfunctions to first calculate IndVals and their
-associated direction (i.e., a decreasing taxon \link{group 1} is associated with
-the left side of any partition, whereas an increasing taxon \link{group 2} is
+associated direction (i.e., a decreasing taxon, group 1, is associated with
+the left side of any partition, whereas an increasing taxon, group 2, is
 associated with the right) and second to develop permuted values for each
 candidate partition. Output includes the indicator direction (1 or 2), z
 scores, IndVal scores, and associated p value (obtained by the fraction of

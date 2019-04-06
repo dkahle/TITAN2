@@ -2,8 +2,7 @@
 % Please edit documentation in R/plotSumz.R
 \name{plotSumz}
 \alias{plotSumz}
-\title{Plots the pattern of community change along an environmental
-gradient}
+\title{Plots the pattern of community change along an environmental gradient}
 \usage{
 plotSumz(titan.out, filter = F, cumfrq = T, bootz1 = T, bootz2 = T,
   sumz1 = T, sumz2 = T, xmin = min(titan.out$env),
@@ -18,121 +17,100 @@ plotSumz(titan.out, filter = F, cumfrq = T, bootz1 = T, bootz2 = T,
 \arguments{
 \item{titan.out}{A TITAN output object.}
 
-\item{filter}{A logical indicating whether only pure and reliable
-taxa should be used to create the plot.This is the recommended
-as a check of the unfiltered default to assess whether impure
-or unreliable taxa are substantially contributing to the
-distribution of sum(z) scores.}
+\item{filter}{A logical indicating whether only pure and reliable taxa should
+be used to create the plot.This is the recommended as a check of the
+unfiltered default to assess whether impure or unreliable taxa are
+substantially contributing to the distribution of sum(z) scores.}
 
-\item{cumfrq}{A logical specifying whether cumulative frequencies
-of sum(z) maxima across bootstrap replicates should be plotted.}
+\item{cumfrq}{A logical specifying whether cumulative frequencies of sum(z)
+maxima across bootstrap replicates should be plotted.}
 
-\item{bootz1}{A logical specifying whether decreasing cumulative
-frequencies exist or should be plotted.}
+\item{bootz1}{A logical specifying whether decreasing cumulative frequencies
+exist or should be plotted.}
 
-\item{bootz2}{A logical specifying whether increasing cumulative
-frequencies exist or should be plotted.}
+\item{bootz2}{A logical specifying whether increasing cumulative frequencies
+exist or should be plotted.}
 
-\item{sumz1}{A logical specifying whether decreasing changes
-should be plotted.}
+\item{sumz1}{A logical specifying whether decreasing changes should be
+plotted.}
 
-\item{sumz2}{A logical specifying whether increasing changes
-should be plotted.}
+\item{sumz2}{A logical specifying whether increasing changes should be
+plotted.}
 
-\item{xmin}{A graphical argument specifying the value of the x
-axis minimum.}
+\item{xmin}{A graphical argument specifying the value of the x axis minimum.}
 
-\item{xmax}{A graphical argument specifying the value of the x
-axis maximum.}
+\item{xmax}{A graphical argument specifying the value of the x axis maximum.}
 
 \item{xlabel}{A character string for the x axis label.}
 
-\item{y1label}{A character specifying the label of the second y
-axis}
+\item{y1label}{A character specifying the label of the second y axis}
 
-\item{y2label}{A character specifying the label of the second y
-axis}
+\item{y2label}{A character specifying the label of the second y axis}
 
-\item{log}{A graphical argument specifying whether an axis should
-be log scaled.}
+\item{log}{A graphical argument specifying whether an axis should be log
+scaled.}
 
-\item{at}{A graphical argument for controling placement of the x
-axis label}
+\item{at}{A graphical argument for controling placement of the x axis label}
 
-\item{tck}{A graphical argument specifying the scale of axis tick
-marks.}
+\item{tck}{A graphical argument specifying the scale of axis tick marks.}
 
 \item{bty}{A graphical argument.}
 
-\item{ntick}{A graphical argument specifying the default number
-of axis tick marks.}
+\item{ntick}{A graphical argument specifying the default number of axis tick
+marks.}
 
-\item{prtty}{A logical specifying whether pretty() should be used
-to plot axis labels.}
+\item{prtty}{A logical specifying whether pretty() should be used to plot
+axis labels.}
 
-\item{dig}{A numeric argument specifying the number of decimal
-digits in axes.}
+\item{dig}{A numeric argument specifying the number of decimal digits in
+axes.}
 
-\item{cex}{A graphical argument specifying the scaling of the
-figure.}
+\item{cex}{A graphical argument specifying the scaling of the figure.}
 
-\item{cex.axis}{A graphical argument specifying the scaling of
-the axes.}
+\item{cex.axis}{A graphical argument specifying the scaling of the axes.}
 
-\item{cex.leg}{A graphical argument specifying the scaling of the
-legend.}
+\item{cex.leg}{A graphical argument specifying the scaling of the legend.}
 
-\item{cex.lab}{A graphical argument specifying the scaling of the
-lables.}
+\item{cex.lab}{A graphical argument specifying the scaling of the lables.}
 
-\item{leg.x}{A graphical argument specifying the x coordinate of
-the legend.}
+\item{leg.x}{A graphical argument specifying the x coordinate of the legend.}
 
-\item{leg.y}{A graphical argument specifying the y coordinate of
-the legend.}
+\item{leg.y}{A graphical argument specifying the y coordinate of the legend.}
 
-\item{legend}{A logical specifying whether or not to plot the
-legend.}
+\item{legend}{A logical specifying whether or not to plot the legend.}
 
-\item{pch1}{A graphical argument specifying the type of group 1
-symbols.}
+\item{pch1}{A graphical argument specifying the type of group 1 symbols.}
 
-\item{pch2}{A graphical argument specifying the type of group 2
-symbols.}
+\item{pch2}{A graphical argument specifying the type of group 2 symbols.}
 
-\item{col1}{A graphical argument specifying the color of group 1
-symbols.}
+\item{col1}{A graphical argument specifying the color of group 1 symbols.}
 
-\item{col2}{A graphical argument specifying the color of group 2
-symbols.}
+\item{col2}{A graphical argument specifying the color of group 2 symbols.}
 
-\item{...}{An argument for passing generic plotting function
-parameters.}
+\item{...}{An argument for passing generic plotting function parameters.}
 }
 \value{
-A plot of sum(z-) and sum(z+) profiles along the
-environmental gradient.
+A plot of sum(z-) and sum(z+) profiles along the environmental
+gradient.
 }
 \description{
-Creates a plot of community-level sums of taxon-specific change
-along an environmental gradient and optionally conveys
-uncertainty associated with the maximum community change derived
-from decreasers or increasers.
+Creates a plot of community-level sums of taxon-specific change along an
+environmental gradient and optionally conveys uncertainty associated with the
+maximum community change derived from decreasers or increasers.
 }
 \details{
-This function assumes that the TITAN object contains bootstrap
-summaries and filtering information and automatically determines
-whether this is the case.  Without the bootstrap summaries, only
-unfiltered change magnitudes are plotted.
+This function assumes that the TITAN object contains bootstrap summaries and
+filtering information and automatically determines whether this is the case.
+Without the bootstrap summaries, only unfiltered change magnitudes are
+plotted.
 
-The original sum(z) plots (v1.0) did not filter taxa using purity
-and reliability.  Because these taxa often have small z scores,
-they are unlikely to contribute significantly to the sum(z)
-profiles.  However, subsequent investigation has demonstrated
-that when sufficient numbers of taxa are involved, it is possible
-for noisy data to generate artifactual peaks in low-magnitude
-sum(z) profiles or plateaus.  Therefore, we recommend evaluating
-filtered versions of the sum(z) to assess this potential in v2.0.
+The original sum(z) plots (v1.0) did not filter taxa using purity and
+reliability.  Because these taxa often have small z scores, they are unlikely
+to contribute significantly to the sum(z) profiles.  However, subsequent
+investigation has demonstrated that when sufficient numbers of taxa are
+involved, it is possible for noisy data to generate artifactual peaks in
+low-magnitude sum(z) profiles or plateaus.  Therefore, we recommend
+evaluating filtered versions of the sum(z) to assess this potential in v2.0.
 }
 \note{
 Should not be used with output objects from TITAN v1.0.
@@ -145,15 +123,13 @@ plotSumz(glades.titan, filter = FALSE)
 
 }
 \references{
-Baker, ME and RS King.  2010. A new method for
-detecting and interpreting biodiversity and ecological
-community thresholds.  Methods in Ecology and Evolution 1(1):
-25:37.
+Baker, ME and RS King.  2010. A new method for detecting and
+interpreting biodiversity and ecological community thresholds.  Methods in
+Ecology and Evolution 1(1): 25:37.
 
-King, RS and ME Baker  2010. Considerations for
-identifying and interpreting ecological community thresholds.
-Journal of the North American Benthological Association
-29(3):998-1008.
+King, RS and ME Baker  2010. Considerations for identifying and
+interpreting ecological community thresholds. Journal of the North American
+Benthological Association 29(3):998-1008.
 }
 \seealso{
 \code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plotCPs]{plotCPs()}}
