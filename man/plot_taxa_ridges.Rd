@@ -10,14 +10,14 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
   pur.cut = titan.out$arguments[[7]],
   rel.cut = titan.out$arguments[[8]],
   xlabel = "Environmental Gradient", n_ytaxa = 90, ytxt.sz = 10,
-  all = FALSE, printspp = TRUE, grid = TRUE, xlim, bw, ...)
+  printspp = FALSE, grid = TRUE, xlim, bw, ...)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
 
 \item{z1}{A logical specifying whether decreasing taxa should be plotted.}
 
-\item{z2}{A logical specifying whether decreasing taxa should be plotted.}
+\item{z2}{A logical specifying whether increasing taxa should be plotted.}
 
 \item{z1_fill_low}{z1_fill_low}
 
@@ -37,17 +37,14 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
 
 \item{ytxt.sz}{The relative size of the taxa label along the y axis.}
 
-\item{all}{A logical specifying whether all taxa with p<0.05 should be
-plotted.}
-
 \item{printspp}{A logical specifying whether the sppmax table should be
 printed.}
 
 \item{grid}{grid}
 
-\item{xlim}{X axis limits.}
+\item{xlim}{x axis limits, e.g. xlim=c(0,10)}
 
-\item{bw}{bw}
+\item{bw}{bw (bandwidth)}
 
 \item{...}{...}
 }
@@ -65,8 +62,8 @@ Should not be used with output objects from TITAN v1.0.
 
 data(glades.titan)
 
-plot_taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", ytxt.sz=8)
-plot_taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", z2=FALSE)
+plot_taxa_ridges(glades.titan, ytxt.sz=8)
+plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), z2=FALSE)
 
 
 }

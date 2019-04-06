@@ -4,10 +4,8 @@
 #'
 #' @param titan.out A TITAN output object.
 #' @param z1 A logical specifying whether decreasing taxa should be plotted.
-#' @param z2 A logical specifying whether decreasing taxa should be plotted.
+#' @param z2 A logical specifying whether increasing taxa should be plotted.
 #' @param xlabel A character string for the x axis label.
-#' @param all A logical specifying whether all taxa with p<0.05 should be
-#'   plotted.
 #' @param ytxt.sz The relative size of the taxa label along the y axis.
 #' @param n_ytaxa The maximum number of taxa to be plotted.
 #' @param printspp A logical specifying whether the sppmax table should be
@@ -19,8 +17,8 @@
 #' @param pur.cut pur.cut
 #' @param rel.cut rel.cut
 #' @param grid grid
-#' @param bw bw
-#' @param xlim X axis limits.
+#' @param bw bw (bandwidth)
+#' @param xlim x axis limits, e.g. xlim=c(0,10)
 #' @param ... ...
 #' @return A plot of decreasing and/or increasing taxon-specific change points
 #'   along the environmental gradient.
@@ -39,8 +37,8 @@
 #'
 #' data(glades.titan)
 #'
-#' plot_taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", ytxt.sz=8)
-#' plot_taxa_ridges(glades.titan, xlabel = "Surface Water TP (ug/l)", z2=FALSE)
+#' plot_taxa_ridges(glades.titan, ytxt.sz=8)
+#' plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), z2=FALSE)
 #'
 #'
 plot_taxa_ridges <- function(
@@ -53,8 +51,7 @@ plot_taxa_ridges <- function(
   xlabel = "Environmental Gradient",
   n_ytaxa = 90,
   ytxt.sz = 10,
-  all = FALSE,
-  printspp = TRUE,
+  printspp = FALSE,
   grid = TRUE,
   xlim, bw,
   ...
@@ -80,7 +77,6 @@ plot_taxa_ridges <- function(
 
   imax <- titan.out$arguments[["imax"]]
   boot <- titan.out$arguments[["boot"]] > 0.5
-  if (all) boot <- FALSE
 
   sppmax <- titan.out %>%
     pluck("sppmax") %>%
@@ -116,12 +112,6 @@ plot_taxa_ridges <- function(
       (filter == 1) ~ -1L,
       (filter == 2) ~ +1L
     ))
-
-  # nbd = rev(dim(titan.out$metricArray))[1],
-  # taxa = sppmax$id[.x],
-  # z.Scores =
-
-  ####if (missing(xlim)) xlim <- range(gdf$chk_pts)
 
   # compute pooled statistics
   if (missing(xlim)) xlim <- grDevices::extendrange(range(gdf$chk_pts), f = 0.05)
@@ -211,7 +201,7 @@ plot_taxa_ridges <- function(
 
     }
 
-  # if (printspp) print(as.data.frame(sppmax))
+  if (printspp) print(as.data.frame(sppmax))
 
   if (z1) {
     if (z2) {
