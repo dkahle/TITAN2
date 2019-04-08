@@ -100,7 +100,7 @@ across taxa.
 Following the intitial (v1.0) TITAN publications, it was clear that
 substantial information regarding taxon-specific change points was lost when
 bootstrapped distributions were represented solely as quantiles (i.e., as in
-'plotTaxa' and the 'sppmax' output table).  Empirical probability densities
+\code{\link[=plot_taxa]{plot_taxa()}} and the 'sppmax' output table).  Empirical probability densities
 allow greater detail and more nuanced interpretation associated with this
 uncertainty, especially when compared against observed abundance and
 occurrence.  Further, comparison of the summed probability densities and the
@@ -130,7 +130,7 @@ interpreting ecological community thresholds. Journal of the North American
 Benthological Association 29(3):998-1008.
 }
 \seealso{
-\code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plot_sumz]{plot_sumz()}}
+\code{\link[=plot_taxa]{plot_taxa()}}, \code{\link[=plot_sumz]{plot_sumz()}}
 }
 \author{
 M. Baker and R. King

@@ -10,7 +10,7 @@
 #' Following the intitial (v1.0) TITAN publications, it was clear that
 #' substantial information regarding taxon-specific change points was lost when
 #' bootstrapped distributions were represented solely as quantiles (i.e., as in
-#' 'plotTaxa' and the 'sppmax' output table).  Empirical probability densities
+#' [plot_taxa()] and the 'sppmax' output table).  Empirical probability densities
 #' allow greater detail and more nuanced interpretation associated with this
 #' uncertainty, especially when compared against observed abundance and
 #' occurrence.  Further, comparison of the summed probability densities and the
@@ -71,7 +71,7 @@
 #'   Benthological Association 29(3):998-1008.
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker and R. King
-#' @seealso [plotTaxa()], [plot_sumz()]
+#' @seealso [plot_taxa()], [plot_sumz()]
 #' @keywords TITAN kwd2
 #' @name plot-cps
 #' @examples

@@ -73,20 +73,44 @@
 #' @author M. Baker and R. King
 #' @seealso [plot_sumz()], [plot_cps()]
 #' @keywords TITAN kwd2
-#' @export
+#' @name plot-taxa
 #' @examples
 #'
 #' data(glades.titan)
-#' plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
+#' plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 #'
-plotTaxa <- function(titan.out, z1 = T, z2 = T, interval = T, prob95 = F,
-  z.med = F, xlabel = "Environmental Gradient", log = "", at = NULL,
-  xmin = min(titan.out$sppmax[, 8]), xmax = max(titan.out$sppmax[,
-    12]) * 1.05, tck = 0.025, bty = "u", ntick = 6, prtty = T,
-  dig = 1, leg.x = 0.8, leg.y = 10, cex.taxa = 0.75, cex = 1.25,
-  cex.axis = 1.25, cex.leg = 1.25, cex.lab = 1.25, legend = T,
-  col1 = "black", fil1 = "black", col2 = "black", fil2 = "white",
-  write = F, all = F, ...) {
+#'
+
+
+
+
+
+#' @rdname plot-taxa
+#' @export
+plot_taxa <- function(
+  titan.out,
+  z1 = TRUE, z2 = TRUE,
+  interval = TRUE,
+  prob95 = FALSE,
+  z.med = FALSE,
+  xlabel = "Environmental Gradient",
+  log = "", at = NULL,
+  xmin = min(titan.out$sppmax[, 8]),
+  xmax = max(titan.out$sppmax[,12]) * 1.05,
+  tck = 0.025,
+  bty = "u",
+  ntick = 6,
+  prtty = TRUE,
+  dig = 1,
+  leg.x = 0.8, leg.y = 10,
+  cex.taxa = 0.75, cex = 1.25, cex.axis = 1.25, cex.leg = 1.25, cex.lab = 1.25,
+  legend = TRUE,
+  col1 = "black", fil1 = "black",
+  col2 = "black", fil2 = "white",
+  write = FALSE,
+  all = FALSE,
+  ...
+) {
 
   imax = titan.out$arguments[[5]]
   boot = titan.out$arguments[[3]] > 0.5
@@ -402,7 +426,6 @@ plotTaxa <- function(titan.out, z1 = T, z2 = T, interval = T, prob95 = F,
     return(sppsub2)
   }
 
-  ### END plotTaxa
 
 }
 
@@ -410,6 +433,13 @@ plotTaxa <- function(titan.out, z1 = T, z2 = T, interval = T, prob95 = F,
 
 
 
+
+#' @rdname plot-taxa
+#' @export
+plotTaxa <- function(...) {
+  .Deprecated("plot_taxa")
+  plot_taxa(...)
+}
 
 
 
