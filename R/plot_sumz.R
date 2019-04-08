@@ -72,7 +72,7 @@
 #' @author M. Baker and R. King
 #' @seealso [plotTaxa()], [plotCPs()]
 #' @keywords TITAN sum(z)
-#' @name plot_sumz
+#' @name plot-sumz
 #' @examples
 #'
 #' data(glades.titan)
@@ -90,7 +90,7 @@
 
 
 
-#' @rdname plot_sumz
+#' @rdname plot-sumz
 #' @export
 plot_sumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
   bootz2 = T, sumz1 = T, sumz2 = T, xmin = min(titan.out$env),
@@ -283,7 +283,7 @@ plot_sumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
 
 
 
-#' @rdname plot_sumz
+#' @rdname plot-sumz
 #' @export
 plotSumz <- function(...) {
   .Deprecated("plot_sumz")
