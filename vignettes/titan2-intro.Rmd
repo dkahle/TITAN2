@@ -491,16 +491,16 @@ ivzScores
 
 ### Visualizing Results
 
-#### `plotSumz()` and `plot_sumz_density()`
+#### `plot_sumz()` and `plot_sumz_density()`
 
-The community-level output may be viewed using the `plotSumz()` or
+The community-level output may be viewed using the `plot_sumz()` or
 `plot_sumz_density()` functions.  The `plot_sumz_density()` function is new to
 this version of **TITAN2**. We recommend its use because we think it will be
 both easier to understand than previous output and encourage appropriate
 interpretation of results.
 
 There are many options for changing the look of the graphs; see their full
-documentations with `?plotSumz` or `?plot_sumz_density`. An abbreviated version
+documentations with `?plot_sumz` or `?plot_sumz_density`. An abbreviated version
 is presented below.  To begin, here's how you use `plot_sumz_density()`:
 
 ```{r, echo = FALSE}
@@ -605,7 +605,7 @@ plotted
 
 - `legend.position` - controls location of legend
 
-For `plotSumz`, the older plotting function in **TITAN2**, filled and hollow
+For `plot_sumz`, the older plotting function in **TITAN2**, filled and hollow
 symbols denote the magnitude of summed z scores of increasing (z+) or decreasing
 (z-) taxa. Peaks in the values indicate points along the environmental gradient
 that produce large amounts of change in community composition and/or structure.
@@ -625,7 +625,7 @@ depending on contributions from impure or unreliable taxa:
 graphics.off()
 ```
 ```{r, fig.height = 6,fig.width = 8}
-plotSumz(glades.titan, filter = TRUE)
+plot_sumz(glades.titan, filter = TRUE)
 ```
 
 
@@ -857,7 +857,7 @@ bootstrap replicates and using median $z$ score instead of observed value
 `log`, `at`, `xmin`, `xmax`, `xlabel`, `tck`, `bty`, `ntick`, `prtty`,
 `dig`, `leg.x`, `leg.y`, `cex`, `cex.axis`, `cex.leg`, `cex.lab`,
 `legend`, `col1`, `fil1`, `col2`, and `fil2` are the same as in
-`plotSumz()` above.
+`plot_sumz()` above.
 
 Here is the same function with `z.med = TRUE`:
 
@@ -1016,7 +1016,7 @@ plotCPs(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", sta
 
 Here the blue and red circles correspond to the location of the respective
 maxima for decreasing and increasing taxa change points. In either case, the
-summed PDFs are meant to provide complementarity to the `plotSumz()` graphic
+summed PDFs are meant to provide complementarity to the `plot_sumz()` graphic
 about where there are key values along the environmental gradient where many
 coincident change points occur regardless of the sample.
 

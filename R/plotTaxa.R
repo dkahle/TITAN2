@@ -71,7 +71,7 @@
 #'   Benthological Association 29(3):998-1008.
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker and R. King
-#' @seealso [plotSumz()], [plotCPs()]
+#' @seealso [plot_sumz()], [plotCPs()]
 #' @keywords TITAN kwd2
 #' @export
 #' @examples

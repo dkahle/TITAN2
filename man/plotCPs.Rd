@@ -127,7 +127,7 @@ interpreting ecological community thresholds. Journal of the North American
 Benthological Association 29(3):998-1008.
 }
 \seealso{
-\code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plotSumz]{plotSumz()}}
+\code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plot_sumz]{plot_sumz()}}
 }
 \author{
 M. Baker and R. King

@@ -49,7 +49,7 @@ interpreting biodiversity and ecological community thresholds. Methods in
 Ecology and Evolution 1(1): 25:37.
 }
 \seealso{
-\code{\link[=getivz]{getivz()}}, \code{\link[=plotSumz]{plotSumz()}}
+\code{\link[=getivz]{getivz()}}, \code{\link[=plot_sumz]{plot_sumz()}}
 }
 \author{
 M. Baker and R. King

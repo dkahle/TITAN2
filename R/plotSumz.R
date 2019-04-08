@@ -72,14 +72,27 @@
 #' @author M. Baker and R. King
 #' @seealso [plotTaxa()], [plotCPs()]
 #' @keywords TITAN sum(z)
-#' @export
+#' @name plot_sumz
 #' @examples
 #'
 #' data(glades.titan)
-#' plotSumz(glades.titan, filter = FALSE)
+#' plot_sumz(glades.titan, filter = FALSE)
 #'
 #'
-plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
+#'
+#'
+
+
+
+
+
+
+
+
+
+#' @rdname plot_sumz
+#' @export
+plot_sumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
   bootz2 = T, sumz1 = T, sumz2 = T, xmin = min(titan.out$env),
   xmax = max(titan.out$envcls) * 1.25, xlabel = "Environmental Gradient",
   y1label = NULL, y2label = "Cumulative Frequency", log = "",
@@ -265,5 +278,14 @@ plotSumz <- function(titan.out, filter = F, cumfrq = T, bootz1 = T,
       max(ivz, na.rm = T) * leg.y, bty = "n", leg, fill = fill.leg,
       ncol = 1, plot = TRUE, cex = cex.leg)
   }
-  ### END plotSumz
+}
+
+
+
+
+#' @rdname plot_sumz
+#' @export
+plotSumz <- function(...) {
+  .Deprecated("plot_sumz")
+  plot_sumz(...)
 }

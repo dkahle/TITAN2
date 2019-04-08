@@ -571,7 +571,7 @@ getivz <- function(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass,
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds. Methods in
 #'   Ecology and Evolution 1(1): 25:37.
-#' @seealso [getivz()], [plotSumz()]
+#' @seealso [getivz()], [plot_sumz()]
 #' @author M. Baker and R. King
 #' @keywords TITAN sum(z)
 #' @name ivzsums
