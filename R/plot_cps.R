@@ -73,18 +73,28 @@
 #' @author M. Baker and R. King
 #' @seealso [plotTaxa()], [plot_sumz()]
 #' @keywords TITAN kwd2
-#' @export
+#' @name plot-cps
 #' @examples
 #'
 #' data(glades.titan)
-#' plotCPs(glades.titan,
+#' plot_cps(glades.titan,
 #'   taxa.dist = FALSE,
 #'   xlabel = "Surface Water TP (ug/l)",
 #'   stacked = TRUE
 #' )
 #'
-#'
-plotCPs <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
+
+
+
+
+
+
+
+
+
+#' @rdname plot-cps
+#' @export
+plot_cps <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
   cp.med = F, cp.trace = F, cp.hist = T, stacked = F, xlabel = "Environmental Gradient",
   xmin = min(titan.out$env), xmax = max(titan.out$envcls) * 1.25,
   tck = 0.025, bty = "u", ntick = 6, cex = 1.75, cex.axis = 1.75,
@@ -414,5 +424,19 @@ plotCPs <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
       }
     }
   }
-  ## End plotCPs
+
 }
+
+
+
+
+#' @rdname plot-cps
+#' @export
+plotCPs <- function(...) {
+  .Deprecated("plot_cps")
+  plot_cps(...)
+}
+
+
+
+

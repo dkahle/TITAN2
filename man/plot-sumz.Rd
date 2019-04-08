@@ -138,7 +138,7 @@ interpreting ecological community thresholds. Journal of the North American
 Benthological Association 29(3):998-1008.
 }
 \seealso{
-\code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plotCPs]{plotCPs()}}
+\code{\link[=plotTaxa]{plotTaxa()}}, \code{\link[=plot_cps]{plot_cps()}}
 }
 \author{
 M. Baker and R. King
