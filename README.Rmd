@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/TITAN2)](https://cran.r-project.org/package=TITAN2)
 <!-- badges: end -->
 
-__TITAN2__ is an R package that 
+__TITAN2__ is the second R implementation of Threshold Indicator Taxa ANalysis. It is an R package source controlled with Git on GitHub and [distributed on CRAN](https://cran.r-project.org/package=TITAN2).
 
 
 

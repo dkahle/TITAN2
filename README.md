@@ -9,7 +9,9 @@ TITAN2
 status](https://www.r-pkg.org/badges/version/TITAN2)](https://cran.r-project.org/package=TITAN2)
 <!-- badges: end -->
 
-**TITAN2** is an R package that
+**TITAN2** is the second R implementation of Threshold Indicator Taxa
+ANalysis. It is an R package source controlled with Git on GitHub and
+[distributed on CRAN](https://cran.r-project.org/package=TITAN2).
 
 Installation
 ------------
