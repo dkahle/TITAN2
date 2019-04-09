@@ -815,21 +815,21 @@ plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total ph
 ``` 
 
 
-#### `plotTaxa()`
+#### `plot_taxa()`
 
 Pure and reliable indicator taxa change points can be plotted using an older
 plotting function that was integral to the original TITAN2 release,
-`plotTaxa()`.  We have replaced this plot with the distributions in
+`plot_taxa()`.  We have replaced this plot with the distributions in
 `plot_taxa_ridges()` because it tended to empahsize the observed change points
 over the bootrap replicates. Again, there are many options for changing the look
-of the graph, so see the full documentation with `?plotTaxa`, but you can get
-started by simply calling `plotTaxa()` on the output of `titan()`:
+of the graph, so see the full documentation with `?plot_taxa`, but you can get
+started by simply calling `plot_taxa()` on the output of `titan()`:
 
 ```{r, echo = FALSE}
 graphics.off()
 ```
 ```{r, fig.height = 8,fig.width = 8}
-plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
+plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 ``` 
 
 Each plot includes robust declining taxa on the left axis, increasers on the
@@ -865,7 +865,7 @@ Here is the same function with `z.med = TRUE`:
 graphics.off()
 ```
 ```{r, fig.height = 8,fig.width = 8}
-plotTaxa(glades.titan,xlabel = "Surface Water TP (ug/l)",z.med = T)
+plot_taxa(glades.titan,xlabel = "Surface Water TP (ug/l)",z.med = T)
 ``` 
 
 Alternatively, with `prob95 = TRUE`:
@@ -874,7 +874,7 @@ Alternatively, with `prob95 = TRUE`:
 graphics.off()
 ```
 ```{r, fig.height = 8,fig.width = 8}
-plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = F, prob95 = T)
+plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = F, prob95 = T)
 ``` 
 
 Importantly, some of the control over the plotting that was optional in the
@@ -886,7 +886,7 @@ written as text files (these can be easily extracted from the
 
 
 
-#### `plotCPs()`
+#### `plot_cps()`
 
 In **TITAN2** 2.0 and later, there are several plotting options; all contained
 within a single function centered on interpreting taxon-specific change points
@@ -915,7 +915,7 @@ The remaining arguments: `xlabel`, `xmin`, `xmax`, `tck`, `bty`, `ntick`, `cex`,
 `cex.axis`, `cex.leg`, `cex.lab`, `leg.x`, `leg.y` and `legend` are the same as
 in the previous plotting functions.
 
-The default graphic from `plotCPs()` is a $z$-score weighted probability density
+The default graphic from `plot_cps()` is a $z$-score weighted probability density
 function derived from the empirical distribution of change points across all
 bootstrap replicates plotted as a histogram for each pure and reliable taxon
 (blue for decreasers and red for increasers). NOTE: When you try to plot the
@@ -924,7 +924,7 @@ too large".  This is easily addressed by closing the plot window, or turning the
 graphics device off.
 
 ```{r, fig.height = 10,fig.width = 10}
-plotCPs(glades.titan)
+plot_cps(glades.titan)
 ``` 
 
 Typically, these histograms are visually scanned to distinguish those taxa whose
@@ -941,7 +941,7 @@ margins.
 graphics.off()
 ```
 ```{r, fig.height = 5,fig.width = 8}
-plotCPs(glades.titan, taxaID = "ENALCIVI", xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxaID = "ENALCIVI", xlabel = "Surface Water TP (ug/l)")
 ``` 
 
 The base plot is simply taxon-specific abundance (black circles) along the
@@ -960,7 +960,7 @@ change point along the environmental gradient (see [Baker and King
 graphics.off()
 ```
 ```{r, fig.height = 5,fig.width = 8}
-plotCPs(glades.titan, taxaID = "ENALCIVI", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxaID = "ENALCIVI", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
 ``` 
 
 Below is an increasing taxon from the same data set with a conspicuously bimodal
@@ -970,14 +970,14 @@ distribution of replicate change points:
 graphics.off()
 ```
 ```{r, fig.height = 5,fig.width = 8}
-plotCPs(glades.titan, taxaID = "OSTRASP5", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxaID = "OSTRASP5", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
 ``` 
 
 Here it appears as if two potential change points were predominantly identified:
 one that kept nearly all of the abundance to the right, and another (the
 observed) than kept nearly all the absences to the left.
 
-Finally, if `taxa.dist = FALSE`, instead of a taxon-specific plot, `plotCPs()`
+Finally, if `taxa.dist = FALSE`, instead of a taxon-specific plot, `plot_cps()`
 will produce a plot of the summed $z$-weighted (if `z.weights = TRUE`)
 probability densities across increasing (`maxgrp = 1`; blue) decreasing (`maxgrp
 = 2`; red) and all pure and reliable taxa (filter>0; grey):
@@ -986,7 +986,7 @@ probability densities across increasing (`maxgrp = 1`; blue) decreasing (`maxgrp
 graphics.off()
 ```
 ```{r, fig.height = 6,fig.width = 8}
-plotCPs(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)")
 ```  
 
 The accompanying table summarizes the location of both the $z$-weighted and
@@ -1011,7 +1011,7 @@ setting `stacked = TRUE`:
 graphics.off()
 ```
 ```{r, fig.height = 6,fig.width = 8}
-plotCPs(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", stacked = TRUE)
+plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", stacked = TRUE)
 ```  
 
 Here the blue and red circles correspond to the location of the respective

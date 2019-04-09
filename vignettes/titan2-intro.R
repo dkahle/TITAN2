@@ -83,7 +83,7 @@ plot_sumz_density(glades.titan, ribbon=TRUE, points=FALSE, sumz1=FALSE, change_p
 graphics.off()
 
 ## ---- fig.height = 6,fig.width = 8---------------------------------------
-plotSumz(glades.titan, filter = TRUE)
+plot_sumz(glades.titan, filter = TRUE)
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
@@ -113,50 +113,50 @@ plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total ph
 graphics.off()
 
 ## ---- fig.height = 8,fig.width = 8---------------------------------------
-plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
+plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
 ## ---- fig.height = 8,fig.width = 8---------------------------------------
-plotTaxa(glades.titan,xlabel = "Surface Water TP (ug/l)",z.med = T)
+plot_taxa(glades.titan,xlabel = "Surface Water TP (ug/l)",z.med = T)
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
 ## ---- fig.height = 8,fig.width = 8---------------------------------------
-plotTaxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = F, prob95 = T)
+plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = F, prob95 = T)
 
 ## ---- fig.height = 10,fig.width = 10-------------------------------------
-plotCPs(glades.titan)
+plot_cps(glades.titan)
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
 ## ---- fig.height = 5,fig.width = 8---------------------------------------
-plotCPs(glades.titan, taxaID = "ENALCIVI", xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxaID = "ENALCIVI", xlabel = "Surface Water TP (ug/l)")
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
 ## ---- fig.height = 5,fig.width = 8---------------------------------------
-plotCPs(glades.titan, taxaID = "ENALCIVI", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxaID = "ENALCIVI", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
 ## ---- fig.height = 5,fig.width = 8---------------------------------------
-plotCPs(glades.titan, taxaID = "OSTRASP5", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxaID = "OSTRASP5", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
 ## ---- fig.height = 6,fig.width = 8---------------------------------------
-plotCPs(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)")
+plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)")
 
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
 ## ---- fig.height = 6,fig.width = 8---------------------------------------
-plotCPs(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", stacked = TRUE)
+plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", stacked = TRUE)
 
