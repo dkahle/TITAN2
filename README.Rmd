@@ -1,0 +1,41 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#",
+  fig.path = "tools/"
+)
+```
+
+# TITAN2
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/TITAN2)](https://cran.r-project.org/package=TITAN2)
+<!-- badges: end -->
+
+__TITAN2__ is an R package that 
+
+
+
+## Installation
+
+* From Github (dev version): 
+```{r, eval=FALSE}
+if (!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("dkahle/TITAN2")
+```
+
+
+
+
+
+## Acknowledgements
+
+This material is based upon work supported by ...
