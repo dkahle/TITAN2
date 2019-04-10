@@ -38,4 +38,4 @@ devtools::install_github("dkahle/TITAN2")
 
 ## Acknowledgements
 
-This material is based upon work supported by ...
+This work continues to be supported by the Department of Geography and Environmental Systems (UMBC), Department of Biology (Baylor), and Department of Statistical Sciences (Baylor). 
