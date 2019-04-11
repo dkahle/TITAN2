@@ -399,9 +399,7 @@ The resulting table lists all taxa as rows and the columns are as follows:
 IndVal statistic, scaled 0-100%
 
 - `obsiv.prob`- probability of an equal or larger IndVal from random
-permutation. As an estimate of response magnitude similar to zscore, the p-value
-is vulnerable to bias and does not indicate change point significance. Users
-should instead interpret purity and reliability to identify robust indicators.
+permutation. This is an uncorrected value that doesn't account for the analysis of multiple taxa in the same data set nor repeated estimates of across n partitions of the predictor (x value). To reiterated, this is *not* a valid test of indicator "significance", nor have the authors ever advocated its use in this manner (see Baker and King 2010). The authors include it here only because it is used in the calculation of reliability, which assesses the effect of nBoot replicates on the `obsiv.prob`; reliability, when coupled with purity, is a defensible metric for identifying robust indicator taxa.
 
 - `zscore`- IndVal $z$ score
 
