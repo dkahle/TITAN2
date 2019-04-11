@@ -399,7 +399,14 @@ The resulting table lists all taxa as rows and the columns are as follows:
 IndVal statistic, scaled 0-100%
 
 - `obsiv.prob`- probability of an equal or larger IndVal from random
-permutation. This is an uncorrected value that doesn't account for the analysis of multiple taxa in the same data set nor repeated estimates of across n partitions of the predictor (x value). To reiterated, this is *not* a valid test of indicator "significance", nor have the authors ever advocated its use in this manner (see Baker and King 2010). The authors include it here only because it is used in the calculation of reliability, which assesses the effect of nBoot replicates on the `obsiv.prob`; reliability, when coupled with purity, is a defensible metric for identifying robust indicator taxa.
+permutation. This is an uncorrected value that doesn't account for the analysis
+of multiple taxa in the same data set nor repeated estimates of across n
+partitions of the predictor (x value). To reiterated, this is *not* a valid test
+of indicator "significance", nor have the authors ever advocated its use in this
+manner (see Baker and King 2010). The authors include it here only because it is
+used in the calculation of reliability, which assesses the effect of nBoot
+replicates on the `obsiv.prob`; reliability, when coupled with purity, is a
+defensible metric for identifying robust indicator taxa.
 
 - `zscore`- IndVal $z$ score
 
@@ -913,9 +920,9 @@ The remaining arguments: `xlabel`, `xmin`, `xmax`, `tck`, `bty`, `ntick`, `cex`,
 `cex.axis`, `cex.leg`, `cex.lab`, `leg.x`, `leg.y` and `legend` are the same as
 in the previous plotting functions.
 
-The default graphic from `plot_cps()` is a $z$-score weighted probability density
-function derived from the empirical distribution of change points across all
-bootstrap replicates plotted as a histogram for each pure and reliable taxon
+The default graphic from `plot_cps()` is a $z$-score weighted probability
+density function derived from the empirical distribution of change points across
+all bootstrap replicates plotted as a histogram for each pure and reliable taxon
 (blue for decreasers and red for increasers). NOTE: When you try to plot the
 matrix of plots consecutively you can generate an error about "Figure margins
 too large".  This is easily addressed by closing the plot window, or turning the
@@ -1021,10 +1028,17 @@ coincident change points occur regardless of the sample.
 
 **Citations:**
 
-  *Baker, M.E. and R. S. King.  2010. A new method for detecting and interpreting biodiversity and ecological community thresholds. Methods in Ecology and Evolution 1: 25-43.Z*
+  *Baker, M.E. and R. S. King.  2010. A new method for detecting and
+  interpreting biodiversity and ecological community thresholds. Methods in
+  Ecology and Evolution 1: 25-43.Z*
 
-  *Baker, M.E. and R. S. King.  2013. Of TITAN and strawmen: an appeal for greater understanding of community data. Freshwater Science  32(2):489-506.*
+  *Baker, M.E. and R. S. King.  2013. Of TITAN and strawmen: an appeal for
+  greater understanding of community data. Freshwater Science  32(2):489-506.*
   
-  *King, R.S. and C. J. Richardson. 2003. Integrating bioassessment and ecological risk assessment: an approach to developing numerical water-quality criteria. Environmental Management 31(6):795-809.*
+  *King, R.S. and C. J. Richardson. 2003. Integrating bioassessment and
+  ecological risk assessment: an approach to developing numerical water-quality
+  criteria. Environmental Management 31(6):795-809.*
 
-  *Dufrene, M. and P. Legendre. 1997. Species assemblages and indicator species: the need for a flexible asymmetrical approach. Ecological Monographs. 67:345-366.*
+  *Dufrene, M. and P. Legendre. 1997. Species assemblages and indicator species:
+  the need for a flexible asymmetrical approach. Ecological Monographs.
+  67:345-366.*
