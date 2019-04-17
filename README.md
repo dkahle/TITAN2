@@ -13,8 +13,16 @@ status](https://www.r-pkg.org/badges/version/TITAN2)](https://cran.r-project.org
 ANalysis. It is an R package source controlled with Git on GitHub and
 [distributed on CRAN](https://cran.r-project.org/package=TITAN2).
 
+To learn more about **TITAN2**, install the package (see below), load it
+with `library("TITAN2")`, and read the vignette with
+`vignette("titan2-intro")`.
+
 Installation
 ------------
+
+You can install **TITAN2** in either of two ways. At the present time,
+we recommend installing **TITAN2** from GitHub, as it has several new
+features, e.g. `plot_taxa_ridges()`.
 
 -   From Github (dev version):
 

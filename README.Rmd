@@ -22,9 +22,14 @@ knitr::opts_chunk$set(
 
 __TITAN2__ is the second R implementation of Threshold Indicator Taxa ANalysis. It is an R package source controlled with Git on GitHub and [distributed on CRAN](https://cran.r-project.org/package=TITAN2).
 
+To learn more about __TITAN2__, install the package (see below), load it with `library("TITAN2")`, and read the vignette with `vignette("titan2-intro")`.
+
 
 
 ## Installation
+
+You can install __TITAN2__ in either of two ways. At the present time, we recommend installing __TITAN2__ from GitHub, as it has several new features, e.g. `plot_taxa_ridges()`.
+
 
 * From Github (dev version): 
 ```{r, eval=FALSE}
