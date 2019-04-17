@@ -41,10 +41,11 @@
 #' plot_taxa_ridges(glades.titan, ytxt.sz=8, grid = FALSE)
 #' plot_taxa_ridges(glades.titan, ytxt.sz=8, xaxis = TRUE)
 #'
-#' plot_taxa_ridges(glades.titan,
-#'   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")),
-#'   z2 = FALSE
-#' )
+#' # example with x-axis styling
+#' # plot_taxa_ridges(glades.titan,
+#' #   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")),
+#' #   z2 = FALSE
+#' # )
 #'
 #'
 plot_taxa_ridges <- function(
