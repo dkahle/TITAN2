@@ -7,6 +7,8 @@ TITAN2
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/TITAN2)](https://cran.r-project.org/package=TITAN2)
+[![Travis build
+status](https://travis-ci.org/dkahle/TITAN2.svg?branch=master)](https://travis-ci.org/dkahle/TITAN2)
 <!-- badges: end -->
 
 **TITAN2** is the second R implementation of Threshold Indicator Taxa
