@@ -17,9 +17,13 @@ status](https://ci.appveyor.com/api/projects/status/github/dkahle/TITAN2?branch=
 ANalysis. It is an R package source controlled with Git on GitHub and
 [distributed on CRAN](https://cran.r-project.org/package=TITAN2).
 
-To learn more about **TITAN2**, install the package (see below), load it
-with `library("TITAN2")`, and read the vignette with
-`vignette("titan2-intro")`.
+To learn more about **TITAN2**, [check out the vignette
+here](https://github.com/dkahle/TITAN2/blob/master/vignettes/titan2-intro.pdf)
+(you can click Download to view it in a separate window).
+
+*Note: a previous version of this readme stated that you could read the
+vignette; however, the vignette is not built when the package is
+downloaded from GitHub, so just access it as above.*
 
 Installation
 ------------
