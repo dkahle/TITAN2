@@ -7,4 +7,4 @@ cache: packages
 jobs:
   include:
   - r: release
-  - r: devel
+  #- r: devel
