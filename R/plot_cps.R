@@ -72,7 +72,6 @@
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker and R. King
 #' @seealso [plot_taxa()], [plot_sumz()]
-#' @keywords TITAN kwd2
 #' @name plot-cps
 #' @examples
 #'

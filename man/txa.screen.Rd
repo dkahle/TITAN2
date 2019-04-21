@@ -42,5 +42,3 @@ greater understanding of community data. Freshwater Science 32(2):489-506.
 \author{
 M. Baker and R. King
 }
-\keyword{TITAN}
-\keyword{~kwd2}

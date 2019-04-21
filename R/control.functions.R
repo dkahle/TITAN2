@@ -23,7 +23,6 @@
 #' @references Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for
 #'   greater understanding of community data. Freshwater Science 32(2):489-506.
 #' @author M. Baker and R. King
-#' @keywords TITAN ~kwd2
 txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
 
   if(messaging) message("Screening taxa...")

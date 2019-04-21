@@ -31,7 +31,6 @@
 #' @note Should not be used with output objects from TITAN v1.0.
 #' @author M. Baker, R. King, D. Kahle
 #' @seealso [plot_sumz()], [plot_cps()]
-#' @keywords TITAN kwd2
 #' @export
 #' @examples
 #'

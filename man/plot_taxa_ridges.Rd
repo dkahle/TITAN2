@@ -87,5 +87,3 @@ Benthological Association 29(3):998-1008.
 \author{
 M. Baker, R. King, D. Kahle
 }
-\keyword{TITAN}
-\keyword{kwd2}

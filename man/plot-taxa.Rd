@@ -141,5 +141,3 @@ Benthological Association 29(3):998-1008.
 \author{
 M. Baker and R. King
 }
-\keyword{TITAN}
-\keyword{kwd2}
