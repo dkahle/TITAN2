@@ -229,9 +229,12 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 
   # if multiple cores are available, take advantage of parallel processing
   if (ncpus > 1) {
-    message(glue::glue("Bootstrap resampling in parallel using {ncpus} CPUs... no index will be printed to screen"))
-    cores <- rep("localhost", ncpus)
-    cl <- parallel::makeCluster(cores, type = "SOCK")
+    message(glue::glue("Bootstrap resampling in parallel using {ncpus} CPUs... no index will be printed to screen."))
+    # if (ncpus > nBoot) {
+    #   message(glue("Decreasing number of CPUs to number of bootstrap replicates ({nBoot})."))
+    #   ncpus <- nBoot
+    # }
+    cl <- parallel::makeCluster(rep("localhost", ncpus), type = "SOCK")
     bSeq <- parallel::clusterSplit(cl, 1:nBoot)
     ivz.bt.list <- parallel::clusterApply(cl, bSeq, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
     parallel::stopCluster(cl)
@@ -382,20 +385,21 @@ small.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   aseq <- 0
   if (ncpus > 1) {
     for (s in 1:ncpus) {
-      for (l in 1:length(bSeq[[s]])) {
+      # for (l in 1:length(bSeq[[s]])) {
+      for (l in seq_along(bSeq[[s]])) {
         aseq <- aseq + 1
         metricArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[1]])
-        zArray[, , aseq]      <- unlist(ivz.bt.list[[s]][[l]][[2]])
-        bEnvMatrix[aseq, ]    <- unlist(ivz.bt.list[[s]][[l]][[3]])
-        rspdir[, , aseq]      <- unlist(ivz.bt.list[[s]][[l]][[4]])
+             zArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[2]])
+         bEnvMatrix[aseq, ]   <- unlist(ivz.bt.list[[s]][[l]][[3]])
+             rspdir[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[4]])
       }
     }
   } else {
     for (i in 1:nBoot) {
       metricArray[, , i] <- unlist(ivz.bt.list[[i]][[1]][[1]])
-      zArray[, , i]      <- unlist(ivz.bt.list[[i]][[1]][[2]])
-      bEnvMatrix[i, ]    <- unlist(ivz.bt.list[[i]][[1]][[3]])
-      rspdir[, , i]      <- unlist(ivz.bt.list[[i]][[1]][[4]])
+           zArray[, , i] <- unlist(ivz.bt.list[[i]][[1]][[2]])
+       bEnvMatrix[i, ]   <- unlist(ivz.bt.list[[i]][[1]][[3]])
+           rspdir[, , i] <- unlist(ivz.bt.list[[i]][[1]][[4]])
     }
   }
 

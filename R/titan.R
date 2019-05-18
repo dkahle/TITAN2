@@ -152,34 +152,26 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   ############################################################
 
   if (boot) {
-
     # control of bootstrap processing (sequential or parallel)
     ivzBtSeq <- boot.titan(env, taxa, ivTot, boot, ncpus, nBoot, minSplt, numPerm, memory, imax, numUnit) # slow
     bSeq <- ivzBtSeq[[1]]
     ivz.bt.list <- ivzBtSeq[[2]]
     rm(ivzBtSeq)
 
-    # ummarize output, if file size too large write some to
-    # temporary storage on disk
+    # summarize output, if file size too large write some to temporary storage on disk
     if (memory) {
       boot.summ <-   big.boot(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot, numClass, numUnit, ncpus, pur.cut, rel.cut, minSplt)
     } else {
       boot.summ <- small.boot(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot, numClass, numUnit, ncpus, pur.cut, rel.cut, minSplt)
     }
-    sppSub1 <- boot.summ[[1]]
-    sppSub2 <- boot.summ[[2]]
-    sppmax <- boot.summ[[3]]
-    maxSumz <- boot.summ[[4]]
-    maxFsumz <- boot.summ[[5]]
+    sppSub1     <- boot.summ[[1]]
+    sppSub2     <- boot.summ[[2]]
+    sppmax      <- boot.summ[[3]]
+    maxSumz     <- boot.summ[[4]]
+    maxFsumz    <- boot.summ[[5]]
     metricArray <- boot.summ[[6]]
   } else {
-    maxSumz <- 0
-    ivz.f <- 0
-    maxFsumz <- 0
-    sppSub1 <- 0
-    sppSub2 <- 0
-    metricArray <- 0
-    z.median <- 0
+    maxSumz <- ivz.f <- maxFsumz <- sppSub1 <- sppSub2 <- metricArray <- z.median <- 0
   }
 
   ## summarize sum(z) titan output
