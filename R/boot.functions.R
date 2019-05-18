@@ -236,7 +236,7 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
     ivz.bt.list <- parallel::clusterApply(cl, bSeq, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
     parallel::stopCluster(cl)
   } else {
-    ## otherwise run bootstrap in sequence
+    # otherwise run bootstrap in sequence
     message("Bootstrap resampling in sequence...")
     bSeq <- 0
     ivz.bt.list = lapply(1:nBoot, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
@@ -365,51 +365,45 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 small.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   numClass, numUnit, ncpus, pur.cut, rel.cut, minSplt) {
 
-  numTxa <- nrow(sppmax)
-  ## Create empty matrix for storing IndVal maxima and group
-  ## assignments
-  metricArray <- array(NA, c(numTxa, 4, nBoot))
+  nTaxa <- nrow(sppmax)
 
-  ## Create empty matrices for storing nuids and z values at
-  ## IndVal maxima for bootreps
-  zArray <- array(NA, c(numTxa, numClass, nBoot))
-  bEnvMatrix <- matrix(NA, nBoot, numUnit)
-  rspdir <- array(NA, c(numTxa, numClass, nBoot))
+  # create empty matrix for storing IndVal maxima and group assignments
+  metricArray <- array(NA, c(nTaxa, 4, nBoot))
 
-  ## Store env values of filtered and unfiltered sum(z) maxima by
-  ## bootstrap replicate
-  sumzBoot <- matrix(NA, nBoot, 2)
-  sumzBoot.f <- matrix(NA, nBoot, 2)
-  maxSumz <- matrix(NA, nBoot, 2)
-  maxFsumz <- matrix(NA, nBoot, 2)
-  aseq = 0
+  # create empty matrices for storing nuids and z values at IndVal maxima for bootreps
+  zArray     <- array(NA, c(nTaxa, numClass, nBoot))
+  bEnvMatrix <- array(NA, c(nBoot, numUnit))
+  rspdir     <- array(NA, c(nTaxa, numClass, nBoot))
 
-  ### The following loop creates an array across all bootreps from
-  ### parallel or sequenced result list
+  # create empty matrices to store env values of filtered and unfiltered sum(z) maxima by bootstrap replicate
+  sumzBoot <- sumzBoot.f <- maxSumz <- maxFsumz <- matrix(NA, nBoot, 2)
+
+  # create an array across all bootreps from parallel or sequenced result list
+  aseq <- 0
   if (ncpus > 1) {
     for (s in 1:ncpus) {
       for (l in 1:length(bSeq[[s]])) {
-        aseq = aseq + 1
+        aseq <- aseq + 1
         metricArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[1]])
-        zArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[2]])
-        bEnvMatrix[aseq, ] <- unlist(ivz.bt.list[[s]][[l]][[3]])
-        rspdir[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[4]])
+        zArray[, , aseq]      <- unlist(ivz.bt.list[[s]][[l]][[2]])
+        bEnvMatrix[aseq, ]    <- unlist(ivz.bt.list[[s]][[l]][[3]])
+        rspdir[, , aseq]      <- unlist(ivz.bt.list[[s]][[l]][[4]])
       }
     }
   } else {
     for (i in 1:nBoot) {
       metricArray[, , i] <- unlist(ivz.bt.list[[i]][[1]][[1]])
-      zArray[, , i] <- unlist(ivz.bt.list[[i]][[1]][[2]])
-      bEnvMatrix[i, ] <- unlist(ivz.bt.list[[i]][[1]][[3]])
-      rspdir[, , i] <- unlist(ivz.bt.list[[i]][[1]][[4]])
+      zArray[, , i]      <- unlist(ivz.bt.list[[i]][[1]][[2]])
+      bEnvMatrix[i, ]    <- unlist(ivz.bt.list[[i]][[1]][[3]])
+      rspdir[, , i]      <- unlist(ivz.bt.list[[i]][[1]][[4]])
     }
   }
 
-  purity1 <- rowMeans(metricArray[, 1, ] == 1, na.rm = T)
-  purity2 <- rowMeans(metricArray[, 1, ] == 2, na.rm = T)
-  reliab <- rowMeans(metricArray[, 4, ] < 0.05, na.rm = T)
-  z.median <- apply(metricArray[, 3, ], 1, median, na.rm = T)
-  quantiles <- t(apply(metricArray[, 2, ], 1, quantile, probs = c(0.05, 0.1, 0.5, 0.9, 0.95), na.rm = T))
+  purity1  <- rowMeans(metricArray[, 1, , drop=FALSE] == 1, na.rm = T)
+  purity2  <- rowMeans(metricArray[, 1, , drop=FALSE] == 2, na.rm = T)
+  reliab   <- rowMeans(metricArray[, 4, , drop=FALSE] < 0.05, na.rm = T)
+  z.median <-    apply(metricArray[, 3, , drop=FALSE], 1, median, na.rm = T)
+  quantiles <- t(apply(metricArray[, 2, , drop=FALSE], 1, quantile, probs = c(0.05, 0.1, 0.5, 0.9, 0.95), na.rm = T))
   sppmax[, 14] <- reliab
   sppmax[, 15] <- z.median
   sppmax[which(purity1 >= pur.cut & reliab >= rel.cut & obs1), 16] <- 1
