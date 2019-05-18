@@ -64,3 +64,99 @@ str(glades.titan, max.level = 1, give.attr = FALSE)
 ## ---- echo = FALSE-------------------------------------------------------
 graphics.off()
 
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_sumz_density(glades.titan)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_sumz_density(glades.titan, ribbon=FALSE, points=TRUE)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_sumz_density(glades.titan, ribbon=TRUE, points=FALSE, sumz1=FALSE, change_points = FALSE, xlabel=expression(paste("Surface Water Total Phosphorus ("*mu*"g/l)")))
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_sumz(glades.titan, filter = TRUE)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 10,fig.width = 8--------------------------------------
+plot_taxa_ridges(glades.titan, ytxt.sz=8)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 10,fig.width = 8--------------------------------------
+plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), n_ytaxa=50)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), z2=FALSE)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_taxa_ridges(glades.titan, xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), z2=FALSE, grid=FALSE)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 8,fig.width = 8---------------------------------------
+plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 8,fig.width = 8---------------------------------------
+plot_taxa(glades.titan,xlabel = "Surface Water TP (ug/l)",z.med = T)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 8,fig.width = 8---------------------------------------
+plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = F, prob95 = T)
+
+## ---- fig.height = 10,fig.width = 10-------------------------------------
+plot_cps(glades.titan)
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 5,fig.width = 8---------------------------------------
+plot_cps(glades.titan, taxaID = "ENALCIVI", xlabel = "Surface Water TP (ug/l)")
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 5,fig.width = 8---------------------------------------
+plot_cps(glades.titan, taxaID = "ENALCIVI", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 5,fig.width = 8---------------------------------------
+plot_cps(glades.titan, taxaID = "OSTRASP5", cp.trace = TRUE, xlabel = "Surface Water TP (ug/l)")
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)")
+
+## ---- echo = FALSE-------------------------------------------------------
+graphics.off()
+
+## ---- fig.height = 6,fig.width = 8---------------------------------------
+plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", stacked = TRUE)
+
