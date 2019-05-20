@@ -103,11 +103,6 @@
 #' }
 #'
 #'
-#' glades.env[sample(nrow(glades.env), 20),] <- NA
-#' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
-#'   numPerm = 25, boot = TRUE, nBoot = 2, imax = FALSE,
-#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 2, memory = FALSE
-#' )
 #'
 #'
 titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,

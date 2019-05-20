@@ -119,6 +119,7 @@ glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
 
 
 
+
 }
 \references{
 Baker, ME and RS King.  2010. A new method for detecting and
