@@ -66,27 +66,27 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPe
 
   # create empty arrays for storing sum(z-) and sum(z+) across envcls by replicate
   boot.metrics <- rep(NA, length(bSeq))
-  numUnit <- length(env)
+  numUnit <- length(env) # number along gradient
   rnum <- runif(1, 0, 100)
   max.btSumz <- rep(NA, 2)
+  n_taxa <- ncol(taxa)
 
   for (i in 1:length(bSeq)) {
 
     # resample data with replacement, repeat part 1 preliminaries
     permuted_row_ndcs <- sample(1:numUnit, replace = TRUE) # generate permutation of row indices
     booted_taxa <- taxa[permuted_row_ndcs, ]
-    n_taxa <- ncol(booted_taxa)
     permuted_env <- env[permuted_row_ndcs]
     bRankEnv <- rank(permuted_env, ties.method = "random")
     bSrti <- sort(permuted_env)
+
     bSrti2 <- sort(bRankEnv)
-    bEnvCls <- bSrti[(minSplt):(numUnit - minSplt)]
+    bEnvCls <- bSrti[minSplt:(numUnit - minSplt)]
     nClass <- length(bEnvCls)
     boot.env <- matrix(NA, numUnit, nClass)
     for (c in 1:nClass) {
       boot.env[, c] <- (bRankEnv > bSrti2[minSplt + (c - 1)]) + 1
     }
-    booted_taxa <- booted_taxa
 
     # create temporary matrix for storing z scores and group assignments
     ivzScores.bt <- getivz(boot.env, booted_taxa, ivTot, nPerm = nPerm, imax = imax, numClass = nClass)
@@ -94,9 +94,7 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPe
     # replace NaNs with 0s
     for (k in (n_taxa + 1):(n_taxa * 3)) {
       for (j in 1:nClass) {
-        if (is.nan(ivzScores.bt[k, j])) {
-          ivzScores.bt[k, j] <- 0
-        }
+        if (is.nan(ivzScores.bt[k, j]))  ivzScores.bt[k, j] <- 0
       }
     }
 
@@ -132,7 +130,6 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPe
     }
     boot.metrics[i] <- list(bt.list)
   }
-
 
   boot.metrics
 }
@@ -382,25 +379,38 @@ small.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   sumzBoot <- sumzBoot.f <- maxSumz <- maxFsumz <- matrix(NA, nBoot, 2)
 
   # create an array across all bootreps from parallel or sequenced result list
-  aseq <- 0
+  # aseq <- 0
   if (ncpus > 1) {
-    for (s in 1:ncpus) {
-      # for (l in 1:length(bSeq[[s]])) {
-      for (l in seq_along(bSeq[[s]])) {
-        aseq <- aseq + 1
-        metricArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[1]])
-             zArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[2]])
-         bEnvMatrix[aseq, ]   <- unlist(ivz.bt.list[[s]][[l]][[3]])
-             rspdir[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[4]])
-      }
+
+    # combine lists of output into one list (from ncpus list of lists)
+    ivz.bt.list <- do.call(c, ivz.bt.list)[unlist(bSeq)]
+    for (k in seq_along(ivz.bt.list)) {
+      metricArray[, , k] <- unlist(ivz.bt.list[[k]][[1]])
+           zArray[, , k] <- unlist(ivz.bt.list[[k]][[2]])
+         bEnvMatrix[k, ] <- unlist(ivz.bt.list[[k]][[3]])
+           rspdir[, , k] <- unlist(ivz.bt.list[[k]][[4]])
     }
+
+    # for (s in 1:ncpus) {
+    #   # for (l in 1:length(bSeq[[s]])) {
+    #   for (l in seq_along(bSeq[[s]])) {
+    #     aseq <- aseq + 1
+    #     metricArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[1]])
+    #          zArray[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[2]])
+    #      bEnvMatrix[aseq, ]   <- unlist(ivz.bt.list[[s]][[l]][[3]])
+    #          rspdir[, , aseq] <- unlist(ivz.bt.list[[s]][[l]][[4]])
+    #   }
+    # }
+
   } else {
+
     for (i in 1:nBoot) {
       metricArray[, , i] <- unlist(ivz.bt.list[[i]][[1]][[1]])
            zArray[, , i] <- unlist(ivz.bt.list[[i]][[1]][[2]])
-       bEnvMatrix[i, ]   <- unlist(ivz.bt.list[[i]][[1]][[3]])
+         bEnvMatrix[i, ] <- unlist(ivz.bt.list[[i]][[1]][[3]])
            rspdir[, , i] <- unlist(ivz.bt.list[[i]][[1]][[4]])
     }
+
   }
 
   purity1  <- rowMeans(metricArray[, 1, , drop=FALSE] == 1, na.rm = T)
