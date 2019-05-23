@@ -101,11 +101,13 @@ plot_taxa_ridges <- function(
   message(paste("Number of Decreasers=", num.dcr,sep=""))
   message(paste("Number of Increasers=", num.ncr,sep=""))
 
-  sppmax <- sppmax %>%
+  reliable_taxa_ndcs <- which(sppmax$filter > 0)
+  colnames(sppmax)[8]="Q5"
+  colnames(sppmax)[12]="Q95"
+  
+  sppmax_ny <- sppmax %>%
    dplyr::arrange(desc(purity),desc(reliability),desc(z.median)) %>%
    dplyr::slice(1:min(dplyr::n(),n_ytaxa))
-
-  reliable_taxa_ndcs <- which(sppmax$filter > 0)
 
   gdf <- reliable_taxa_ndcs %>%
     map(~
@@ -119,6 +121,11 @@ plot_taxa_ridges <- function(
       (filter == 1) ~ -1L,
       (filter == 2) ~ +1L
     ))
+  
+  gdf <- gdf %>%
+   dplyr::arrange(desc(purity),desc(reliability),desc(z.median)) %>%
+   dplyr::slice(1:min(dplyr::n(),(n_ytaxa*length(titan.out$metricArray[1,1,])))) %>%
+   dplyr::filter(chk_pts > Q5) %>% dplyr::filter(chk_pts < Q95)
 
   # compute pooled statistics
   if (missing(xlim)) xlim <- grDevices::extendrange(range(gdf$chk_pts), f = 0.05)
@@ -216,7 +223,7 @@ plot_taxa_ridges <- function(
 
     }
 
-  if (printspp) print(as.data.frame(sppmax))
+  if (printspp) print(as.data.frame(sppmax_ny))
 
   if (z1) {
     if (z2) {
