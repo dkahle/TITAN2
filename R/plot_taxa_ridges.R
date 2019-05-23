@@ -109,6 +109,9 @@ plot_taxa_ridges <- function(
    dplyr::arrange(desc(purity),desc(reliability),desc(z.median)) %>%
    dplyr::slice(1:min(dplyr::n(),n_ytaxa))
 
+  n_filter_decr<-sum(sppmax_ny$filter==1)
+  n_filter_incr<-sum(sppmax_ny$filter==2)
+  
   gdf <- reliable_taxa_ndcs %>%
     map(~
       cbind(
@@ -227,7 +230,7 @@ plot_taxa_ridges <- function(
 
   if (z1) {
     if (z2) {
-      plot_grid(ptop, pbottom, ncol = 1, rel_heights = c(num.dcr, num.ncr), align = "v")
+      plot_grid(ptop, pbottom, ncol = 1, rel_heights = c(n_filter_decr, n_filter_incr), align = "v")
     } else {
       plot_grid(ptop)
     }
