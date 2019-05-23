@@ -124,7 +124,7 @@ plot_taxa_ridges <- function(
   
   gdf <- gdf %>%
    dplyr::arrange(desc(purity),desc(reliability),desc(z.median)) %>%
-   dplyr::slice(1:min(dplyr::n(),(n_ytaxa*length(metricArray[1,1,])))) %>%
+   dplyr::slice(1:min(dplyr::n(),(n_ytaxa*length(titan.out$metricArray[1,1,])))) %>%
    dplyr::filter(chk_pts > Q5) %>% dplyr::filter(chk_pts < Q95)
 
   # compute pooled statistics
