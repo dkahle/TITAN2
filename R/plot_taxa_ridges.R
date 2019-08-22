@@ -79,8 +79,8 @@ plot_taxa_ridges <- function(
   purity <- NULL; rm(purity)
   reliability <- NULL; rm(reliability)
   z.median <- NULL; rm(z.median)
-
-
+  `5%` <- NULL; rm(`5%`)
+  `95%` <- NULL; rm(`95%`)
 
   imax <- titan.out$arguments[["imax"]]
   boot <- titan.out$arguments[["boot"]] > 0.5
@@ -88,34 +88,35 @@ plot_taxa_ridges <- function(
   sppmax <- titan.out %>%
     pluck("sppmax") %>%
     tibble::as_tibble() %>%
-    mutate(id = row.names(titan.out$sppmax))
+    mutate(id = row.names(titan.out$sppmax)) #%>%
+    #dplyr::rename("Q5" = "5%", "Q95" = "95%")
 
   sppmax$filter <- 0
-  sppmax$filter[which(sppmax$purity>=pur.cut & sppmax$reliability>=rel.cut)] <- sppmax$maxgrp[which(sppmax$purity>=pur.cut & sppmax$reliability>=rel.cut)]
+  pure_and_reliable_ndcs <- with(sppmax, which(purity>=pur.cut & reliability>=rel.cut))
+  sppmax$filter[pure_and_reliable_ndcs] <- sppmax$maxgrp[pure_and_reliable_ndcs]
 
+  num.dcr <- sum(sppmax$filter == 1L)
+  num.ncr <- sum(sppmax$filter == 2L)
 
-  num.dcr <- sum(sppmax$filter==1)
-  num.ncr <- sum(sppmax$filter==2)
-
-  message(paste("There are", sum(num.dcr,num.ncr), "indicator taxa of", n_ytaxa, "possible for plotting",sep=" "))
-  message(paste("Number of Decreasers=", num.dcr,sep=""))
-  message(paste("Number of Increasers=", num.ncr,sep=""))
+  message(glue("There are {sum(num.dcr, num.ncr)} indicator taxa of {n_ytaxa} possible for plotting"))
+  message(glue("Number of Decreasers = {num.dcr}"))
+  message(glue("Number of Increasers = {num.ncr}"))
 
   reliable_taxa_ndcs <- which(sppmax$filter > 0)
-  colnames(sppmax)[8]="Q5"
-  colnames(sppmax)[12]="Q95"
-  
+
   sppmax_ny <- sppmax %>%
    dplyr::arrange(desc(purity),desc(reliability),desc(z.median)) %>%
-   dplyr::slice(1:min(dplyr::n(),n_ytaxa))
+   dplyr::slice(1:min(dplyr::n(), n_ytaxa))
 
-  n_filter_decr<-sum(sppmax_ny$filter==1)
-  n_filter_incr<-sum(sppmax_ny$filter==2)
-  
+  n_filter_decr <- with(sppmax_ny, sum(filter == 1L))
+  n_filter_incr <- with(sppmax_ny, sum(filter == 2L))
+
   gdf <- reliable_taxa_ndcs %>%
     map(~
       cbind(
-        data_frame(chk_pts = round(sort(titan.out$metricArray[.x,2,]), digits = 2)),
+        tibble::tibble(
+          "chk_pts" = round(sort(titan.out$metricArray[.x,2,]), digits = 2)
+        ),
         sppmax %>% slice(.x)
       )
     ) %>%
@@ -124,11 +125,11 @@ plot_taxa_ridges <- function(
       (filter == 1) ~ -1L,
       (filter == 2) ~ +1L
     ))
-  
+
   gdf <- gdf %>%
-   dplyr::arrange(desc(purity),desc(reliability),desc(z.median)) %>%
-   dplyr::slice(1:min(dplyr::n(),(n_ytaxa*length(titan.out$metricArray[1,1,])))) %>%
-   dplyr::filter(chk_pts > Q5) %>% dplyr::filter(chk_pts < Q95)
+    dplyr::arrange(desc(purity), desc(reliability), desc(z.median)) %>%
+    dplyr::slice(1:min(dplyr::n(), n_ytaxa*length(titan.out$metricArray[1,1,]))) %>%
+    dplyr::filter(`5%` < chk_pts, chk_pts < `95%`)
 
   # compute pooled statistics
   if (missing(xlim)) xlim <- grDevices::extendrange(range(gdf$chk_pts), f = 0.05)
@@ -185,7 +186,7 @@ plot_taxa_ridges <- function(
     ) +
     ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
     theme(
-      axis.text.y = element_text(size=ytxt.sz),
+      axis.text.y = element_text(size = ytxt.sz),
       axis.line = (if (xaxis) {
         do.call(element_line, theme_get()$axis.line)
       } else {
