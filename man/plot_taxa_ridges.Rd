@@ -9,9 +9,16 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
   z2_fill_low = "pink", z2_fill_high = "red",
   pur.cut = titan.out$arguments[[7]],
   rel.cut = titan.out$arguments[[8]],
-  xlabel = "Environmental Gradient", n_ytaxa = 90, ytxt.sz = 10,
-  printspp = FALSE, grid = TRUE, xaxis = !grid, trans = "identity",
-  xlim, bw, ...)
+  xlabel = "Environmental Gradient", n_ytaxa = 90, axis.text.x = if
+  (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else
+  theme_get()$text$size, axis.text.y = if
+  (is.null(theme_get()$axis.text.y$size)) theme_get()$axis.text.y$size else
+  theme_get()$text$size, axis.title.x = if
+  (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size
+  else theme_get()$text$size, axis.title.y = if
+  (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size
+  else theme_get()$text$size, printspp = FALSE, grid = TRUE,
+  trans = "identity", xaxis = !grid, xlim, bw, ...)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
@@ -31,24 +38,27 @@ colors passed to \code{\link[=scale_fill_gradient]{scale_fill_gradient()}}}
 
 \item{n_ytaxa}{The maximum number of taxa to be plotted.}
 
-\item{ytxt.sz}{The relative size of the taxa label along the y axis.}
+\item{axis.text.x, axis.text.y, axis.title.x, axes.title.y}{Font sizes of
+respective axis text. Passed as the size argument to the ggplot2 thematic
+elements of the same name. Defaults to current default ggplot2 theme.s}
 
 \item{printspp}{A logical specifying whether the sppmax table should be
 printed.}
 
-\item{grid}{The \code{grid} argument of \code{\link[=theme_ridges]{theme_ridges()}}.}
-
-\item{xaxis}{Logical; should the x-axis be plotted?}
+\item{grid}{The \code{grid} argument of \code{\link[=theme_ridges]{theme_ridges()}}. Setting this to
+\code{FALSE} removes horizontal lines from the plot, see examples.}
 
 \item{trans}{a scale transformation to be applied to the x-axis through
 ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 
-\item{xlim}{x axis limits, e.g. \code{xlim = c(0,10)}}
+\item{xaxis}{Logical; should the x-axis be plotted?}
+
+\item{xlim}{x axis limits, e.g. \code{xlim = c(0,10)}.}
 
 \item{bw}{The bandwidth of used in the kernel density estimate; see
 \code{\link[=density]{density()}}.}
 
-\item{...}{...}
+\item{...}{Arguments to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}}
 }
 \value{
 A plot of decreasing and/or increasing taxon-specific change points
@@ -64,17 +74,26 @@ Should not be used with output objects from TITAN v1.0.
 
 data(glades.titan)
 
-plot_taxa_ridges(glades.titan, ytxt.sz = 8)
-plot_taxa_ridges(glades.titan, ytxt.sz = 8, grid = FALSE)
-plot_taxa_ridges(glades.titan, ytxt.sz = 8, xaxis = TRUE)
-plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "log10", xlim = c(1,150))
-plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "sqrt", xlim = c(0,150))
+plot_taxa_ridges(glades.titan)
+plot_taxa_ridges(glades.titan, grid = FALSE)
+plot_taxa_ridges(glades.titan, xaxis = TRUE)
+plot_taxa_ridges(glades.titan, trans = "log10", xlim = c(1,150))
+plot_taxa_ridges(glades.titan, trans = "sqrt", xlim = c(0,150))
 
 # example with x-axis styling
 # plot_taxa_ridges(glades.titan,
 #   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")),
 #   z2 = FALSE
 # )
+
+# styling
+
+plot_taxa_ridges(glades.titan,
+  axis.text.x = 14,
+  axis.text.y = 4,
+  axis.title.x = 20,
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
+)
 
 
 }

@@ -6,7 +6,6 @@
 #' @param z1 A logical specifying whether decreasing taxa should be plotted.
 #' @param z2 A logical specifying whether increasing taxa should be plotted.
 #' @param xlabel A character string for the x axis label.
-#' @param ytxt.sz The relative size of the taxa label along the y axis.
 #' @param n_ytaxa The maximum number of taxa to be plotted.
 #' @param printspp A logical specifying whether the sppmax table should be
 #'   printed.
@@ -14,14 +13,18 @@
 #'   colors passed to [scale_fill_gradient()]
 #' @param pur.cut pur.cut
 #' @param rel.cut rel.cut
-#' @param grid The \code{grid} argument of [theme_ridges()].
-#' @param xaxis Logical; should the x-axis be plotted?
-#' @param bw The bandwidth of used in the kernel density estimate; see
-#'   [density()].
-#' @param xlim x axis limits, e.g. \code{xlim = c(0,10)}
+#' @param grid The \code{grid} argument of [theme_ridges()]. Setting this to
+#'   \code{FALSE} removes horizontal lines from the plot, see examples.
 #' @param trans a scale transformation to be applied to the x-axis through
 #'   ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.
-#' @param ... ...
+#' @param xaxis Logical; should the x-axis be plotted?
+#' @param xlim x axis limits, e.g. \code{xlim = c(0,10)}.
+#' @param axis.text.x,axis.text.y,axis.title.x,axes.title.y Font sizes of
+#'   respective axis text. Passed as the size argument to the ggplot2 thematic
+#'   elements of the same name. Defaults to current default ggplot2 theme.s
+#' @param bw The bandwidth of used in the kernel density estimate; see
+#'   [density()].
+#' @param ... Arguments to pass to [geom_density_ridges()]
 #' @return A plot of decreasing and/or increasing taxon-specific change points
 #'   along the environmental gradient.
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
@@ -38,11 +41,11 @@
 #'
 #' data(glades.titan)
 #'
-#' plot_taxa_ridges(glades.titan, ytxt.sz = 8)
-#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, grid = FALSE)
-#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, xaxis = TRUE)
-#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "log10", xlim = c(1,150))
-#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "sqrt", xlim = c(0,150))
+#' plot_taxa_ridges(glades.titan)
+#' plot_taxa_ridges(glades.titan, grid = FALSE)
+#' plot_taxa_ridges(glades.titan, xaxis = TRUE)
+#' plot_taxa_ridges(glades.titan, trans = "log10", xlim = c(1,150))
+#' plot_taxa_ridges(glades.titan, trans = "sqrt", xlim = c(0,150))
 #'
 #' # example with x-axis styling
 #' # plot_taxa_ridges(glades.titan,
@@ -50,22 +53,35 @@
 #' #   z2 = FALSE
 #' # )
 #'
+#' # styling
+#'
+#' plot_taxa_ridges(glades.titan,
+#'   axis.text.x = 14,
+#'   axis.text.y = 4,
+#'   axis.title.x = 20,
+#'   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
+#' )
+#'
 #'
 plot_taxa_ridges <- function(
   titan.out,
   z1 = TRUE, z2 = TRUE,
   z1_fill_low="light blue", z1_fill_high="black",
   z2_fill_low="pink", z2_fill_high="red",
-  pur.cut=titan.out$arguments[[7]],
-  rel.cut=titan.out$arguments[[8]],
+  pur.cut = titan.out$arguments[[7]],
+  rel.cut = titan.out$arguments[[8]],
   xlabel = "Environmental Gradient",
   n_ytaxa = 90,
-  ytxt.sz = 10,
+  axis.text.x = if (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else theme_get()$text$size,
+  axis.text.y = if (is.null(theme_get()$axis.text.y$size)) theme_get()$axis.text.y$size else theme_get()$text$size,
+  axis.title.x = if (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size else theme_get()$text$size,
+  axis.title.y = if (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size else theme_get()$text$size,
   printspp = FALSE,
   grid = TRUE,
-  xaxis = !grid,
   trans = "identity",
-  xlim, bw,
+  xaxis = !grid,
+  xlim,
+  bw,
   ...
 ) {
 
@@ -166,9 +182,10 @@ plot_taxa_ridges <- function(
       scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
       ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
       theme(
-        axis.text.y = element_text(size = ytxt.sz),
         axis.text.x = element_blank(),
+        axis.text.y = element_text(size = axis.text.y),
         axis.title.x = element_blank(),
+        axis.title.y = element_text(size = axis.title.y),
         plot.margin = structure(
           c(5.5, 5.5, 0, 5.5),
           class = c("margin", "unit"),
@@ -194,19 +211,21 @@ plot_taxa_ridges <- function(
       ...
     ) +
     ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
+    scale_x_continuous(xlabel, limits = xlim, expand = c(0,0), trans = trans) +
+    scale_y_discrete("") +
+    scale_fill_gradient("Z-Score", low = z2_fill_low, high = z2_fill_high) +
     theme(
-      axis.text.y = element_text(size = ytxt.sz),
+      axis.text.x = element_text(size = axis.text.x),
+      axis.text.y = element_text(size = axis.text.y),
+      axis.title.x = element_text(size = axis.title.x),
+      axis.title.y = element_text(size = axis.title.y),
       axis.line = (if (xaxis) {
         do.call(element_line, theme_get()$axis.line)
       } else {
         element_blank()
       }),
       axis.line.y = element_blank()
-    ) +
-    scale_x_continuous(xlabel, limits = xlim, expand = c(0,0), trans = trans) +
-    scale_y_discrete("") +
-    labs(x = xlabel, y = "") +
-    scale_fill_gradient("Z-Score", low = z2_fill_low, high = z2_fill_high)
+    )
 
   } else {
 
@@ -232,7 +251,12 @@ plot_taxa_ridges <- function(
         scale_x_continuous(xlabel, limits = xlim, expand = c(0,0), trans = trans) +
         scale_y_discrete("") +
         scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
-        theme(axis.text.y = element_text(size = ytxt.sz))
+        theme(
+          axis.text.x = element_text(size = axis.text.x),
+          axis.text.y = element_text(size = axis.text.y),
+          axis.title.x = element_text(size = axis.title.x),
+          axis.title.y = element_text(size = axis.title.y)
+        )
 
       }
 
