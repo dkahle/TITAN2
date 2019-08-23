@@ -19,7 +19,7 @@
 #'   ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.
 #' @param xaxis Logical; should the x-axis be plotted?
 #' @param xlim x axis limits, e.g. \code{xlim = c(0,10)}.
-#' @param axis.text.x,axis.text.y,axis.title.x,axes.title.y Font sizes of
+#' @param axis.text.x,axis.text.y,axis.title.x,axis.title.y Font sizes of
 #'   respective axis text. Passed as the size argument to the ggplot2 thematic
 #'   elements of the same name. Defaults to current default ggplot2 theme.s
 #' @param bw The bandwidth of used in the kernel density estimate; see

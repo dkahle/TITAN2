@@ -38,7 +38,7 @@ colors passed to \code{\link[=scale_fill_gradient]{scale_fill_gradient()}}}
 
 \item{n_ytaxa}{The maximum number of taxa to be plotted.}
 
-\item{axis.text.x, axis.text.y, axis.title.x, axes.title.y}{Font sizes of
+\item{axis.text.x, axis.text.y, axis.title.x, axis.title.y}{Font sizes of
 respective axis text. Passed as the size argument to the ggplot2 thematic
 elements of the same name. Defaults to current default ggplot2 theme.s}
 
