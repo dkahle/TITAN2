@@ -10,7 +10,8 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
   pur.cut = titan.out$arguments[[7]],
   rel.cut = titan.out$arguments[[8]],
   xlabel = "Environmental Gradient", n_ytaxa = 90, ytxt.sz = 10,
-  printspp = FALSE, grid = TRUE, xaxis = !grid, xlim, bw, ...)
+  printspp = FALSE, grid = TRUE, xaxis = !grid, trans = "identity",
+  xlim, bw, ...)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
@@ -39,7 +40,10 @@ printed.}
 
 \item{xaxis}{Logical; should the x-axis be plotted?}
 
-\item{xlim}{x axis limits, e.g. \code{xlim =c(0,10)}}
+\item{trans}{a scale transformation to be applied to the x-axis through
+ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
+
+\item{xlim}{x axis limits, e.g. \code{xlim = c(0,10)}}
 
 \item{bw}{The bandwidth of used in the kernel density estimate; see
 \code{\link[=density]{density()}}.}
@@ -60,9 +64,11 @@ Should not be used with output objects from TITAN v1.0.
 
 data(glades.titan)
 
-plot_taxa_ridges(glades.titan, ytxt.sz=8)
-plot_taxa_ridges(glades.titan, ytxt.sz=8, grid = FALSE)
-plot_taxa_ridges(glades.titan, ytxt.sz=8, xaxis = TRUE)
+plot_taxa_ridges(glades.titan, ytxt.sz = 8)
+plot_taxa_ridges(glades.titan, ytxt.sz = 8, grid = FALSE)
+plot_taxa_ridges(glades.titan, ytxt.sz = 8, xaxis = TRUE)
+plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "log10", xlim = c(1,150))
+plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "sqrt", xlim = c(0,150))
 
 # example with x-axis styling
 # plot_taxa_ridges(glades.titan,

@@ -18,7 +18,9 @@
 #' @param xaxis Logical; should the x-axis be plotted?
 #' @param bw The bandwidth of used in the kernel density estimate; see
 #'   [density()].
-#' @param xlim x axis limits, e.g. \code{xlim =c(0,10)}
+#' @param xlim x axis limits, e.g. \code{xlim = c(0,10)}
+#' @param trans a scale transformation to be applied to the x-axis through
+#'   ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.
 #' @param ... ...
 #' @return A plot of decreasing and/or increasing taxon-specific change points
 #'   along the environmental gradient.
@@ -36,9 +38,11 @@
 #'
 #' data(glades.titan)
 #'
-#' plot_taxa_ridges(glades.titan, ytxt.sz=8)
-#' plot_taxa_ridges(glades.titan, ytxt.sz=8, grid = FALSE)
-#' plot_taxa_ridges(glades.titan, ytxt.sz=8, xaxis = TRUE)
+#' plot_taxa_ridges(glades.titan, ytxt.sz = 8)
+#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, grid = FALSE)
+#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, xaxis = TRUE)
+#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "log10", xlim = c(1,150))
+#' plot_taxa_ridges(glades.titan, ytxt.sz = 8, trans = "sqrt", xlim = c(0,150))
 #'
 #' # example with x-axis styling
 #' # plot_taxa_ridges(glades.titan,
@@ -60,6 +64,7 @@ plot_taxa_ridges <- function(
   printspp = FALSE,
   grid = TRUE,
   xaxis = !grid,
+  trans = "identity",
   xlim, bw,
   ...
 ) {
@@ -135,7 +140,7 @@ plot_taxa_ridges <- function(
   if (missing(xlim)) xlim <- grDevices::extendrange(range(gdf$chk_pts), f = 0.05)
   xmin <- xlim[1]
   xmax <- xlim[2]
-  if(missing(bw)) bw <- stats::bw.nrd0(gdf$chk_pts)
+  if (missing(bw)) bw <- stats::bw.nrd0(do.call(trans, list(gdf$chk_pts)))
 
 
   if (z2) {
@@ -151,10 +156,12 @@ plot_taxa_ridges <- function(
         vline_color = "black",
         color = NA,
         alpha = 0.6,
-        from = xmin, to = xmax, bandwidth = bw,
+        from = do.call(trans, list(xmin)),
+        to = do.call(trans, list(xmax)),
+        bandwidth = bw,
         ...
       ) +
-      scale_x_continuous(limits = xlim, expand = c(0,0)) +
+      scale_x_continuous(limits = xlim, expand = c(0,0), trans = trans) +
       scale_y_discrete("") +
       scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
       ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
@@ -181,7 +188,9 @@ plot_taxa_ridges <- function(
       vline_color = "black",
       color = NA,
       alpha = 0.6,
-      from = xmin, to = xmax, bandwidth = bw,
+      from = do.call(trans, list(xmin)),
+      to = do.call(trans, list(xmax)),
+      bandwidth = bw,
       ...
     ) +
     ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
@@ -194,7 +203,7 @@ plot_taxa_ridges <- function(
       }),
       axis.line.y = element_blank()
     ) +
-    scale_x_continuous(xlabel, limits = xlim, expand = c(0,0)) +
+    scale_x_continuous(xlabel, limits = xlim, expand = c(0,0), trans = trans) +
     scale_y_discrete("") +
     labs(x = xlabel, y = "") +
     scale_fill_gradient("Z-Score", low = z2_fill_low, high = z2_fill_high)
@@ -215,10 +224,12 @@ plot_taxa_ridges <- function(
           vline_color = "black",
           color = NA,
           alpha = 0.6,
-          from = xmin, to = xmax, bandwidth = bw,
+          from = do.call(trans, list(xmin)),
+          to = do.call(trans, list(xmax)),
+          bandwidth = bw,
           ...
         ) +
-        scale_x_continuous(xlabel, limits = xlim, expand = c(0,0)) +
+        scale_x_continuous(xlabel, limits = xlim, expand = c(0,0), trans = trans) +
         scale_y_discrete("") +
         scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
         theme(axis.text.y = element_text(size = ytxt.sz))
