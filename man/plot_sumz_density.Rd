@@ -52,6 +52,9 @@ plot_sumz_density(titan.out, filter = TRUE, sumz = TRUE,
 
 \item{base_size}{base size of ggplot2 graphics}
 
+\item{trans}{A scale transformation passed to ggplot2 for the x-axis, see
+examples.}
+
 \item{legend.position}{legend.position}
 
 \item{...}{...}

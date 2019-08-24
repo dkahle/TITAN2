@@ -21,6 +21,8 @@
 #' @param col1 col1
 #' @param col2 col2
 #' @param base_size base size of ggplot2 graphics
+#' @param trans A scale transformation passed to ggplot2 for the x-axis, see
+#'   examples.
 #' @param legend.position legend.position
 #' @param ... ...
 #' @return A plot
