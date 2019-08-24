@@ -20,7 +20,7 @@
 #' @param alpha2 alpha2
 #' @param col1 col1
 #' @param col2 col2
-#' @param axis_lab_size axis_lab_size
+#' @param base_size base size of ggplot2 graphics
 #' @param legend.position legend.position
 #' @param ... ...
 #' @return A plot
@@ -39,6 +39,7 @@
 #' data(glades.titan)
 #'
 #' plot_sumz_density(glades.titan)
+#' plot_sumz_density(glades.titan, trans = "log10")
 #'
 #'
 #'
@@ -57,7 +58,8 @@ plot_sumz_density <- function(
   alpha1 = 0.65,
   alpha2 = 0.5,
   col1 = "steelblue4", col2 = "red",
-  axis_lab_size = 20,
+  base_size = 20,
+  trans = "identity",
   legend.position = c(.9, .9),
   ...
 ) {
@@ -100,15 +102,18 @@ plot_sumz_density <- function(
         (if (points) geom_point(aes(x = titan.out$envcls, y = ivz[, 2], color = "Z+")) else geom_blank()) +
         (if (ribbon) geom_ribbon(aes(x = titan.out$envcls, ymin = 0, ymax = ivz[, 2], fill = "Z+"), alpha = alpha2) else geom_blank()) +
         geom_line(aes(x = titan.out$envcls, y = ivz[, 2], color = "Z+")) +
-        theme_classic(base_size = axis_lab_size) +
+        scale_x_continuous(xlabel, trans = trans, limits = c(xmin, xmax)) +
         scale_color_manual("",
           breaks = c("Z-", "Z+"),
-          values = c("Z-" = col1, "Z+" = col2)
+          values = c("Z-" = col1, "Z+" = col2),
+          guide = FALSE
         ) +
         scale_fill_manual("",
           breaks = c("Z-", "Z+"),
           values = c("Z-" = col1, "Z+" = col2)
         ) +
+        labs(y = y1label, legend = "") +
+        theme_classic(base_size = base_size) +
         theme(
           plot.margin = structure(
             c(0, 5.5, 5.5, 5.5),
@@ -117,16 +122,16 @@ plot_sumz_density <- function(
             unit = "pt"
           ),
           legend.position = legend.position
-        ) +
-        xlim(xmin, xmax) +
-        labs(x = xlabel, y = y1label, legend = "") -> pbot
+        ) -> pbot
     } else {
       if (sumz1) {
         ggplot() +
           (if (points) geom_point(aes(x = titan.out$envcls, y = ivz[, 1]), color = col1) else geom_blank()) +
           (if (ribbon) geom_ribbon(aes(x = titan.out$envcls, ymin = 0, ymax = ivz[, 1]), fill = col1, alpha = alpha1) else geom_blank()) +
           geom_line(aes(x = titan.out$envcls, y = ivz[, 1]), color = col1) +
-          theme_classic(base_size = axis_lab_size) +
+          scale_x_continuous(xlabel, trans = trans, limits = c(xmin, xmax)) +
+          labs(y = y1label) +
+          theme_classic(base_size = base_size) +
           theme(
             plot.margin = structure(
               c(0, 5.5, 5.5, 5.5),
@@ -135,16 +140,16 @@ plot_sumz_density <- function(
               unit = "pt"
             ),
             legend.position = legend.position
-          ) +
-          xlim(xmin, xmax) +
-          labs(x = xlabel, y = y1label) -> pbot
+          ) -> pbot
       } else {
         if (sumz2) {
           ggplot() +
             (if (points) geom_point(aes(x = titan.out$envcls, y = ivz[, 2]), color = col2) else geom_blank()) +
             (if (ribbon) geom_ribbon(aes(x = titan.out$envcls, ymin = 0, ymax = ivz[, 2]), fill = col2, alpha = alpha2) else geom_blank()) +
             geom_line(aes(x = titan.out$envcls, y = ivz[, 2]), color = col2) +
-            theme_classic(base_size = axis_lab_size) +
+            scale_x_continuous(xlabel, trans = trans, limits = c(xmin, xmax)) +
+            labs(y = y1label) +
+            theme_classic(base_size = base_size) +
             theme(
               plot.margin = structure(
                 c(0, 5.5, 5.5, 5.5),
@@ -153,9 +158,7 @@ plot_sumz_density <- function(
                 unit = "pt"
               ),
               legend.position = legend.position
-            ) +
-            xlim(xmin, xmax) +
-            labs(x = xlabel, y = y1label) -> pbot
+            ) -> pbot
         }
       }
     }
@@ -166,8 +169,9 @@ plot_sumz_density <- function(
     ggplot(maxFsumz) +
       (if (sumz1) geom_density(aes(x = X1), color = col1, fill = col1, alpha = alpha1) else geom_blank()) +
       (if (sumz2) geom_density(aes(x = X2), color = col2, fill = col2, alpha = alpha2) else geom_blank()) +
-      xlim(xmin, xmax) +
-      theme_classic(base_size = axis_lab_size) +
+      scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = c(xmin, xmax)) +
+      labs(y = y2label) +
+      theme_classic(base_size = base_size) +
       theme(
         axis.text.x = (if (sumz) element_blank() else element_text()),
         plot.margin = structure(
@@ -176,8 +180,7 @@ plot_sumz_density <- function(
           valid.unit = 8L,
           unit = "pt"
         )
-      ) +
-      labs(x = if (sumz) "" else xlabel, y = y2label) -> pmid
+      ) -> pmid
   }
 
   if (change_points) {
@@ -186,9 +189,9 @@ plot_sumz_density <- function(
       (if (sumz1) geom_point(aes(x = sumz1max, y = sumz1lab), col = col1, alpha = alpha1, size = 5) else geom_blank()) +
       (if (sumz2) geom_segment(aes(x = sumz2quant[1], y = sumz2lab, xend = sumz2quant[2], yend = sumz2lab), col = col2) else geom_blank()) +
       (if (sumz2) geom_point(aes(x = sumz2max, y = sumz2lab), col = col2, alpha = alpha2, size = 5) else geom_blank()) +
-      xlim(xmin, xmax) +
+      scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = c(xmin, xmax)) +
       scale_y_discrete("") +
-      theme_classic(base_size = axis_lab_size) +
+      theme_classic(base_size = base_size) +
       theme(
         axis.text.x = element_blank(),
         plot.margin = structure(
@@ -197,8 +200,7 @@ plot_sumz_density <- function(
           valid.unit = 8L,
           unit = "pt"
         )
-      ) +
-      labs(x = "", y = "") -> ptop
+      ) -> ptop
   }
 
 

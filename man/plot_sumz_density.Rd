@@ -10,8 +10,8 @@ plot_sumz_density(titan.out, filter = TRUE, sumz = TRUE,
   xmin = min(titan.out$env), xmax = max(titan.out$envcls),
   xlabel = "Environmental Gradient", y1label = NULL,
   y2label = "Density", alpha1 = 0.65, alpha2 = 0.5,
-  col1 = "steelblue4", col2 = "red", axis_lab_size = 20,
-  legend.position = c(0.9, 0.9), ...)
+  col1 = "steelblue4", col2 = "red", base_size = 20,
+  trans = "identity", legend.position = c(0.9, 0.9), ...)
 }
 \arguments{
 \item{titan.out}{titan.out}
@@ -50,7 +50,7 @@ plot_sumz_density(titan.out, filter = TRUE, sumz = TRUE,
 
 \item{col2}{col2}
 
-\item{axis_lab_size}{axis_lab_size}
+\item{base_size}{base size of ggplot2 graphics}
 
 \item{legend.position}{legend.position}
 
@@ -70,6 +70,7 @@ Should not be used with output objects from TITAN v1.0.
 data(glades.titan)
 
 plot_sumz_density(glades.titan)
+plot_sumz_density(glades.titan, trans = "log10")
 
 
 
