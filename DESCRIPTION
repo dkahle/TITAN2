@@ -4,8 +4,8 @@ Title: Threshold Indicator Taxa Analysis
 Version: 2.3
 Authors@R: c(person("Matthew E.", "Baker", email = "mbaker@umbc.edu", role = c("aut", "cph")),
   person("Ryan S.", "King",email = "Ryan_S_King@baylor.edu", role = c("aut", "cph")),
-  person("David", "Kahle", email = "david.kahle@gmail.com", role = c("aut", "cph", "cre")))
-Maintainer: David Kahle <david.kahle@gmail.com>
+  person("David", "Kahle", email = "david@kahle.io", role = c("aut", "cph", "cre"), comment = c(ORCID = "0000-0002-9999-1558")))
+Maintainer: David Kahle <david@kahle.io>
 Description: Uses indicator species scores across binary partitions of
   a sample set to detect congruence in taxon-specific changes of abundance
   and occurrence frequency along an environmental gradient as evidence of
