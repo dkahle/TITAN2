@@ -7,57 +7,60 @@
 plot_sumz_density(titan.out, filter = TRUE, sumz = TRUE,
   points = FALSE, ribbon = TRUE, density = TRUE,
   change_points = TRUE, sumz1 = TRUE, sumz2 = TRUE,
-  xmin = min(titan.out$env), xmax = max(titan.out$envcls),
+  xlim = c(min(titan.out$env), max(titan.out$envcls)),
   xlabel = "Environmental Gradient", y1label = NULL,
   y2label = "Density", alpha1 = 0.65, alpha2 = 0.5,
   col1 = "steelblue4", col2 = "red", base_size = 20,
   trans = "identity", legend.position = c(0.9, 0.9), ...)
 }
 \arguments{
-\item{titan.out}{titan.out}
+\item{titan.out}{A TITAN output object.}
 
-\item{filter}{filter}
+\item{filter}{A logical indicating whether only pure and reliable taxa should
+be used to create the plot.This is the recommended as a check of the
+unfiltered default to assess whether impure or unreliable taxa are
+substantially contributing to the distribution of sum(z) scores.}
 
-\item{sumz}{sumz}
+\item{sumz}{Plot sum z values? (Default = \code{TRUE})}
 
-\item{points}{points}
+\item{points}{Plot points on sum z values? (Default = \code{FALSE})}
 
-\item{ribbon}{ribbon}
+\item{ribbon}{Fill in axes under sum z values?  (Default = \code{TRUE})}
 
-\item{density}{density}
+\item{density}{Plot densities of change points?  (Default = \code{TRUE})}
 
-\item{change_points}{change_points}
+\item{change_points}{Plot ranges of change points? These are taken from the
+titan object. (Default = \code{TRUE})}
 
-\item{sumz1}{sumz1}
+\item{sumz1}{A logical specifying whether decreasing changes should be
+plotted.}
 
-\item{sumz2}{sumz2}
+\item{sumz2}{A logical specifying whether increasing changes should be
+plotted.}
 
-\item{xmin}{xmin}
+\item{xlim}{x axis limits, e.g. \code{xlim = c(0,10)}.}
 
-\item{xmax}{xmax}
+\item{xlabel}{A character string for the x axis label.}
 
-\item{xlabel}{xlabel}
+\item{y1label}{A character specifying the label of the second y axis}
 
-\item{y1label}{y1label}
+\item{y2label}{A character specifying the label of the second y axis}
 
-\item{y2label}{y2label}
+\item{alpha1, alpha2}{Transparency of Z- and Z+ values, respectively.}
 
-\item{alpha1}{alpha1}
+\item{col1}{A graphical argument specifying the color of group 1 symbols.}
 
-\item{alpha2}{alpha2}
+\item{col2}{A graphical argument specifying the color of group 2 symbols.}
 
-\item{col1}{col1}
+\item{base_size}{Base size of ggplot2 theme.}
 
-\item{col2}{col2}
+\item{trans}{a scale transformation to be applied to the x-axis through
+ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 
-\item{base_size}{base size of ggplot2 graphics}
+\item{legend.position}{ggplot2 legend position in relative coordinates of sum
+z plot. (Default = \code{c(.9, .9)})}
 
-\item{trans}{A scale transformation passed to ggplot2 for the x-axis, see
-examples.}
-
-\item{legend.position}{legend.position}
-
-\item{...}{...}
+\item{...}{An argument for passing generic plotting function parameters.}
 }
 \value{
 A plot
@@ -73,6 +76,7 @@ Should not be used with output objects from TITAN v1.0.
 data(glades.titan)
 
 plot_sumz_density(glades.titan)
+plot_sumz_density(glades.titan, alpha2 = 1)
 plot_sumz_density(glades.titan, trans = "log10")
 
 

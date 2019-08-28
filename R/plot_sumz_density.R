@@ -2,29 +2,18 @@
 #'
 #' Plot community level change
 #'
-#' @param titan.out titan.out
-#' @param filter filter
-#' @param sumz sumz
-#' @param points points
-#' @param ribbon ribbon
-#' @param density density
-#' @param change_points change_points
-#' @param sumz1 sumz1
-#' @param sumz2 sumz2
-#' @param xmin xmin
-#' @param xmax xmax
-#' @param xlabel xlabel
-#' @param y1label y1label
-#' @param y2label y2label
-#' @param alpha1 alpha1
-#' @param alpha2 alpha2
-#' @param col1 col1
-#' @param col2 col2
-#' @param base_size base size of ggplot2 graphics
-#' @param trans A scale transformation passed to ggplot2 for the x-axis, see
-#'   examples.
-#' @param legend.position legend.position
-#' @param ... ...
+#' @inheritParams plot-sumz
+#' @inheritParams plot_taxa_ridges
+#' @param sumz Plot sum z values? (Default = \code{TRUE})
+#' @param points Plot points on sum z values? (Default = \code{FALSE})
+#' @param ribbon Fill in axes under sum z values?  (Default = \code{TRUE})
+#' @param density Plot densities of change points?  (Default = \code{TRUE})
+#' @param change_points Plot ranges of change points? These are taken from the
+#'   titan object. (Default = \code{TRUE})
+#' @param alpha1,alpha2 Transparency of Z- and Z+ values, respectively.
+#' @param base_size Base size of ggplot2 theme.
+#' @param legend.position ggplot2 legend position in relative coordinates of sum
+#'   z plot. (Default = \code{c(.9, .9)})
 #' @return A plot
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
 #'   interpreting biodiversity and ecological community thresholds.  Methods in
@@ -41,6 +30,7 @@
 #' data(glades.titan)
 #'
 #' plot_sumz_density(glades.titan)
+#' plot_sumz_density(glades.titan, alpha2 = 1)
 #' plot_sumz_density(glades.titan, trans = "log10")
 #'
 #'
@@ -53,7 +43,7 @@ plot_sumz_density <- function(
   ribbon = TRUE, density = TRUE,
   change_points = TRUE,
   sumz1 = TRUE, sumz2 = TRUE,
-  xmin = min(titan.out$env), xmax = max(titan.out$envcls),
+  xlim = c(min(titan.out$env), max(titan.out$envcls)),
   xlabel = "Environmental Gradient",
   y1label = NULL,
   y2label = "Density",
@@ -104,7 +94,7 @@ plot_sumz_density <- function(
         (if (points) geom_point(aes(x = titan.out$envcls, y = ivz[, 2], color = "Z+")) else geom_blank()) +
         (if (ribbon) geom_ribbon(aes(x = titan.out$envcls, ymin = 0, ymax = ivz[, 2], fill = "Z+"), alpha = alpha2) else geom_blank()) +
         geom_line(aes(x = titan.out$envcls, y = ivz[, 2], color = "Z+")) +
-        scale_x_continuous(xlabel, trans = trans, limits = c(xmin, xmax)) +
+        scale_x_continuous(xlabel, trans = trans, limits = xlim) +
         scale_color_manual("",
           breaks = c("Z-", "Z+"),
           values = c("Z-" = col1, "Z+" = col2),
@@ -131,7 +121,7 @@ plot_sumz_density <- function(
           (if (points) geom_point(aes(x = titan.out$envcls, y = ivz[, 1]), color = col1) else geom_blank()) +
           (if (ribbon) geom_ribbon(aes(x = titan.out$envcls, ymin = 0, ymax = ivz[, 1]), fill = col1, alpha = alpha1) else geom_blank()) +
           geom_line(aes(x = titan.out$envcls, y = ivz[, 1]), color = col1) +
-          scale_x_continuous(xlabel, trans = trans, limits = c(xmin, xmax)) +
+          scale_x_continuous(xlabel, trans = trans, limits = xlim) +
           labs(y = y1label) +
           theme_classic(base_size = base_size) +
           theme(
@@ -149,7 +139,7 @@ plot_sumz_density <- function(
             (if (points) geom_point(aes(x = titan.out$envcls, y = ivz[, 2]), color = col2) else geom_blank()) +
             (if (ribbon) geom_ribbon(aes(x = titan.out$envcls, ymin = 0, ymax = ivz[, 2]), fill = col2, alpha = alpha2) else geom_blank()) +
             geom_line(aes(x = titan.out$envcls, y = ivz[, 2]), color = col2) +
-            scale_x_continuous(xlabel, trans = trans, limits = c(xmin, xmax)) +
+            scale_x_continuous(xlabel, trans = trans, limits = xlim) +
             labs(y = y1label) +
             theme_classic(base_size = base_size) +
             theme(
@@ -171,7 +161,7 @@ plot_sumz_density <- function(
     ggplot(maxFsumz) +
       (if (sumz1) geom_density(aes(x = X1), color = col1, fill = col1, alpha = alpha1) else geom_blank()) +
       (if (sumz2) geom_density(aes(x = X2), color = col2, fill = col2, alpha = alpha2) else geom_blank()) +
-      scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = c(xmin, xmax)) +
+      scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = xlim) +
       labs(y = y2label) +
       theme_classic(base_size = base_size) +
       theme(
@@ -191,7 +181,7 @@ plot_sumz_density <- function(
       (if (sumz1) geom_point(aes(x = sumz1max, y = sumz1lab), col = col1, alpha = alpha1, size = 5) else geom_blank()) +
       (if (sumz2) geom_segment(aes(x = sumz2quant[1], y = sumz2lab, xend = sumz2quant[2], yend = sumz2lab), col = col2) else geom_blank()) +
       (if (sumz2) geom_point(aes(x = sumz2max, y = sumz2lab), col = col2, alpha = alpha2, size = 5) else geom_blank()) +
-      scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = c(xmin, xmax)) +
+      scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = xlim) +
       scale_y_discrete("") +
       theme_classic(base_size = base_size) +
       theme(
