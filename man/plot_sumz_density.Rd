@@ -10,8 +10,9 @@ plot_sumz_density(titan.out, filter = TRUE, sumz = TRUE,
   xlim = c(min(titan.out$env), max(titan.out$envcls)),
   xlabel = "Environmental Gradient", y1label = NULL,
   y2label = "Density", alpha1 = 0.65, alpha2 = 0.5,
-  col1 = "steelblue4", col2 = "red", base_size = 20,
-  trans = "identity", legend.position = c(0.9, 0.9), ...)
+  col1 = "steelblue4", col2 = "red", trans = "identity",
+  legend.position = c(0.9, 0.9), ..., axis.text.x, axis.text.y,
+  axis.title.x, axis.title.y)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
@@ -52,8 +53,6 @@ plotted.}
 
 \item{col2}{A graphical argument specifying the color of group 2 symbols.}
 
-\item{base_size}{Base size of ggplot2 theme.}
-
 \item{trans}{a scale transformation to be applied to the x-axis through
 ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 
@@ -61,6 +60,22 @@ ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 z plot. (Default = \code{c(.9, .9)})}
 
 \item{...}{An argument for passing generic plotting function parameters.}
+
+\item{axis.text.x}{Font sizes of
+respective axis text. Passed as the size argument to the ggplot2 thematic
+elements of the same name. Defaults to current default ggplot2 theme.}
+
+\item{axis.text.y}{Font sizes of
+respective axis text. Passed as the size argument to the ggplot2 thematic
+elements of the same name. Defaults to current default ggplot2 theme.}
+
+\item{axis.title.x}{Font sizes of
+respective axis text. Passed as the size argument to the ggplot2 thematic
+elements of the same name. Defaults to current default ggplot2 theme.}
+
+\item{axis.title.y}{Font sizes of
+respective axis text. Passed as the size argument to the ggplot2 thematic
+elements of the same name. Defaults to current default ggplot2 theme.}
 }
 \value{
 A plot
@@ -76,7 +91,6 @@ Should not be used with output objects from TITAN v1.0.
 data(glades.titan)
 
 plot_sumz_density(glades.titan)
-plot_sumz_density(glades.titan, alpha2 = 1)
 plot_sumz_density(glades.titan, trans = "log10")
 
 

@@ -21,7 +21,7 @@
 #' @param xlim x axis limits, e.g. \code{xlim = c(0,10)}.
 #' @param axis.text.x,axis.text.y,axis.title.x,axis.title.y Font sizes of
 #'   respective axis text. Passed as the size argument to the ggplot2 thematic
-#'   elements of the same name. Defaults to current default ggplot2 theme.s
+#'   elements of the same name. Defaults to current default ggplot2 theme.
 #' @param bw The bandwidth of used in the kernel density estimate; see
 #'   [density()].
 #' @param ... Arguments to pass to [geom_density_ridges()]
@@ -53,9 +53,9 @@
 #'
 #' # styling
 #' plot_taxa_ridges(glades.titan,
-#'   axis.text.x = 14,
+#'   axis.text.x = 12,
 #'   axis.text.y = 4,
-#'   axis.title.x = 20,
+#'   axis.title.x = 14,
 #'   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
 #' )
 #'
@@ -70,17 +70,15 @@ plot_taxa_ridges <- function(
   rel.cut = titan.out$arguments[[8]],
   xlabel = "Environmental Gradient",
   n_ytaxa = 90,
-  axis.text.x = if (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else theme_get()$text$size,
-  axis.text.y = if (is.null(theme_get()$axis.text.y$size)) theme_get()$axis.text.y$size else theme_get()$text$size,
-  axis.title.x = if (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size else theme_get()$text$size,
-  axis.title.y = if (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size else theme_get()$text$size,
   printspp = FALSE,
   grid = TRUE,
   trans = "identity",
   xaxis = !grid,
   xlim,
   bw,
-  ...
+  ...,
+  axis.text.x, axis.text.y,
+  axis.title.x, axis.title.y
 ) {
 
   # cran guard
@@ -100,6 +98,13 @@ plot_taxa_ridges <- function(
   z.median <- NULL; rm(z.median)
   `5%` <- NULL; rm(`5%`)
   `95%` <- NULL; rm(`95%`)
+
+  # deal with axis font defaulting
+  if (missing(axis.text.x)) axis.text.x <- if (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else theme_get()$text$size
+  if (missing(axis.text.y)) axis.text.y <- if (is.null(theme_get()$axis.text.y$size)) theme_get()$axis.text.y$size else theme_get()$text$size
+  if (missing(axis.title.x)) axis.title.x <- if (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size else theme_get()$titletext$size
+  if (missing(axis.title.y)) axis.title.y <- if (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size else theme_get()$titletext$size
+
 
   imax <- titan.out$arguments[["imax"]]
   boot <- titan.out$arguments[["boot"]] > 0.5

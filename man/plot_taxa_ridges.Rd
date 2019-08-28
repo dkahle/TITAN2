@@ -9,16 +9,9 @@ plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
   z2_fill_low = "pink", z2_fill_high = "red",
   pur.cut = titan.out$arguments[[7]],
   rel.cut = titan.out$arguments[[8]],
-  xlabel = "Environmental Gradient", n_ytaxa = 90, axis.text.x = if
-  (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else
-  theme_get()$text$size, axis.text.y = if
-  (is.null(theme_get()$axis.text.y$size)) theme_get()$axis.text.y$size else
-  theme_get()$text$size, axis.title.x = if
-  (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size
-  else theme_get()$text$size, axis.title.y = if
-  (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size
-  else theme_get()$text$size, printspp = FALSE, grid = TRUE,
-  trans = "identity", xaxis = !grid, xlim, bw, ...)
+  xlabel = "Environmental Gradient", n_ytaxa = 90, printspp = FALSE,
+  grid = TRUE, trans = "identity", xaxis = !grid, xlim, bw, ...,
+  axis.text.x, axis.text.y, axis.title.x, axis.title.y)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
@@ -38,10 +31,6 @@ colors passed to \code{\link[=scale_fill_gradient]{scale_fill_gradient()}}}
 
 \item{n_ytaxa}{The maximum number of taxa to be plotted.}
 
-\item{axis.text.x, axis.text.y, axis.title.x, axis.title.y}{Font sizes of
-respective axis text. Passed as the size argument to the ggplot2 thematic
-elements of the same name. Defaults to current default ggplot2 theme.s}
-
 \item{printspp}{A logical specifying whether the sppmax table should be
 printed.}
 
@@ -59,6 +48,10 @@ ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 \code{\link[=density]{density()}}.}
 
 \item{...}{Arguments to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}}
+
+\item{axis.text.x, axis.text.y, axis.title.x, axis.title.y}{Font sizes of
+respective axis text. Passed as the size argument to the ggplot2 thematic
+elements of the same name. Defaults to current default ggplot2 theme.}
 }
 \value{
 A plot of decreasing and/or increasing taxon-specific change points
@@ -86,9 +79,9 @@ plot_taxa_ridges(glades.titan, z2 = FALSE, trans = "sqrt", xlim = c(0, 150))
 
 # styling
 plot_taxa_ridges(glades.titan,
-  axis.text.x = 14,
+  axis.text.x = 12,
   axis.text.y = 4,
-  axis.title.x = 20,
+  axis.title.x = 14,
   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
 )
 

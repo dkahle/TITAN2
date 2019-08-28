@@ -11,7 +11,6 @@
 #' @param change_points Plot ranges of change points? These are taken from the
 #'   titan object. (Default = \code{TRUE})
 #' @param alpha1,alpha2 Transparency of Z- and Z+ values, respectively.
-#' @param base_size Base size of ggplot2 theme.
 #' @param legend.position ggplot2 legend position in relative coordinates of sum
 #'   z plot. (Default = \code{c(.9, .9)})
 #' @return A plot
@@ -30,7 +29,6 @@
 #' data(glades.titan)
 #'
 #' plot_sumz_density(glades.titan)
-#' plot_sumz_density(glades.titan, alpha2 = 1)
 #' plot_sumz_density(glades.titan, trans = "log10")
 #'
 #'
@@ -50,16 +48,23 @@ plot_sumz_density <- function(
   alpha1 = 0.65,
   alpha2 = 0.5,
   col1 = "steelblue4", col2 = "red",
-  base_size = 20,
   trans = "identity",
   legend.position = c(.9, .9),
-  ...
+  ...,
+  axis.text.x, axis.text.y,
+  axis.title.x, axis.title.y
 ) {
 
   # cran guard
   X1 <- NULL; rm(X1)
   X2 <- NULL; rm(X2)
 
+
+  # deal with axis font defaulting
+  if (missing(axis.text.x)) axis.text.x <- if (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else theme_get()$text$size
+  if (missing(axis.text.y)) axis.text.y <- if (is.null(theme_get()$axis.text.y$size)) theme_get()$axis.text.y$size else theme_get()$text$size
+  if (missing(axis.title.x)) axis.title.x <- if (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size else theme_get()$titletext$size
+  if (missing(axis.title.y)) axis.title.y <- if (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size else theme_get()$titletext$size
 
 
   if (filter) {
@@ -105,8 +110,12 @@ plot_sumz_density <- function(
           values = c("Z-" = col1, "Z+" = col2)
         ) +
         labs(y = y1label, legend = "") +
-        theme_classic(base_size = base_size) +
+        theme_classic() +
         theme(
+          axis.text.x = element_text(size = axis.text.x),
+          axis.text.y = element_text(size = axis.text.y),
+          axis.title.x = element_text(size = axis.title.x),
+          axis.title.y = element_text(size = axis.title.y),
           plot.margin = structure(
             c(0, 5.5, 5.5, 5.5),
             class = c("margin", "unit"),
@@ -123,8 +132,12 @@ plot_sumz_density <- function(
           geom_line(aes(x = titan.out$envcls, y = ivz[, 1]), color = col1) +
           scale_x_continuous(xlabel, trans = trans, limits = xlim) +
           labs(y = y1label) +
-          theme_classic(base_size = base_size) +
+          theme_classic() +
           theme(
+            axis.text.x = element_text(size = axis.text.x),
+            axis.text.y = element_text(size = axis.text.y),
+            axis.title.x = element_text(size = axis.title.x),
+            axis.title.y = element_text(size = axis.title.y),
             plot.margin = structure(
               c(0, 5.5, 5.5, 5.5),
               class = c("margin", "unit"),
@@ -141,8 +154,12 @@ plot_sumz_density <- function(
             geom_line(aes(x = titan.out$envcls, y = ivz[, 2]), color = col2) +
             scale_x_continuous(xlabel, trans = trans, limits = xlim) +
             labs(y = y1label) +
-            theme_classic(base_size = base_size) +
+            theme_classic() +
             theme(
+              axis.text.x = element_text(size = axis.text.x),
+              axis.text.y = element_text(size = axis.text.y),
+              axis.title.x = element_text(size = axis.title.x),
+              axis.title.y = element_text(size = axis.title.y),
               plot.margin = structure(
                 c(0, 5.5, 5.5, 5.5),
                 class = c("margin", "unit"),
@@ -163,9 +180,12 @@ plot_sumz_density <- function(
       (if (sumz2) geom_density(aes(x = X2), color = col2, fill = col2, alpha = alpha2) else geom_blank()) +
       scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = xlim) +
       labs(y = y2label) +
-      theme_classic(base_size = base_size) +
+      theme_classic() +
       theme(
-        axis.text.x = (if (sumz) element_blank() else element_text()),
+        axis.text.x = (if (sumz) element_blank() else element_text(size = axis.text.x)),
+        axis.text.y = element_text(size = axis.text.y),
+        axis.title.x = element_text(size = axis.title.x),
+        axis.title.y = element_text(size = axis.title.y),
         plot.margin = structure(
           c(if (change_points) 0 else 5.5, 5.5, 0, 5.5),
           class = c("margin", "unit"),
@@ -183,9 +203,12 @@ plot_sumz_density <- function(
       (if (sumz2) geom_point(aes(x = sumz2max, y = sumz2lab), col = col2, alpha = alpha2, size = 5) else geom_blank()) +
       scale_x_continuous(if (sumz) "" else xlabel, trans = trans, limits = xlim) +
       scale_y_discrete("") +
-      theme_classic(base_size = base_size) +
+      theme_classic() +
       theme(
         axis.text.x = element_blank(),
+        axis.text.y = element_text(size = axis.text.y),
+        axis.title.x = element_text(size = axis.title.x),
+        axis.title.y = element_text(size = axis.title.y),
         plot.margin = structure(
           c(5.5, 5.5, 0, 5.5),
           class = c("margin", "unit"),
