@@ -41,9 +41,19 @@
 #'
 #' data(glades.titan)
 #'
+#'
+#' # basic usage
 #' plot_taxa_ridges(glades.titan)
+#'
+#'
+#' \dontrun{ reduce R CMD check time
+#'
+#' # manipulating the x axis thematic components
 #' plot_taxa_ridges(glades.titan, grid = FALSE)
 #' plot_taxa_ridges(glades.titan, xaxis = TRUE)
+#'
+#'
+#' # applying scale transformations
 #' plot_taxa_ridges(glades.titan, trans = "log10", xlim = c(1,150))
 #'
 #'
@@ -51,7 +61,7 @@
 #' plot_taxa_ridges(glades.titan, z2 = FALSE, trans = "sqrt", xlim = c(0, 150))
 #'
 #'
-#' # styling
+#' # more styling
 #' plot_taxa_ridges(glades.titan,
 #'   axis.text.x = 12,
 #'   axis.text.y = 4,
@@ -59,6 +69,7 @@
 #'   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
 #' )
 #'
+#' }
 #'
 #'
 plot_taxa_ridges <- function(
