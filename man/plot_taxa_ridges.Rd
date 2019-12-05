@@ -8,7 +8,7 @@ plot_taxa_ridges(
   titan.out,
   z1 = TRUE,
   z2 = TRUE,
-  z1_fill_low = "light blue",
+  z1_fill_low = "lightblue",
   z1_fill_high = "black",
   z2_fill_low = "pink",
   z2_fill_high = "red",
