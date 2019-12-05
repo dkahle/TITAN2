@@ -1,3 +1,12 @@
+Version 2.4
+-------------------------------------------------------------------------
+
+MINOR BUG FIXES
+
+* For some reason the color "light blue" began erroring in plot_taxa_ridges().
+  This has been fixed to "lightblue" to provide clean CRAN checks.
+
+
 Version 2.2
 -------------------------------------------------------------------------
 
@@ -5,17 +14,12 @@ NEW FEATURES
 
 * TITAN2 is now more or less tidyverse compliant; it imports the tidyverse
   packages dplyr and ggplot2.
-*
 
 CHANGES
 
 * titan now issues messages with message().
 * vignette name changed from glades.TITAN to titan2-intro.
 
-FIXES
-
-*
-*
 
 
 
