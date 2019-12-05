@@ -7,13 +7,31 @@
 \title{Plots probability densities of empirical distributions of bootstrapped change
 points}
 \usage{
-plot_cps(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
-  cp.med = F, cp.trace = F, cp.hist = T, stacked = F,
-  xlabel = "Environmental Gradient", xmin = min(titan.out$env),
-  xmax = max(titan.out$envcls) * 1.25, tck = 0.025, bty = "u",
-  ntick = 6, cex = 1.75, cex.axis = 1.75, cex.leg = 1.5,
-  cex.lab = 1.75, write = F, leg.x = 0.8, leg.y = 0.8,
-  leg = TRUE, ...)
+plot_cps(
+  titan.out,
+  taxa.dist = T,
+  z.weights = T,
+  taxaID = NULL,
+  cp.med = F,
+  cp.trace = F,
+  cp.hist = T,
+  stacked = F,
+  xlabel = "Environmental Gradient",
+  xmin = min(titan.out$env),
+  xmax = max(titan.out$envcls) * 1.25,
+  tck = 0.025,
+  bty = "u",
+  ntick = 6,
+  cex = 1.75,
+  cex.axis = 1.75,
+  cex.leg = 1.5,
+  cex.lab = 1.75,
+  write = F,
+  leg.x = 0.8,
+  leg.y = 0.8,
+  leg = TRUE,
+  ...
+)
 
 plotCPs(...)
 }

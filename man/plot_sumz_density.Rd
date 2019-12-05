@@ -4,15 +4,32 @@
 \alias{plot_sumz_density}
 \title{Plot community level change}
 \usage{
-plot_sumz_density(titan.out, filter = TRUE, sumz = TRUE,
-  points = FALSE, ribbon = TRUE, density = TRUE,
-  change_points = TRUE, sumz1 = TRUE, sumz2 = TRUE,
+plot_sumz_density(
+  titan.out,
+  filter = TRUE,
+  sumz = TRUE,
+  points = FALSE,
+  ribbon = TRUE,
+  density = TRUE,
+  change_points = TRUE,
+  sumz1 = TRUE,
+  sumz2 = TRUE,
   xlim = c(min(titan.out$env), max(titan.out$envcls)),
-  xlabel = "Environmental Gradient", y1label = NULL,
-  y2label = "Density", alpha1 = 0.65, alpha2 = 0.5,
-  col1 = "steelblue4", col2 = "red", trans = "identity",
-  legend.position = c(0.9, 0.9), ..., axis.text.x, axis.text.y,
-  axis.title.x, axis.title.y)
+  xlabel = "Environmental Gradient",
+  y1label = NULL,
+  y2label = "Density",
+  alpha1 = 0.65,
+  alpha2 = 0.5,
+  col1 = "steelblue4",
+  col2 = "red",
+  trans = "identity",
+  legend.position = c(0.9, 0.9),
+  ...,
+  axis.text.x,
+  axis.text.y,
+  axis.title.x,
+  axis.title.y
+)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}

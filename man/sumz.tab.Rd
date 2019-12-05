@@ -4,8 +4,16 @@
 \alias{sumz.tab}
 \title{Summarizes the results of the community-level sum(z) analysis}
 \usage{
-sumz.tab(ivzScores, ivz, srtEnv, sppmax, maxSumz = maxSumz,
-  maxFsumz = maxFsumz, minSplt = minSplt, boot = boot)
+sumz.tab(
+  ivzScores,
+  ivz,
+  srtEnv,
+  sppmax,
+  maxSumz = maxSumz,
+  maxFsumz = maxFsumz,
+  minSplt = minSplt,
+  boot = boot
+)
 }
 \arguments{
 \item{ivzScores}{The product of the 'getivz' function.  A data matrix

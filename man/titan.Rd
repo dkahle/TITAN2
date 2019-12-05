@@ -4,9 +4,21 @@
 \alias{titan}
 \title{Perform a threshold indicator taxa analysis}
 \usage{
-titan(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
-  nBoot = 500, imax = FALSE, ivTot = FALSE, pur.cut = 0.95,
-  rel.cut = 0.95, ncpus = 1, memory = FALSE, messaging = TRUE)
+titan(
+  env,
+  txa,
+  minSplt = 5,
+  numPerm = 250,
+  boot = TRUE,
+  nBoot = 500,
+  imax = FALSE,
+  ivTot = FALSE,
+  pur.cut = 0.95,
+  rel.cut = 0.95,
+  ncpus = 1,
+  memory = FALSE,
+  messaging = TRUE
+)
 }
 \arguments{
 \item{env}{A vector of environmental values.}
@@ -44,8 +56,7 @@ parallel processing on each core.}
 \item{memory}{A logical indicating whether temporary files should be written
 to a scratch directory during bootstrap processing to preserve active
 memory.  This function is sometimes necessary for large data files (e.g.
-
-400 sampling sites and >100 taxa).}
+more than 400 sampling sites and less than 100 taxa).}
 
 \item{messaging}{If \code{TRUE}, provide progress messages.}
 }

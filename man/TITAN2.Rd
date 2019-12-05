@@ -4,7 +4,6 @@
 \name{TITAN2}
 \alias{TITAN2}
 \alias{package-TITAN2}
-\alias{TITAN2-package}
 \title{Threshold Indicator Taxa Analysis}
 \description{
 Uses indicator species scores across binary partitions of a sample set to

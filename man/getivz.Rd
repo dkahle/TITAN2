@@ -4,8 +4,15 @@
 \alias{getivz}
 \title{Performs calculation of IndVal z scores from observed and permuted values}
 \usage{
-getivz(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass,
-  imax = imax, messaging = FALSE)
+getivz(
+  clss,
+  spp,
+  ivTot = ivTot,
+  nPerm = nPerm,
+  numClass = numClass,
+  imax = imax,
+  messaging = FALSE
+)
 }
 \arguments{
 \item{clss}{A matrix of binary (0,1) group membership based on partitions of

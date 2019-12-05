@@ -6,15 +6,39 @@
 \alias{plotSumz}
 \title{Plots the pattern of community change along an environmental gradient}
 \usage{
-plot_sumz(titan.out, filter = F, cumfrq = T, bootz1 = T,
-  bootz2 = T, sumz1 = T, sumz2 = T, xmin = min(titan.out$env),
+plot_sumz(
+  titan.out,
+  filter = F,
+  cumfrq = T,
+  bootz1 = T,
+  bootz2 = T,
+  sumz1 = T,
+  sumz2 = T,
+  xmin = min(titan.out$env),
   xmax = max(titan.out$envcls) * 1.25,
-  xlabel = "Environmental Gradient", y1label = NULL,
-  y2label = "Cumulative Frequency", log = "", at = NULL,
-  tck = 0.025, bty = "u", ntick = 6, prtty = T, dig = 1,
-  cex = 1.75, cex.axis = 1.75, cex.leg = 1.5, cex.lab = 1.75,
-  leg.x = 0.8, leg.y = 0.8, legend = TRUE, pch1 = 16, pch2 = 1,
-  col1 = "black", col2 = "black", ...)
+  xlabel = "Environmental Gradient",
+  y1label = NULL,
+  y2label = "Cumulative Frequency",
+  log = "",
+  at = NULL,
+  tck = 0.025,
+  bty = "u",
+  ntick = 6,
+  prtty = T,
+  dig = 1,
+  cex = 1.75,
+  cex.axis = 1.75,
+  cex.leg = 1.5,
+  cex.lab = 1.75,
+  leg.x = 0.8,
+  leg.y = 0.8,
+  legend = TRUE,
+  pch1 = 16,
+  pch2 = 1,
+  col1 = "black",
+  col2 = "black",
+  ...
+)
 
 plotSumz(...)
 }

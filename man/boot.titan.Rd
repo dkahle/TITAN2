@@ -4,9 +4,19 @@
 \alias{boot.titan}
 \title{Controls the allocation of bootstrap replicates}
 \usage{
-boot.titan(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
-  nBoot = nBoot, minSplt = minSplt, nPerm = 250, memory = memory,
-  imax = imax, numUnit = numUnit)
+boot.titan(
+  env,
+  taxa,
+  ivTot = ivTot,
+  boot = boot,
+  ncpus = ncpus,
+  nBoot = nBoot,
+  minSplt = minSplt,
+  nPerm = 250,
+  memory = memory,
+  imax = imax,
+  numUnit = numUnit
+)
 }
 \arguments{
 \item{env}{A vector of values for each sampling location along the

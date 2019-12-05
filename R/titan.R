@@ -29,7 +29,7 @@
 #' @param memory A logical indicating whether temporary files should be written
 #'   to a scratch directory during bootstrap processing to preserve active
 #'   memory.  This function is sometimes necessary for large data files (e.g.
-#'   >400 sampling sites and >100 taxa).
+#'   more than 400 sampling sites and less than 100 taxa).
 #' @param messaging If \code{TRUE}, provide progress messages.
 #' @return A list with 13 items: \itemize{
 #'

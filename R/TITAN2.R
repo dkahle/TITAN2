@@ -24,7 +24,8 @@
 #' @importFrom utils read.table write.table
 #' @importFrom glue glue
 #' @importFrom cowplot plot_grid
-#' @importFrom dplyr %>% data_frame as_data_frame mutate filter case_when slice bind_rows
+#' @importFrom dplyr %>% data_frame as_data_frame mutate filter case_when slice
+#'   bind_rows
 #' @importFrom purrr pluck map
 #' @importFrom ggridges geom_density_ridges
 #' @aliases TITAN2 package-TITAN2

@@ -4,14 +4,30 @@
 \alias{plot_taxa_ridges}
 \title{Taxon change point ridge plots}
 \usage{
-plot_taxa_ridges(titan.out, z1 = TRUE, z2 = TRUE,
-  z1_fill_low = "light blue", z1_fill_high = "black",
-  z2_fill_low = "pink", z2_fill_high = "red",
+plot_taxa_ridges(
+  titan.out,
+  z1 = TRUE,
+  z2 = TRUE,
+  z1_fill_low = "light blue",
+  z1_fill_high = "black",
+  z2_fill_low = "pink",
+  z2_fill_high = "red",
   pur.cut = titan.out$arguments[[7]],
   rel.cut = titan.out$arguments[[8]],
-  xlabel = "Environmental Gradient", n_ytaxa = 90, printspp = FALSE,
-  grid = TRUE, trans = "identity", xaxis = !grid, xlim, bw, ...,
-  axis.text.x, axis.text.y, axis.title.x, axis.title.y)
+  xlabel = "Environmental Gradient",
+  n_ytaxa = 90,
+  printspp = FALSE,
+  grid = TRUE,
+  trans = "identity",
+  xaxis = !grid,
+  xlim,
+  bw,
+  ...,
+  axis.text.x,
+  axis.text.y,
+  axis.title.x,
+  axis.title.y
+)
 }
 \arguments{
 \item{titan.out}{A TITAN output object.}
