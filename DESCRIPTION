@@ -30,8 +30,7 @@ Imports:
     snow
 Suggests: 
     knitr,
-    rmarkdown,
-    tidyverse
+    rmarkdown
 License: GPL-2
 LazyData: TRUE
 RoxygenNote: 7.0.2
