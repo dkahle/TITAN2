@@ -9,7 +9,3 @@ MINOR BUG FIXES
 * The relative heights of the graphics in `plot_taxa_ridges()` now have better
   defaults. These can be edited with the new `rel_heights` argument to that 
   function.
-
-CHANGES
-
-* **TITAN2** no longer imports **snow**.

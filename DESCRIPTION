@@ -26,7 +26,8 @@ Imports:
     cowplot,
     ggridges,
     purrr,
-    tibble
+    tibble,
+    snow
 Suggests: 
     knitr,
     rmarkdown
