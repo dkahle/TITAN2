@@ -24,6 +24,8 @@
 #'   elements of the same name. Defaults to current default ggplot2 theme.
 #' @param bw The bandwidth of used in the kernel density estimate; see
 #'   [density()].
+#' @param rel_heights Argument to pass to [cowplot::plot_grid()] as an override
+#'   for the defaults
 #' @param ... Arguments to pass to [geom_density_ridges()]
 #' @return A plot of decreasing and/or increasing taxon-specific change points
 #'   along the environmental gradient.
@@ -87,6 +89,7 @@ plot_taxa_ridges <- function(
   xaxis = !grid,
   xlim,
   bw,
+  rel_heights,
   ...,
   axis.text.x, axis.text.y,
   axis.title.x, axis.title.y
@@ -280,7 +283,13 @@ plot_taxa_ridges <- function(
 
   if (z1) {
     if (z2) {
-      plot_grid(ptop, pbottom, ncol = 1, rel_heights = c(n_filter_decr, n_filter_incr), align = "v")
+      if (missing(rel_heights)) {
+        rel_heights <- prop.table(c(n_filter_decr, n_filter_incr))
+        if (min(rel_heights) < .2) {
+          rel_heights <- if (n_filter_decr > n_filter_incr) c(.8, .2) else c(.2, .8)
+        }
+      }
+      plot_grid(ptop, pbottom, ncol = 1, rel_heights = rel_heights, align = "v")
     } else {
       plot_grid(ptop)
     }

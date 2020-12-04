@@ -22,6 +22,7 @@ plot_taxa_ridges(
   xaxis = !grid,
   xlim,
   bw,
+  rel_heights,
   ...,
   axis.text.x,
   axis.text.y,
@@ -62,6 +63,9 @@ ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 
 \item{bw}{The bandwidth of used in the kernel density estimate; see
 \code{\link[=density]{density()}}.}
+
+\item{rel_heights}{Argument to pass to \code{\link[cowplot:plot_grid]{cowplot::plot_grid()}} as an override
+for the defaults}
 
 \item{...}{Arguments to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}}
 
