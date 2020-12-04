@@ -1,7 +1,7 @@
 Package: TITAN2
 Type: Package
 Title: Threshold Indicator Taxa Analysis
-Version: 2.4.900
+Version: 2.4.1
 Authors@R: c(person("Matthew E.", "Baker", email = "mbaker@umbc.edu", role = c("aut", "cph"), comment = c(ORCID = "0000-0001-5069-0204")),
   person("Ryan S.", "King",email = "Ryan_S_King@baylor.edu", role = c("aut", "cph"), comment = c(ORCID = "0000-0002-3159-9816")),
   person("David", "Kahle", email = "david@kahle.io", role = c("aut", "cph", "cre"), comment = c(ORCID = "0000-0002-9999-1558")))
@@ -26,8 +26,7 @@ Imports:
     cowplot,
     ggridges,
     purrr,
-    tibble,
-    snow
+    tibble
 Suggests: 
     knitr,
     rmarkdown
