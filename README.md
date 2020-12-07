@@ -51,4 +51,4 @@ Acknowledgements
 This work continues to be supported by the [Department of Geography and
 Environmental Systems (UMBC)](https://ges.umbc.edu/), [Department of
 Biology (Baylor)](https://www.baylor.edu/biology/), and [Department of
-Statistical Science (Baylor)](http://www.baylor.edu/statistics/).
+Statistical Science (Baylor)](https://www.baylor.edu/statistics/).
