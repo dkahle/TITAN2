@@ -1,14 +1,11 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-TITAN2
-======
+# TITAN2
 
 <!-- badges: start -->
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/TITAN2)](https://cran.r-project.org/package=TITAN2)
-[![Travis build
-status](https://travis-ci.org/dkahle/TITAN2.svg?branch=master)](https://travis-ci.org/dkahle/TITAN2)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/dkahle/TITAN2?branch=master&svg=true)](https://ci.appveyor.com/project/dkahle/TITAN2)
 <!-- badges: end -->
@@ -25,8 +22,7 @@ here](https://github.com/dkahle/TITAN2/blob/master/vignettes/titan2-intro.pdf)
 vignette; however, the vignette is not built when the package is
 downloaded from GitHub, so just access it as above.*
 
-Installation
-------------
+## Installation
 
 You can install **TITAN2** in either of two ways. At the present time,
 we recommend installing **TITAN2** from GitHub, as it has several new
@@ -45,10 +41,10 @@ devtools::install_github("dkahle/TITAN2")
 install.packages("TITAN2")
 ```
 
-Acknowledgements
-----------------
+## Acknowledgements
 
 This work continues to be supported by the [Department of Geography and
 Environmental Systems (UMBC)](https://ges.umbc.edu/), [Department of
-Biology (Baylor)](https://www.baylor.edu/biology/), and [Department of
-Statistical Science (Baylor)](https://www.baylor.edu/statistics/).
+Biology (Baylor)](https://biology.artsandsciences.baylor.edu/), and
+[Department of Statistical Science
+(Baylor)](https://statistics.artsandsciences.baylor.edu/).

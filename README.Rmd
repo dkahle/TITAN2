@@ -18,7 +18,6 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/TITAN2)](https://cran.r-project.org/package=TITAN2)
-[![Travis build status](https://travis-ci.org/dkahle/TITAN2.svg?branch=master)](https://travis-ci.org/dkahle/TITAN2)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/dkahle/TITAN2?branch=master&svg=true)](https://ci.appveyor.com/project/dkahle/TITAN2)
 <!-- badges: end -->
 
@@ -52,4 +51,4 @@ install.packages("TITAN2")
 
 ## Acknowledgements
 
-This work continues to be supported by the [Department of Geography and Environmental Systems (UMBC)](https://ges.umbc.edu/), [Department of Biology (Baylor)](https://www.baylor.edu/biology/), and [Department of Statistical Science (Baylor)](http://www.baylor.edu/statistics/). 
+This work continues to be supported by the [Department of Geography and Environmental Systems (UMBC)](https://ges.umbc.edu/), [Department of Biology (Baylor)](https://biology.artsandsciences.baylor.edu/), and [Department of Statistical Science (Baylor)](https://statistics.artsandsciences.baylor.edu/). 

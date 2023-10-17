@@ -153,7 +153,8 @@ plot_taxa_ridges <- function(
     map(~
       cbind(
         tibble::tibble(
-          "chk_pts" = round(sort(titan.out$metricArray[.x,2,]), digits = 2)
+          # "chk_pts" = round(sort(titan.out$metricArray[.x,2,]), digits = 2)
+          "chk_pts" = sort(titan.out$metricArray[.x,2,])
         ),
         sppmax %>% slice(.x)
       )

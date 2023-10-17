@@ -231,7 +231,8 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
     #   message(glue("Decreasing number of CPUs to number of bootstrap replicates ({nBoot})."))
     #   ncpus <- nBoot
     # }
-    cl <- parallel::makeCluster(rep("localhost", ncpus), type = "SOCK")
+    # cl <- parallel::makeCluster(rep("localhost", ncpus), type = "SOCK")
+    cl <- parallel::makeCluster(rep("localhost", ncpus))
     bSeq <- parallel::clusterSplit(cl, 1:nBoot)
     ivz.bt.list <- parallel::clusterApply(cl, bSeq, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
     parallel::stopCluster(cl)

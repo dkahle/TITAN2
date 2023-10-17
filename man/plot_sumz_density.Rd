@@ -78,19 +78,7 @@ z plot. (Default = \code{c(.9, .9)})}
 
 \item{...}{An argument for passing generic plotting function parameters.}
 
-\item{axis.text.x}{Font sizes of
-respective axis text. Passed as the size argument to the ggplot2 thematic
-elements of the same name. Defaults to current default ggplot2 theme.}
-
-\item{axis.text.y}{Font sizes of
-respective axis text. Passed as the size argument to the ggplot2 thematic
-elements of the same name. Defaults to current default ggplot2 theme.}
-
-\item{axis.title.x}{Font sizes of
-respective axis text. Passed as the size argument to the ggplot2 thematic
-elements of the same name. Defaults to current default ggplot2 theme.}
-
-\item{axis.title.y}{Font sizes of
+\item{axis.text.x, axis.text.y, axis.title.x, axis.title.y}{Font sizes of
 respective axis text. Passed as the size argument to the ggplot2 thematic
 elements of the same name. Defaults to current default ggplot2 theme.}
 }
