@@ -103,7 +103,7 @@ plot_sumz_density <- function(
         scale_color_manual("",
           breaks = c("Z-", "Z+"),
           values = c("Z-" = col1, "Z+" = col2),
-          guide = FALSE
+          guide = "none"
         ) +
         scale_fill_manual("",
           breaks = c("Z-", "Z+"),
