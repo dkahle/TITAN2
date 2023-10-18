@@ -87,53 +87,48 @@
 #' @rdname plot-taxa
 #' @export
 plot_taxa <- function(
-  titan.out,
-  z1 = TRUE, z2 = TRUE,
-  interval = TRUE,
-  prob95 = FALSE,
-  z.med = FALSE,
-  xlabel = "Environmental Gradient",
-  log = "", at = NULL,
-  xmin = min(titan.out$sppmax[, 8]),
-  xmax = max(titan.out$sppmax[,12]) * 1.05,
-  tck = 0.025,
-  bty = "u",
-  ntick = 6,
-  prtty = TRUE,
-  dig = 1,
-  leg.x = 0.8, leg.y = 10,
-  cex.taxa = 0.75, cex = 1.25, cex.axis = 1.25, cex.leg = 1.25, cex.lab = 1.25,
-  legend = TRUE,
-  col1 = "black", fil1 = "black",
-  col2 = "black", fil2 = "white",
-  write = FALSE,
-  all = FALSE,
-  ...
+    titan.out,
+    z1 = TRUE, z2 = TRUE,
+    interval = TRUE,
+    prob95 = FALSE,
+    z.med = TRUE,
+    xlabel = "Environmental Gradient",
+    log = "", at = NULL,
+    xmin = min(titan.out$sppmax[, 8]),
+    xmax = max(titan.out$sppmax[,12]) * 1.05,
+    tck = 0.025,
+    bty = "u",
+    ntick = 6,
+    prtty = TRUE,
+    dig = 1,
+    leg.x = 0.8, leg.y = 10,
+    cex.taxa = 0.6, cex = 1, cex.axis = 1, cex.leg = 1, cex.lab = 1,
+    legend = TRUE,
+    col1 = "black", fil1 = "black",
+    col2 = "black", fil2 = "white",
+    write = FALSE,
+    all = FALSE,
+    ...
 ) {
 
-  imax = titan.out$arguments[[5]]
-  boot = titan.out$arguments[[3]] > 0.5
-  if (all) {
-    boot = F
-  }
+  imax <- titan.out$arguments[[5]]
+  boot <- titan.out$arguments[[3]] > 0.5
+  if (all) boot <- FALSE
+
   ## SUBSET TAXA INTO 2 MATRICES BY GROUP ID (1 OR 2)
   if (boot) {
     if (z1) {
-      sppsub1 <- subset(titan.out$sppmax, titan.out$sppmax[,
-        16] == 1)
+      sppsub1 <- subset(titan.out$sppmax, titan.out$sppmax[,16] == 1)
     }
     if (z2) {
-      sppsub2 <- subset(titan.out$sppmax, titan.out$sppmax[,
-        16] == 2)
+      sppsub2 <- subset(titan.out$sppmax, titan.out$sppmax[,16] == 2)
     }
   } else {
     if (z1) {
-      sppsub1 <- subset(titan.out$sppmax, titan.out$sppmax[,
-        4] == 1 & titan.out$sppmax[, 6] <= 0.05)
+      sppsub1 <- subset(titan.out$sppmax, titan.out$sppmax[,4] == 1 & titan.out$sppmax[, 6] <= 0.05)
     }
     if (z2) {
-      sppsub2 <- subset(titan.out$sppmax, titan.out$sppmax[,
-        4] == 2 & titan.out$sppmax[, 6] <= 0.05)
+      sppsub2 <- subset(titan.out$sppmax, titan.out$sppmax[,4] == 2 & titan.out$sppmax[, 6] <= 0.05)
     }
   }
 
@@ -167,52 +162,51 @@ plot_taxa <- function(
     }
   }
 
-  plot(sppsub.gt[, 1], ((max(rank((sppsub.gt[, 1]), ties.method = "first")) +
-    1) - rank((sppsub.gt[, 1]), ties.method = "first")), xlim = c(xmin,
-    xmax), ylim = c(0.5, max(rank(sppsub.gt[, 1], ties.method = "first") +
-    1)), cex = 0, tck = tck, log = log, axes = FALSE, ylab = "",
-    xlab = "")
+  plot(
+    sppsub.gt[, 1],
+    (max(rank((sppsub.gt[, 1]), ties.method = "first")) + 1) - rank((sppsub.gt[, 1]), ties.method = "first"),
+    xlim = c(xmin, xmax),
+    ylim = c(0.5, max(rank(sppsub.gt[, 1], ties.method = "first") + 1)),
+    cex = 0,
+    tck = tck,
+    log = log,
+    axes = FALSE,
+    ylab = "",
+    xlab = ""
+  )
 
 
   ## DETERMINE RANK ORDER OF SYMBOLS ON Y AXIS
   if (boot) {
     if (prob95) {
       if (z1) {
-        yvalues1 = ((max(rank((sppsub1[, 12]), ties.method = "first")) +
-          1) - rank((sppsub1[, 12]), ties.method = "first"))
+        yvalues1 <- (max(rank((sppsub1[, 12]), ties.method = "first")) + 1) - rank((sppsub1[, 12]), ties.method = "first")
       }
       if (z2) {
-        yvalues2 = rank((sppsub2[, 8]), ties.method = "first") +
-          0.5
+        yvalues2 <- rank((sppsub2[, 8]), ties.method = "first") + 0.5
       }
     } else {
       if (z.med) {
         if (z1) {
-          yvalues1 = ((max(rank((sppsub1[, 10]), ties.method = "first")) +
-          1) - rank((sppsub1[, 10]), ties.method = "first"))
+          yvalues1 <- (max(rank((sppsub1[, 10]), ties.method = "first")) + 1) - rank((sppsub1[, 10]), ties.method = "first")
         }
         if (z2) {
-          yvalues2 = rank((sppsub2[, 10]), ties.method = "first") +
-          0.5
+          yvalues2 <- rank((sppsub2[, 10]), ties.method = "first") + 0.5
         }
       } else {
         if (imax) {
           if (z1) {
-          yvalues1 = ((max(rank((sppsub1[, 1]), ties.method = "first")) +
-            1) - rank((sppsub1[, 1]), ties.method = "first"))
+            yvalues1 <- (max(rank((sppsub1[, 1]), ties.method = "first")) + 1) - rank((sppsub1[, 1]), ties.method = "first")
           }
           if (z2) {
-          yvalues2 = rank((sppsub2[, 1]), ties.method = "first") +
-            0.5
+            yvalues2 <- rank((sppsub2[, 1]), ties.method = "first") + 0.5
           }
         } else {
           if (z1) {
-          yvalues1 = ((max(rank((sppsub1[, 2]), ties.method = "first")) +
-            1) - rank((sppsub1[, 2]), ties.method = "first"))
+            yvalues1 <- (max(rank((sppsub1[, 2]), ties.method = "first")) + 1) - rank((sppsub1[, 2]), ties.method = "first")
           }
           if (z2) {
-          yvalues2 = rank((sppsub2[, 2]), ties.method = "first") +
-            0.5
+            yvalues2 <- rank((sppsub2[, 2]), ties.method = "first") + 0.5
           }
         }
       }
@@ -220,21 +214,17 @@ plot_taxa <- function(
   } else {
     if (imax) {
       if (z1) {
-        yvalues1 = ((max(rank((sppsub1[, 1]), ties.method = "first")) +
-          1) - rank((sppsub1[, 1]), ties.method = "first"))
+        yvalues1 <- (max(rank((sppsub1[, 1]), ties.method = "first")) + 1) - rank((sppsub1[, 1]), ties.method = "first")
       }
       if (z2) {
-        yvalues2 = rank((sppsub2[, 1]), ties.method = "first") +
-          0.5
+        yvalues2 <- rank((sppsub2[, 1]), ties.method = "first") + 0.5
       }
     } else {
       if (z1) {
-        yvalues1 = ((max(rank((sppsub1[, 2]), ties.method = "first")) +
-          1) - rank((sppsub1[, 2]), ties.method = "first"))
+        yvalues1 <- (max(rank((sppsub1[, 2]), ties.method = "first")) + 1) - rank((sppsub1[, 2]), ties.method = "first")
       }
       if (z2) {
-        yvalues2 = rank((sppsub2[, 2]), ties.method = "first") +
-          0.5
+        yvalues2 <- rank((sppsub2[, 2]), ties.method = "first") + 0.5
       }
     }
   }
@@ -242,42 +232,16 @@ plot_taxa <- function(
   ## ADD INTERVALS AS LINE SEGMENTS
 
   if (boot & interval) {
-    if (z1) {
-      segments(sppsub1[, 8], yvalues1, sppsub1[, 12], yvalues1,
-        col = col1, lwd = 2)
-    }
-    if (z2) {
-      segments(sppsub2[, 8], yvalues2, sppsub2[, 12], yvalues2,
-        col = col2, lwd = 2, lty = 3)
-    }
+    if (z1) segments(sppsub1[, 8], yvalues1, sppsub1[, 12], yvalues1, col = col1, lwd = 2)
+    if (z2) segments(sppsub2[, 8], yvalues2, sppsub2[, 12], yvalues2, col = col2, lwd = 2, lty = 3)
   }
 
 
   ## CREATE VECTOR FOR COLOR CODING MAX GROUP ASSIGNMENTS
-  if (z1) {
-    grpcol = rep(NA, nrow(sppsub1))
-  }
-  if (z2) {
-    grpcol2 = rep(NA, nrow(sppsub2))
-  }
-  if (z1) {
-    for (i in 1:nrow(sppsub1)) {
-      if (sppsub1[i, 4] > 1.5) {
-        grpcol[i] = col2
-      } else {
-        grpcol[i] = fil1
-      }
-    }
-  }
-  if (z2) {
-    for (i in 1:nrow(sppsub2)) {
-      if (sppsub2[i, 4] > 1.5) {
-        grpcol2[i] = fil2
-      } else {
-        grpcol2[i] = fil1
-      }
-    }
-  }
+  if (z1) grpcol <- rep(NA, nrow(sppsub1))
+  if (z2) grpcol2 <- rep(NA, nrow(sppsub2))
+  if (z1) for (i in 1:nrow(sppsub1)) grpcol[i] <- if (sppsub1[i, 4] > 1.5) col2 else fil1
+  if (z2) for (i in 1:nrow(sppsub2)) grpcol2[i] <- if (sppsub2[i, 4] > 1.5) fil2 else fil1
 
   ## ADD TAXA SYMBOLS IN PROPORTION TO Z SCORE OR MEDIAN BOOT.Z,
   ## COLORED BY MAX GROUP ASSIGMENT
@@ -285,61 +249,41 @@ plot_taxa <- function(
     if (prob95) {
       if (z.med) {
         if (z1) {
-          symbols(sppsub1[, 12], yvalues1, circles = sppsub1[,
-          15], inches = 0.1, add = TRUE, xlim = c(0,
-          5), fg = col1, bg = grpcol, lwd = 2)
+          symbols(sppsub1[, 12], yvalues1, circles = sppsub1[, 15], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col1, bg = grpcol, lwd = 2)
         }
         if (z2) {
-          symbols(sppsub2[, 8], yvalues2, circles = sppsub2[,
-          15], inches = 0.1, add = TRUE, xlim = c(0,
-          5), fg = col2, bg = grpcol2, lwd = 2)
+          symbols(sppsub2[, 8], yvalues2, circles = sppsub2[, 15], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col2, bg = grpcol2, lwd = 2)
         }
       } else {
         if (z1) {
-          symbols(sppsub1[, 12], yvalues1, circles = sppsub1[,
-          7], inches = 0.1, add = TRUE, xlim = c(0, 5),
-          fg = col1, bg = grpcol, lwd = 2)
+          symbols(sppsub1[, 12], yvalues1, circles = sppsub1[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col1, bg = grpcol, lwd = 2)
         }
         if (z2) {
-          symbols(sppsub2[, 8], yvalues2, circles = sppsub2[,
-          7], inches = 0.1, add = TRUE, xlim = c(0, 5),
-          fg = col2, bg = grpcol2, lwd = 2)
+          symbols(sppsub2[, 8], yvalues2, circles = sppsub2[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col2, bg = grpcol2, lwd = 2)
         }
       }
     } else {
       if (z.med) {
         if (z1) {
-          symbols(sppsub1[, 10], yvalues1, circles = sppsub1[,
-          15], inches = 0.1, add = TRUE, xlim = c(0,
-          5), fg = col1, bg = grpcol, lwd = 2)
+          symbols(sppsub1[, 10], yvalues1, circles = sppsub1[, 15], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col1, bg = grpcol, lwd = 2)
         }
         if (z2) {
-          symbols(sppsub2[, 10], yvalues2, circles = sppsub2[,
-          15], inches = 0.1, add = TRUE, xlim = c(0,
-          5), fg = col2, bg = grpcol2, lwd = 2)
+          symbols(sppsub2[, 10], yvalues2, circles = sppsub2[, 15], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col2, bg = grpcol2, lwd = 2)
         }
       } else {
         if (imax) {
           if (z1) {
-          symbols(sppsub1[, 1], yvalues1, circles = sppsub1[,
-            7], inches = 0.1, add = TRUE, xlim = c(0,
-            5), fg = col1, bg = grpcol, lwd = 2)
+            symbols(sppsub1[, 1], yvalues1, circles = sppsub1[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col1, bg = grpcol, lwd = 2)
           }
           if (z2) {
-          symbols(sppsub2[, 1], yvalues2, circles = sppsub2[,
-            7], inches = 0.1, add = TRUE, xlim = c(0,
-            5), fg = col2, bg = grpcol2, lwd = 2)
+            symbols(sppsub2[, 1], yvalues2, circles = sppsub2[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col2, bg = grpcol2, lwd = 2)
           }
         } else {
           if (z1) {
-          symbols(sppsub1[, 2], yvalues1, circles = sppsub1[,
-            7], inches = 0.1, add = TRUE, xlim = c(0,
-            5), fg = col1, bg = grpcol, lwd = 2)
+            symbols(sppsub1[, 2], yvalues1, circles = sppsub1[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col1, bg = grpcol, lwd = 2)
           }
           if (z2) {
-          symbols(sppsub2[, 2], yvalues2, circles = sppsub2[,
-            7], inches = 0.1, add = TRUE, xlim = c(0,
-            5), fg = col2, bg = grpcol2, lwd = 2)
+            symbols(sppsub2[, 2], yvalues2, circles = sppsub2[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col2, bg = grpcol2, lwd = 2)
           }
         }
       }
@@ -347,53 +291,47 @@ plot_taxa <- function(
   } else {
     if (imax) {
       if (z1) {
-        symbols(sppsub1[, 1], yvalues1, circles = sppsub1[,
-          7], inches = 0.1, add = TRUE, xlim = c(0, 5),
-          fg = col1, bg = grpcol, lwd = 2)
+        symbols(sppsub1[, 1], yvalues1, circles = sppsub1[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col1, bg = grpcol, lwd = 2)
       }
       if (z2) {
-        symbols(sppsub2[, 1], yvalues2, circles = sppsub2[,
-          7], inches = 0.1, add = TRUE, xlim = c(0, 5),
-          fg = col2, bg = grpcol2, lwd = 2)
+        symbols(sppsub2[, 1], yvalues2, circles = sppsub2[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col2, bg = grpcol2, lwd = 2)
       }
     } else {
       if (z1) {
-        symbols(sppsub1[, 2], yvalues1, circles = sppsub1[,
-          7], inches = 0.1, add = TRUE, xlim = c(0, 5),
-          fg = col1, bg = grpcol, lwd = 2)
+        symbols(sppsub1[, 2], yvalues1, circles = sppsub1[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col1, bg = grpcol, lwd = 2)
       }
       if (z2) {
-        symbols(sppsub2[, 2], yvalues2, circles = sppsub2[,
-          7], inches = 0.1, add = TRUE, xlim = c(0, 5),
-          fg = col2, bg = grpcol2, lwd = 2)
+        symbols(sppsub2[, 2], yvalues2, circles = sppsub2[, 7], inches = 0.1, add = TRUE, xlim = c(0, 5), fg = col2, bg = grpcol2, lwd = 2)
       }
     }
   }
 
   ## ADD TAXA NAMES TO Y-AXES
   if (z1) {
-    axis(2, at = yvalues1, labels = rownames(sppsub1), las = 1,
-      mgp = c(1, 0.5, 0), cex.axis = cex.taxa, tck = tck)
+    axis(2, at = yvalues1, labels = rownames(sppsub1), las = 1, mgp = c(1, 0.5, 0), cex.axis = cex.taxa, tck = tck)
   }
   if (z2) {
-    axis(4, at = yvalues2, labels = rownames(sppsub2), mgp = c(1,
-      0.5, 0), las = 1, cex.axis = cex.taxa, tck = tck)
+    axis(4, at = yvalues2, labels = rownames(sppsub2), mgp = c(1, 0.5, 0), las = 1, cex.axis = cex.taxa, tck = tck)
   }
 
 
   ## ADD X-AXIS WITH SAME RANGE AS DUMMY PLOT
   if (log == "x") {
-    axis(1, at = at, mgp = c(2, 0.5, 0), cex.axis = cex.axis,
-      tck = tck)
+    axis(1, at = at, mgp = c(2, 0.5, 0), cex.axis = cex.axis, tck = tck)
   } else {
     if (prtty) {
-      axis(1, pretty(xmin:xmax, ntick), mgp = c(2, 0.5, 0),
-        cex.axis = cex.axis, tck = tck)
+      axis(1, pretty(xmin:xmax, ntick), mgp = c(2, 0.5, 0), cex.axis = cex.axis, tck = tck)
     } else {
-      axis(1, at = seq(from = round(xmin, digits = dig),
-        to = round(xmax, digits = dig), by = round((xmax -
-          xmin)/4, digits = dig)), mgp = c(2, 0.5, 0),
-        cex.axis = cex.axis, tck = tck)
+      axis(1,
+           at = seq(
+             from = round(xmin, digits = dig),
+             to = round(xmax, digits = dig),
+             by = round((xmax - xmin)/4, digits = dig)
+           ),
+           mgp = c(2, 0.5, 0),
+           cex.axis = cex.axis,
+           tck = tck
+      )
     }
   }
 
@@ -401,29 +339,28 @@ plot_taxa <- function(
   mtext(xlabel, side = 1, line = 2, cex = cex)
 
   ## ADD LEGEND TO FIGURE
-  if (z1 & z2) {
+  ##2023-09-19 changed plot=TRUE to plot=legend (TRUE or FALSE, user decides)
+  if (z1 && z2) {
     leg = c("z-", "z+")
     fill.leg = c(fil1, fil2)
-    legend(titan.out$envcls[length(titan.out$envcls) * leg.x],
-      leg.y, leg, fill = fill.leg, ncol = 1, bty = "n", plot = TRUE,
-      cex = cex.leg)
+    legend(
+      titan.out$envcls[length(titan.out$envcls) * leg.x],
+      leg.y, leg, fill = fill.leg, ncol = 1, bty = "n", plot = legend,
+      cex = cex.leg
+    )
   }
   box(which = "plot", bty = bty)
 
   ## WRITE SPPSUB1 AND/OR 2 TO FILE AND PRINT TO CONSOLE if(z1)
   ## {write.table(sppsub1,'sppsub1.txt')} if(z2)
   ## {write.table(sppsub2,'sppsub2.txt')}
-  if (z1 & z2 & write) {
+  if (z1 && z2 && write) {
     sppsub <- list(sppsub1, sppsub2)
     names(sppsub) <- c("sppsub1", "sppsub2")
     return(sppsub)
   }
-  if (z1 & write) {
-    return(sppsub1)
-  }
-  if (z2 & write) {
-    return(sppsub2)
-  }
+  if (z1 && write) return(sppsub1)
+  if (z2 && write) return(sppsub2)
 
 
 }
