@@ -117,6 +117,9 @@ plot_taxa_ridges <- function(
   z.median <- NULL; rm(z.median)
   `5%` <- NULL; rm(`5%`)
   `95%` <- NULL; rm(`95%`)
+  Q5 <- NULL; rm(Q5)
+  Q50 <- NULL; rm(Q50)
+  Q95 <- NULL; rm(Q95)
 
   # deal with axis font defaulting
   if (missing(axis.text.x)) axis.text.x <- if (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else theme_get()$text$size
