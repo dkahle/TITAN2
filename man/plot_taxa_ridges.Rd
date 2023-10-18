@@ -12,15 +12,15 @@ plot_taxa_ridges(
   z1_fill_high = "black",
   z2_fill_low = "pink",
   z2_fill_high = "red",
-  pur.cut = titan.out$arguments[[7]],
-  rel.cut = titan.out$arguments[[8]],
   xlabel = "Environmental Gradient",
   n_ytaxa = 90,
   printspp = FALSE,
   grid = TRUE,
+  d_lines = FALSE,
   trans = "identity",
   xaxis = !grid,
   xlim,
+  breaks = ggplot2::waiver(),
   bw,
   rel_heights,
   ...,
@@ -40,10 +40,6 @@ plot_taxa_ridges(
 \item{z1_fill_low, z1_fill_high, z2_fill_low, z2_fill_high}{Respective fill
 colors passed to \code{\link[=scale_fill_gradient]{scale_fill_gradient()}}}
 
-\item{pur.cut}{pur.cut}
-
-\item{rel.cut}{rel.cut}
-
 \item{xlabel}{A character string for the x axis label.}
 
 \item{n_ytaxa}{The maximum number of taxa to be plotted.}
@@ -54,12 +50,20 @@ printed.}
 \item{grid}{The \code{grid} argument of \code{\link[=theme_ridges]{theme_ridges()}}. Setting this to
 \code{FALSE} removes horizontal lines from the plot, see examples.}
 
+\item{d_lines}{Argument to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}.
+Short for density lines, a logical determining whether the median change
+point values from estimated from each taxon's density function, is plotted.
+If \code{TRUE}, a dashed, black vertical line will be plotted.}
+
 \item{trans}{a scale transformation to be applied to the x-axis through
 ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 
 \item{xaxis}{Logical; should the x-axis be plotted?}
 
 \item{xlim}{x axis limits, e.g. \code{xlim = c(0,10)}.}
+
+\item{breaks}{Argument to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}.
+Determines values and labels of breaks (ticks) on the x-axis.}
 
 \item{bw}{The bandwidth of used in the kernel density estimate; see
 \code{\link[=density]{density()}}.}
@@ -116,6 +120,7 @@ plot_taxa_ridges(glades.titan,
 )
 
 }
+
 
 
 }

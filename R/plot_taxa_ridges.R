@@ -1,7 +1,5 @@
 #' Taxon change point ridge plots
 #'
-#' Taxon change point ridge plots
-#'
 #' @param titan.out A TITAN output object.
 #' @param z1 A logical specifying whether decreasing taxa should be plotted.
 #' @param z2 A logical specifying whether increasing taxa should be plotted.
@@ -11,12 +9,10 @@
 #'   printed.
 #' @param z1_fill_low,z1_fill_high,z2_fill_low,z2_fill_high Respective fill
 #'   colors passed to [scale_fill_gradient()]
-#' @param pur.cut pur.cut
-#' @param rel.cut rel.cut
-#' @param grid The \code{grid} argument of [theme_ridges()]. Setting this to
-#'   \code{FALSE} removes horizontal lines from the plot, see examples.
+#' @param grid The `grid` argument of [theme_ridges()]. Setting this to
+#'   `FALSE` removes horizontal lines from the plot, see examples.
 #' @param trans a scale transformation to be applied to the x-axis through
-#'   ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.
+#'   ggplot2. e.g. `"log10"` or `"sqrt"`.
 #' @param xaxis Logical; should the x-axis be plotted?
 #' @param xlim x axis limits, e.g. \code{xlim = c(0,10)}.
 #' @param axis.text.x,axis.text.y,axis.title.x,axis.title.y Font sizes of
@@ -26,6 +22,12 @@
 #'   [density()].
 #' @param rel_heights Argument to pass to [cowplot::plot_grid()] as an override
 #'   for the defaults
+#' @param breaks Argument to pass to [geom_density_ridges()].
+#' Determines values and labels of breaks (ticks) on the x-axis.
+#' @param d_lines Argument to pass to [geom_density_ridges()].
+#' Short for density lines, a logical determining whether the median change
+#' point values from estimated from each taxon's density function, is plotted.
+#' If `TRUE`, a dashed, black vertical line will be plotted.
 #' @param ... Arguments to pass to [geom_density_ridges()]
 #' @return A plot of decreasing and/or increasing taxon-specific change points
 #'   along the environmental gradient.
@@ -74,25 +76,28 @@
 #' }
 #'
 #'
+#'
 plot_taxa_ridges <- function(
-  titan.out,
-  z1 = TRUE, z2 = TRUE,
-  z1_fill_low="lightblue", z1_fill_high="black",
-  z2_fill_low="pink", z2_fill_high="red",
-  pur.cut = titan.out$arguments[[7]],
-  rel.cut = titan.out$arguments[[8]],
-  xlabel = "Environmental Gradient",
-  n_ytaxa = 90,
-  printspp = FALSE,
-  grid = TRUE,
-  trans = "identity",
-  xaxis = !grid,
-  xlim,
-  bw,
-  rel_heights,
-  ...,
-  axis.text.x, axis.text.y,
-  axis.title.x, axis.title.y
+    titan.out,
+    z1 = TRUE, z2 = TRUE,
+    z1_fill_low="lightblue", z1_fill_high="black",
+    z2_fill_low="pink", z2_fill_high="red",
+    # pur.cut = titan.out$arguments[[7]],
+    # rel.cut = titan.out$arguments[[8]],
+    xlabel = "Environmental Gradient",
+    n_ytaxa = 90,
+    printspp = FALSE,
+    grid = TRUE,
+    d_lines = FALSE,
+    trans = "identity",
+    xaxis = !grid,
+    xlim,
+    breaks = ggplot2::waiver(),
+    bw,
+    rel_heights,
+    ...,
+    axis.text.x, axis.text.y,
+    axis.title.x, axis.title.y
 ) {
 
   # cran guard
@@ -119,19 +124,19 @@ plot_taxa_ridges <- function(
   if (missing(axis.title.x)) axis.title.x <- if (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size else theme_get()$titletext$size
   if (missing(axis.title.y)) axis.title.y <- if (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size else theme_get()$titletext$size
 
-
   imax <- titan.out$arguments[["imax"]]
   boot <- titan.out$arguments[["boot"]] > 0.5
 
   sppmax <- titan.out %>%
     pluck("sppmax") %>%
     tibble::as_tibble() %>%
-    mutate(id = row.names(titan.out$sppmax)) #%>%
-    #dplyr::rename("Q5" = "5%", "Q95" = "95%")
+    mutate(id = row.names(titan.out$sppmax)) %>%
+    rename("Q5" = "5%","Q10" = "10%", "Q50" = "50%", "Q90"="90%", "Q95" = "95%")
 
-  sppmax$filter <- 0
-  pure_and_reliable_ndcs <- with(sppmax, which(purity>=pur.cut & reliability>=rel.cut))
-  sppmax$filter[pure_and_reliable_ndcs] <- sppmax$maxgrp[pure_and_reliable_ndcs]
+  # next 3 lines are unnecessary
+  # sppmax$filter <- 0
+  # reliable_taxa_ndcs <- with(sppmax, which(purity>=pur.cut & reliability>=rel.cut))
+  # sppmax$filter[reliable_taxa_ndcs] <- sppmax$maxgrp[reliable_taxa_ndcs]
 
   num.dcr <- sum(sppmax$filter == 1L)
   num.ncr <- sum(sppmax$filter == 2L)
@@ -140,35 +145,33 @@ plot_taxa_ridges <- function(
   message(glue("Number of Decreasers = {num.dcr}"))
   message(glue("Number of Increasers = {num.ncr}"))
 
-  reliable_taxa_ndcs <- which(sppmax$filter > 0)
+  sppmax_filter_index <- which(sppmax$filter > 0) #changed name of index for pure/reliable taxa (more intuitive)
 
   sppmax_ny <- sppmax %>%
-   dplyr::arrange(desc(purity),desc(reliability),desc(z.median)) %>%
-   dplyr::slice(1:min(dplyr::n(), n_ytaxa))
+    arrange(desc(purity), desc(reliability), desc(z.median)) %>%
+    slice(1:min(n(), n_ytaxa))
 
-  n_filter_decr <- with(sppmax_ny, sum(filter == 1L))
-  n_filter_incr <- with(sppmax_ny, sum(filter == 2L))
+  n_filter_decr <- sum(sppmax_ny$filter == 1L)
+  n_filter_incr <- sum(sppmax_ny$filter == 2L)
 
-  gdf <- reliable_taxa_ndcs %>%
-    map(~
-      cbind(
-        tibble::tibble(
-          # "chk_pts" = round(sort(titan.out$metricArray[.x,2,]), digits = 2)
-          "chk_pts" = sort(titan.out$metricArray[.x,2,])
-        ),
-        sppmax %>% slice(.x)
-      )
+  gdf <- sppmax_filter_index %>% #use of new pure/reliable filter index
+    map_dfr(~
+              cbind(
+                tibble::tibble(
+                  "chk_pts" = sort(titan.out$metricArray[.x,2,])
+                ),
+                sppmax %>% slice(.x)
+              )
     ) %>%
-    bind_rows() %>%
     mutate(filter = case_when(
       (filter == 1) ~ -1L,
       (filter == 2) ~ +1L
     ))
 
   gdf <- gdf %>%
-    dplyr::arrange(desc(purity), desc(reliability), desc(z.median)) %>%
-    dplyr::slice(1:min(dplyr::n(), n_ytaxa*length(titan.out$metricArray[1,1,]))) %>%
-    dplyr::filter(`5%` < chk_pts, chk_pts < `95%`)
+    arrange(desc(purity), desc(reliability), desc(z.median)) %>%
+    slice(1:min(n(), n_ytaxa*length(titan.out$metricArray[1,1,]))) %>%
+    filter(Q5 < chk_pts, chk_pts < Q95) #changed to Q5 and Q95 to reflect renaming
 
   # compute pooled statistics
   if (missing(xlim)) xlim <- grDevices::extendrange(range(gdf$chk_pts), f = 0.05)
@@ -181,21 +184,25 @@ plot_taxa_ridges <- function(
 
     ptop <- ggplot(
       filter(gdf, filter == -1L),
-      aes(x = chk_pts, y = reorder(id, -chk_pts, median), fill = zscore)
+      aes(x = chk_pts, y = reorder(id, -Q50, median), fill = zscore)
     ) +
       ggridges::geom_density_ridges(
-        quantile_lines = TRUE,
+        quantile_lines = d_lines, #made an argument
         vline_size = 0.25,
         quantiles = 2,
-        vline_color = "black",
+        vline_color = "black", #suggest using black
+        vline_linetype = 2, #distinguish from 50% by linetype = 2
         color = NA,
         alpha = 0.6,
         from = do.call(trans, list(xmin)),
         to = do.call(trans, list(xmax)),
-        bandwidth = bw,
-        ...
+        bandwidth = bw
       ) +
-      scale_x_continuous(limits = xlim, expand = c(0,0), trans = trans) +
+      geom_segment(aes(x=Q50, xend=Q50, y=as.numeric(reorder(id, -Q50, median)), yend=as.numeric(reorder(id, -Q50, median))+.9), linewidth=0.25, color="black"
+                   #changed to black, removed "linetype"
+      ) +
+      scale_x_continuous(limits = xlim, breaks=breaks, expand = c(0,0), trans = trans) +
+      #added breaks=breaks as argument
       scale_y_discrete("") +
       scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
       ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
@@ -204,6 +211,12 @@ plot_taxa_ridges <- function(
         axis.text.y = element_text(size = axis.text.y),
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = axis.title.y),
+        axis.line = (if (xaxis) { #added if (xaxis) {...} to all 3 places needed to plot x if xaxis=TRUE
+          do.call(element_line, theme_get()$axis.line)
+        } else {
+          element_blank()
+        }),
+        axis.line.y = element_blank(),
         plot.margin = structure(
           c(5.5, 5.5, 0, 5.5),
           class = c("margin", "unit"),
@@ -214,36 +227,38 @@ plot_taxa_ridges <- function(
 
     pbottom <- ggplot(
       filter(gdf, filter == +1L),
-      aes(x = chk_pts, y = reorder(id, chk_pts, median), fill = zscore)
+      aes(x = chk_pts, y = reorder(id, Q50, median), fill = zscore)
     ) +
-    ggridges::geom_density_ridges(
-      quantile_lines = TRUE,
-      vline_size = 0.25,
-      quantiles = 2,
-      vline_color = "black",
-      color = NA,
-      alpha = 0.6,
-      from = do.call(trans, list(xmin)),
-      to = do.call(trans, list(xmax)),
-      bandwidth = bw,
-      ...
-    ) +
-    ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
-    scale_x_continuous(xlabel, limits = xlim, expand = c(0,0), trans = trans) +
-    scale_y_discrete("") +
-    scale_fill_gradient("Z-Score", low = z2_fill_low, high = z2_fill_high) +
-    theme(
-      axis.text.x = element_text(size = axis.text.x),
-      axis.text.y = element_text(size = axis.text.y),
-      axis.title.x = element_text(size = axis.title.x),
-      axis.title.y = element_text(size = axis.title.y),
-      axis.line = (if (xaxis) {
-        do.call(element_line, theme_get()$axis.line)
-      } else {
-        element_blank()
-      }),
-      axis.line.y = element_blank()
-    )
+      ggridges::geom_density_ridges(
+        quantile_lines = d_lines, #made an argument
+        vline_size = 0.25,
+        quantiles = 2,
+        vline_color = "black", #suggest using black
+        vline_linetype = 2, #distinguish from 50% by linetype = 2
+        color = NA,
+        alpha = 0.6,
+        from = do.call(trans, list(xmin)),
+        to = do.call(trans, list(xmax)),
+        bandwidth = bw
+      ) +
+      geom_segment(aes(x=Q50, xend=Q50, y=as.numeric(reorder(id, Q50, median)), yend=as.numeric(reorder(id, Q50, median))+.9), linewidth=0.25, color="black" #changed to black, removed linetype
+      ) +
+      ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
+      scale_x_continuous(xlabel, limits = xlim, breaks=breaks, expand = c(0,0), trans = trans) +
+      scale_y_discrete("") +
+      scale_fill_gradient("Z-Score", low = z2_fill_low, high = z2_fill_high) +
+      theme(
+        axis.text.x = element_text(size = axis.text.x),
+        axis.text.y = element_text(size = axis.text.y),
+        axis.title.x = element_text(size = axis.title.x),
+        axis.title.y = element_text(size = axis.title.y),
+        axis.line = (if (xaxis) {#added if (xaxis) {...} to all 3 places needed to plot x if xaxis=TRUE
+          do.call(element_line, theme_get()$axis.line)
+        } else {
+          element_blank()
+        }),
+        axis.line.y = element_blank()
+      )
 
   } else {
 
@@ -251,34 +266,43 @@ plot_taxa_ridges <- function(
 
       ptop <- ggplot(
         filter(gdf, filter == -1),
-        aes(x = chk_pts, y = reorder(id, -chk_pts, median), fill = zscore)
+        aes(x = chk_pts, y = reorder(id, -Q50, median), fill = zscore)
       ) +
         ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
         ggridges::geom_density_ridges(
-          quantile_lines = TRUE,
+          quantile_lines = d_lines,  #made an argument
           vline_size = 0.25,
           quantiles = 2,
-          vline_color = "black",
+          vline_color = "black", #suggest using black
+          vline_linetype = 2, #distinguish from 50% by linetype = 2
           color = NA,
           alpha = 0.6,
           from = do.call(trans, list(xmin)),
           to = do.call(trans, list(xmax)),
-          bandwidth = bw,
-          ...
+          bandwidth = bw
+        )+
+        geom_segment(aes(x=Q50, xend=Q50, y=as.numeric(reorder(id, -Q50, median)), yend=as.numeric(reorder(id, -Q50, median))+.9), linewidth=0.25, color="black" #changed to black, removed linetype
         ) +
-        scale_x_continuous(xlabel, limits = xlim, expand = c(0,0), trans = trans) +
+        scale_x_continuous(xlabel, limits = xlim, breaks=breaks, expand = c(0,0), trans = trans) +
         scale_y_discrete("") +
         scale_fill_gradient("Z-Score", low = z1_fill_low, high = z1_fill_high) +
         theme(
           axis.text.x = element_text(size = axis.text.x),
           axis.text.y = element_text(size = axis.text.y),
           axis.title.x = element_text(size = axis.title.x),
-          axis.title.y = element_text(size = axis.title.y)
+          axis.title.y = element_text(size = axis.title.y),
+          axis.line = (if (xaxis) {#added if (xaxis) {...} to all 3 places needed to plot x if xaxis=TRUE
+            do.call(element_line, theme_get()$axis.line)
+          } else {
+            element_blank()
+          }),
+          axis.line.y = element_blank()
         )
 
-      }
 
     }
+
+  }
 
   if (printspp) print(as.data.frame(sppmax_ny))
 
