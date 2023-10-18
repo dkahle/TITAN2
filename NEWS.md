@@ -1,3 +1,12 @@
+# TITAN2 2.4.3
+
+MINOR CHANGES
+
+* `plot_taxa_ridges()`: 
+
+* `plot_taxa()`: 
+
+
 # TITAN2 2.4.2
 
 MINOR CHANGES
