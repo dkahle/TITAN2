@@ -4,11 +4,10 @@ author: "Matthew Baker (UMBC),  Ryan King (Baylor), and David Kahle (Baylor)"
 date: "`r ip <- as.data.frame(installed.packages()); paste('Version', ip[ip$Package == 'TITAN2',]$Version[[1]])`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{titan2-intro}
+  %\VignetteIndexEntry{An Introduction to TITAN2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 
 
 ```{r setup, include=FALSE}
@@ -22,9 +21,9 @@ knitr::opts_chunk$set(echo=TRUE, collapse=TRUE, error=TRUE, comment = "#")
 <!-- library(TITAN2) -->
 <!-- library(cowplot) -->
 <!-- library(ggridges) -->
-<!-- library(tidddyverse) -->
+<!-- library(tidyverse) --> 
+<!-- library(glue) --> 
 <!-- ``` -->
-
 
 
 ### Introduction to Threshold Indicator Taxa Analysis with **TITAN2**
@@ -37,7 +36,7 @@ was described in [Baker and King
 first published by [King and Richardson
 (2003)](http://link.springer.com/article/10.1007/s00267-002-0036-4#/page-1).
 
-For users familiar with the original version of `titan()` and associated
+For users familiar with the original version of `titan()`{.R} and associated
 functions, released as a text file for R 2.9.2 in Appendix 3 of [Baker and King
 (2010)]
 (http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full),
@@ -87,21 +86,21 @@ fixed; these include screens for inappropriate data.
 ### First Steps
 
 For users new to **TITAN2**, the package can be loaded like any other R package
-downloaded from CRAN with `install.packages("TITAN2")`; this only needs to be
+downloaded from CRAN with `install.packages("TITAN2")`{.R}; this only needs to be
 done once. The package can then be loaded into an active R session with
-`library()`:
+`library()`{.R}:
 ```{r}
 library("TITAN2")
 ```
 Note that the package needs to be loaded once per R session.
 
-As with the first version of the project, `titan()` requires 1) a site by taxa
+As with the first version of the project, `titan()`{.R} requires 1) a site by taxa
 matrix and 2) an environmental gradient. To facilitate this discussion, we have
-included in **TITAN2** examples of both: the datasets `glades.taxa` and
-`glades.env`.  This is the same data included with the original version in
+included in **TITAN2** examples of both: the datasets `glades.taxa`{.R} and
+`glades.env`{.R}.  This is the same data included with the original version in
 [Baker and King
 (2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full).
-Users can load the taxa data with the `data()` function:
+Users can load the taxa data with the `data()`{.R} function:
 
 ```{r}
 data(glades.taxa)
@@ -110,9 +109,9 @@ str(glades.taxa, list.len = 5)
 
 *See below for a discussion of how you can get your data into R.*
 
-The `data()` function loads the site by taxa matrix of 126 rows and 164 columns
-`glades.taxa`, and the `str()` ("structure") function gives a summary of what
-the data object is.  The columns of `glades.taxa` contain $log_{10}(x+1)$
+The `data()`{.R} function loads the site by taxa matrix of 126 rows and 164 columns
+`glades.taxa`{.R}, and the `str()`{.R} ("structure") function gives a summary of what
+the data object is.  The columns of `glades.taxa`{.R} contain $log_{10}(x+1)$
 transformed densities of macroinvertebrate taxa (though transformation is
 usually unnecessary in **TITAN2**).  The rows are sample units.  Taxa names are
 8-character abbreviations of scientific names. Only taxa with at least 5
@@ -130,49 +129,49 @@ This dataset has 126 rows and 1 column, surface-water total phosphorus (ug/L).
 As with the taxa data, missing values are not allowed in the environmental
 gradient data.
 
-We are now ready to run the `titan()` function.  (Note: this takes a while to 
+We are now ready to run the `titan()`{.R} function.  (Note: this takes a while to 
 run, so beware.)
 
 ```{r, eval = FALSE}
 glades.titan <- titan(glades.env, glades.taxa)
 ```
 
-In the above use of `titan()` many parameters are set by default, but they can
+In the above use of `titan()`{.R} many parameters are set by default, but they can
 be customized to the user's circumstance by direct specification.  The default
 values assumed by the above call are
 
 ```{r, eval = FALSE}
 glades.titan <- titan(glades.env, glades.taxa, 
   minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500, imax = FALSE, 
-  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 8, memory = FALSE
 )
 ```
 
-`titan()`'s extensive computations often require long run times, typically
+`titan()`{.R}'s extensive computations often require long run times, typically
 minutes or hours depending on the specifications.  To save you some time from
 running the above function yourself, we've included the results in the built-in
-dataset `glades.titan`, accessible with the `data()` function as before:
+dataset `glades.titan`{.R}, accessible with the `data()`{.R} function as before:
 
 ```{r}
 data(glades.titan)
 str(glades.titan, 1)
 ```
 
-In `titan()` the primary arguments are the environmental gradient (here
-`glades.env`) and the taxa matrix (here `glades.taxa`).  When you use the
+In `titan()`{.R} the primary arguments are the environmental gradient (here
+`glades.env`{.R}) and the taxa matrix (here `glades.taxa`{.R}).  When you use the
 function, be sure to save the output to another variable (this is the
 `glades.titan <- titan(gla...` part above).  Note that the deviance argument in
-`titan()` has been dropped from previous versions.  Other arguments include the
-following; you can learn more about them in the documentation of `titan()`
+`titan()`{.R} has been dropped from previous versions.  Other arguments include the
+following; you can learn more about them in the documentation of `titan()`{.R}
 obtained by typing `?titan`:
 
-- `minSplt` - the minimum number of observations on either side of a change
+- `minSplt`{.R} - the minimum number of observations on either side of a change
 point required to compute IndVal, $z$ scores, and associated statistics.  There
 are few reasons to make this value larger unless one is investigating sample
-bias.  Although small data sets may require reducing `minSplt`, it should never
+bias.  Although small data sets may require reducing `minSplt`{.R}, it should never
 be smaller than 3.
 
-- `numPerm` - the number of random permutations of the taxa data used to compare
+- `numPerm`{.R} - the number of random permutations of the taxa data used to compare
 observed IndVal scores to random ordering of observations along the
 environmental gradient, compute IndVal p-values (the probability that the
 magnitude of the observed value is no different from a distribution of those
@@ -183,19 +182,19 @@ for more formal analysis because larger numbers will result in convergence on a
 more precise $z$ score that will show less variation between runs. Larger values
 will increase computation time.
 
-- `boot` - a logical `TRUE` or `FALSE` controlling whether the function will
+- `boot`{.R} - a logical `TRUE`{.R} or `FALSE`{.R} controlling whether the function will
 employ a bootstrap resampling procedure to estimate uncertainty associated with
 the sample.  This is strongly recommended as the absence of the bootstrap
 results and associated diagnostics will almost certainly result in interpretive
 errors, and should not be called **TITAN2** ([Baker and King
 2013](http://www.bioone.org/doi/abs/10.1899/12-142.1)).
 
-- `nBoot` - controls the number of new datasets created by resampling the
+- `nBoot`{.R} - controls the number of new datasets created by resampling the
 observed data with replacement.  Values <500 can be used for exploration of
 large datasets to reduce computation time, but we recommend 500 or 1000 for
 formal analysis.
 
-- `imax` - controls whether the IndVal maximum or the $z$-score maximum (default
+- `imax`{.R} - controls whether the IndVal maximum or the $z$-score maximum (default
 and v1.0) is used to determine change points for each taxon.  This argument is
 provided as an option for those users concerned about the effect of bias
 introduced by the permutation used to calculate $z$ scores (see [Baker and King
@@ -204,7 +203,7 @@ practice, we have found that $z$-score bias is rarely a concern with empirical
 biological survey data. Nevertheless, we provide the option because we are
 unable to anticipate the full range of applications users may require.
 
-- `ivTot`- controls whether IndVal scores are computed by mean relative
+- `ivTot`{.R}- controls whether IndVal scores are computed by mean relative
 abundance across partitions (the default; after [Dufrene and Legendre
 1997](http://www.esajournals.org/doi/abs/10.1890/0012-9615(1997)067[0345:SAAIST]2.0.CO;2))
 or relative abundance obtained by the ratio of summed abundance in each
@@ -225,7 +224,7 @@ significantly from what would expect from random permutation.  Low reliability
 often indicates that resampling can produce sample distributions without a
 strong response signal, but this is not always the case.
 
-- `ncpus`- controls the number of processing cores to which the bootstrap
+- `ncpus`{.R}- controls the number of processing cores to which the bootstrap
 procedure is allocated.  The default (1) processes each bootstrap replicate in
 sequence.  If ncpus>1 the replicates will be allocated to different cores and
 processed in parallel using the R package **parallel** (which comes with R).
@@ -233,18 +232,18 @@ Parallel processing dramatically shortens run time and is recommended for most
 desktop applications as modern personal computers typically have 2-8 processing
 cores.
 
-- `memory`- a logical indicating whether temporary files should be written to
+- `memory`{.R}- a logical indicating whether temporary files should be written to
 disk during processing of bootstrap replicates.  Although this IO procedure can
 extend sequential processing time, its effects is negligible relative to
 parallelization, and we recommend it for data matrices larger than 250,000
-elements (e.g., 500 sites by 500 taxa).  Note that use of `memory = TRUE`
+elements (e.g., 500 sites by 500 taxa).  Note that use of `memory = TRUE`{.R}
 results in the creation of a scratch directory within the local workspace called
 "temp.dir"" containing the excess results from each bootstrap replicate
 necessary for accurate summary.  These files may be saved or discarded following
 each program run.
 
 During normal program operation, the taxa dataset is screened to assess whether
-it is appropriate for `titan()` and the following messages are written to the
+it is appropriate for `titan()`{.R} and the following messages are written to the
 screen:
 
 ```{r, echo = FALSE}
@@ -254,7 +253,7 @@ message("Taxa frequency screen complete")
 
 The first screening checks for excessively rare or common taxa occurrences and
 returns a warning if 100% or below minimum number of occurrences are detected.
-In some cases where analysis would be nonsensical, `titan()` will end its run.
+In some cases where analysis would be nonsensical, `titan()`{.R} will end its run.
 The second screen checks to make sure the environmental gradient and the taxa
 matrix have the same number of records.
 
@@ -272,7 +271,7 @@ message("Estimating taxa change points using z-score maxima")
 ```
 
 The final message issued in a normal execution presents the progress of the
-bootstrap routine by counting off replicates (if `ncpus = 1`):
+bootstrap routine by counting off replicates (if `ncpus == 1`{.R}):
 
 ```{r, echo = FALSE}
 message("Bootstrap resampling in sequence...")
@@ -281,7 +280,7 @@ message(2*1)
 message(3*1)
 ```
 
-or informing the user that the bootstrap is running in parallel (if `ncpus = 2`
+or informing the user that the bootstrap is running in parallel (if `ncpus == 2`{.R}
 or greater):
 
 ```{r, echo = FALSE}
@@ -291,9 +290,9 @@ message("Bootstrap resampling in parallel using 2 CPUs...no index will be printe
 This is the most computationally intensive step in the analysis.  The Everglades
 dataset takes ~6-7 seconds per bootstrap replicate, depending on processor
 speed.  Thus, 500 replicates take 3500 seconds or 58 minutes and ~60 minutes for
-the entire run.  However, `ncpus = 2` cuts this time in half to about 32 min,
-and `ncpus = 4` lowers the time to about 15 min, etc.  For initial explorations,
-users may consider setting `boot = FALSE`.  However, we do not recommend any
+the entire run.  However, setting `ncpus = 2`{.R} cuts this time in half to about 32 min,
+setting `ncpus = 4`{.R} lowers the time to about 15 min, etc.  For initial explorations,
+users may consider setting `boot = FALSE`{.R}.  However, we do not recommend any
 interpretation of graphical outputs or many tabular outputs until filtered by
 bootstrap diagnostics.
 
@@ -303,16 +302,16 @@ bootstrap diagnostics.
 
 #### Note on Loading Your Own Data
 
-As noted in the previous section, `titan()` requires two datasets: a site by
+As noted in the previous section, `titan()`{.R} requires two datasets: a site by
 taxa matrix and a environmental gradient dataset.  The site by taxa matrix
-should ideally be of class `data.frame`, the standard data structure in R.
-These can be read into R in several ways, for example the `read.table()` or
-`read.csv()` functions.  The **readr** package has other similar functions to
+should ideally be of class `data.frame`{.R}, the standard data structure in R.
+These can be read into R in several ways, for example the `read.table()`{.R} or
+`read.csv()`{.R} functions.  The **readr** package has other similar functions to
 help read data into R.  The environmental gradient dataset can either be a
-`data.frame` object with one column or simply an atomic vector of class
-`numeric`.  In addition to the the data-reading functions listed above, `scan()`
+`data.frame`{.R} object with one column or simply an atomic vector of class
+`numeric`{.R}.  In addition to the the data-reading functions listed above, `scan()`{.R}
 can be helpful for reading data of this type into R.  In addition to these, the
-`file.choose()` function allows users to select files interactively, which can
+`file.choose()`{.R} function allows users to select files interactively, which can
 help avoid pathing issues.
 
 
@@ -355,14 +354,14 @@ help avoid pathing issues.
 
 ### Tabular Results
 
-Community change points are returned automatically at the end of each `titan()`
+Community change points are returned automatically at the end of each `titan()`{.R}
 call, but these tabular sum(z) change point results are part of the titan object
 and may be called as follows:
 ```{r}
 glades.titan$sumz.cp
 ```
 
-The columns include the observed change point (`cp`) defined by the sum(z)
+The columns include the observed change point (`cp`{.R}) defined by the sum(z)
 maximum and selected quantiles (0.05-0.95) of the change points determined by
 resampling the observed data.
 
@@ -371,14 +370,14 @@ responding taxa (sumz-), those corresponding to the increasing or positively
 responding taxa (sumz+), and the corresponding scores using filtered versions of
 both sums.  Filtering is achieved by computing the sum(z) scores using only
 those taxa that are determined to be pure and reliable indicators.  FIltered
-scores are sensitive to `pur.cut` and `rel.cut` arguments at the `titan()`
+scores are sensitive to `pur.cut`{.R} and `rel.cut`{.R} arguments at the `titan()`{.R}
 function call.  Filtered scores may be used as a check to indicate whether
 impure or unreliable indicator taxa are contributing substantially to the
 pattern of sum(z) scores (in this case they do not).
 
 To obtain tabular results for individual taxa we can simply type
-`glades.titan$sppmax`.  Since this is a $164 \times 16$ matrix, we use the
-`head()` function to just display the top to get a feel for the results:
+`glades.titan$sppmax`{.R}.  Since this is a $164 \times 16$ matrix, we use the
+`head()`{.R} function to just display the top to get a feel for the results:
 
 ```{r}
 head(glades.titan$sppmax)
@@ -386,86 +385,85 @@ head(glades.titan$sppmax)
 
 The resulting table lists all taxa as rows and the columns are as follows:
 
-- `ienv.cp`- environmental change point for each taxon based on IndVal maximum
-(used if `imax = TRUE`)
+- `ienv.cp`{.R}- environmental change point for each taxon based on IndVal maximum
+(used if `imax = TRUE`{.R})
 
-- `zenv.cp`- environmental change point for each taxon based on z maximum
-(default, `imax = FALSE`)
+- `zenv.cp`{.R}- environmental change point for each taxon based on z maximum
+(default, `imax = FALSE`{.R})
 
-- `freq`- number of non-zero abundance values per taxon
+- `freq`{.R}- number of non-zero abundance values per taxon
 
-- `maxgrp`- 1 if z- (negative response); 2 if z+ (positive response)
+- `maxgrp`{.R}- 1 if z- (negative response); 2 if z+ (positive response)
 
-- `IndVal`-[Dufrene and Legendre
+- `IndVal`{.R}-[Dufrene and Legendre
 1997](http://www.esajournals.org/doi/abs/10.1890/0012-9615(1997)067[0345:SAAIST]2.0.CO;2)
 IndVal statistic, scaled 0-100%
 
-- `obsiv.prob`- probability of an equal or larger IndVal from random
+- `obsiv.prob`{.R}- probability of an equal or larger IndVal from random
 permutation. This is an uncorrected value that doesn't account for the analysis
 of multiple taxa in the same data set nor repeated estimates of across n
 partitions of the predictor (x value). To reiterated, this is *not* a valid test
 of indicator "significance", nor have the authors ever advocated its use in this
 manner (see Baker and King 2010). The authors include it here only because it is
 used in the calculation of reliability, which assesses the effect of nBoot
-replicates on the `obsiv.prob`; reliability, when coupled with purity, is a
+replicates on the `obsiv.prob`{.R}; reliability, when coupled with purity, is a
 defensible metric for identifying robust indicator taxa.
 
-- `zscore`- IndVal $z$ score
+- `zscore`{.R}- IndVal $z$ score
 
 - `5%`, `10%`, `50%`, `90%`, `95%`- change point quantiles among bootstrap
 replicates
 
-- `purity` - proportion of replicates matching observed `maxgrp` assignment
+- `purity`{.R} - proportion of replicates matching observed `maxgrp`{.R} assignment
 
-- `reliability` - proportion of replicate `obsiv.prob` values < =  0.05
+- `reliability`{.R} - proportion of replicate `obsiv.prob`{.R} values < =  0.05
 
-- `z.median`- median score magnitude across all bootstrap replicates
+- `z.median`{.R}- median score magnitude across all bootstrap replicates
 
-- `filter`- logical (if >0) indicating whether each taxa met purity and
-reliability criteria, value indicates `maxgrp` assignment.
+- `filter`{.R}- logical (if >0) indicating whether each taxa met purity and
+reliability criteria, value indicates `maxgrp`{.R} assignment.
 
-Remember that each `titan` object (created with the `titan()` function) contains
+Remember that each `titan`{.R} object (created with the `titan()`{.R} function) contains
 a number of additional elements for post hoc exploration:
 
 ```{r}
 str(glades.titan, max.level = 1, give.attr = FALSE)
 ```   
 
-`summary(glades.titan)` provides similar output.  The items within each `titan`
+`summary(glades.titan)`{.R} provides similar output.  The items within each `titan`{.R}
 object include:
 
-- `sppmax`- the taxon-specific result table described above
+- `sppmax`{.R}- the taxon-specific result table described above
 
-- `sumz.cp`- the community result table described above
+- `sumz.cp`{.R}- the community result table described above
 
-- `env`- the environmental gradient, i.e. `glades.env`
+- `env`{.R}- the environmental gradient, i.e. `glades.env`{.R}
 
-- `taxa`- the taxa matrix, i.e. `glades.taxa`
+- `taxa`{.R}- the taxa matrix, i.e. `glades.taxa`{.R}
 
-- `envcls`- the environmental values used as candidate split points
+- `envcls`{.R}- the environmental values used as candidate split points
 
-- `srtEnv`- a sorted version of the environmental gradient
+- `srtEnv`{.R}- a sorted version of the environmental gradient
 
-- `ivzScores` - a matrix containing `maxgrp`, $z$ scores, indVals, and
-`obsiv.prob` for each taxon
+- `ivzScores`{.R} - a matrix containing `maxgrp`{.R}, $z$ scores, indVals, and
+`obsiv.prob`{.R} for each taxon
 
-- `ivz` - sums of all taxa `z` scores belonging to `maxgrp = 1` or `maxgrp = 2`
+- `ivz`{.R} - sums of all taxa `z`{.R} scores belonging to `maxgrp == 1`{.R} or `maxgrp == 2`{.R}
 at each candidate split point along the environmental gradient
 
-- `ivz.f` - sums of all pure and reliable taxa $z$ scores belonging to `maxgrp =
-1` or `maxgrp = 2` at each candidate split point along the environmental
+- `ivz.f`{.R} - sums of all pure and reliable taxa $z$ scores belonging to `maxgrp == 1`{.R} or `maxgrp == 2`{.R} at each candidate split point along the environmental
 gradient
 
-- `maxSumz` - the environmental value corresponding to the unfiltered sum(z)
+- `maxSumz`{.R} - the environmental value corresponding to the unfiltered sum(z)
 maximum for each maxgrp and each bootstrap replicate
 
-- `maxFsumz` - the environmental value corresponding to the filtered sum(z)
+- `maxFsumz`{.R} - the environmental value corresponding to the filtered sum(z)
 maximum for each maxgrp and each bootstrap replicate
 
-- `metricArray` - an array of summary metrics from the bootstrap based on
+- `metricArray`{.R} - an array of summary metrics from the bootstrap based on
 ivzScores
 
-- `arguments` - a list of arguments used in `titan()` function call
+- `arguments`{.R} - a list of arguments used in `titan()`{.R} function call
 
 
 
@@ -498,23 +496,23 @@ ivzScores
 
 ### Visualizing Results
 
-#### `plot_sumz()` and `plot_sumz_density()`
+#### `plot_sumz()`{.R} and `plot_sumz_density()`{.R}
 
-The community-level output may be viewed using the `plot_sumz()` or
-`plot_sumz_density()` functions.  The `plot_sumz_density()` function is new to
+The community-level output may be viewed using the `plot_sumz()`{.R} or
+`plot_sumz_density()`{.R} functions.  The `plot_sumz_density()`{.R} function is new to
 this version of **TITAN2**. We recommend its use because we think it will be
 both easier to understand than previous output and encourage appropriate
 interpretation of results.
 
 There are many options for changing the look of the graphs; see their full
-documentations with `?plot_sumz` or `?plot_sumz_density`. An abbreviated version
-is presented below.  To begin, here's how you use `plot_sumz_density()`:
+documentations with `?plot_sumz`{.R} or `?plot_sumz_density`{.R}. An abbreviated version
+is presented below.  To begin, here's how you use `plot_sumz_density()`{.R}:
 
 ```{r, fig.height = 6,fig.width = 8}
 plot_sumz_density(glades.titan)
 ```
 
-`plot_sumz_density()` plots community level change identified with **TITAN2**.
+`plot_sumz_density()`{.R} plots community level change identified with **TITAN2**.
 There are three component panels in the default output and we will consider them
 from the bottom to the top. The first plot is a slight modification of the
 original sum(z) plot first presented by Baker and King (2010). It shows the
@@ -523,26 +521,26 @@ increasing along the gradient. Peaks in the values indicate points along the
 environmental gradient that produce large amounts of change in community
 composition and/or structure.  These are the nominal community change points.
 Plateaus denote regions of similar change. The sums are converted to areas using
-the logical argument `ribbon`, a line plot can be obtained by setting `ribbon`
-to FALSE, and the original point plot can be obtained by setting the logical
-argument `points` to TRUE.
+the logical argument `ribbon`{.R}, a line plot can be obtained by setting `ribbon`{.R}
+to `FALSE`{.R}, and the original point plot can be obtained by setting the logical
+argument `points`{.R} to `TRUE`{.R}.
 
 ```{r, fig.height = 6,fig.width = 8}
 plot_sumz_density(glades.titan, ribbon = FALSE, points = TRUE)
 ```
 
 The second change from earlier versions of **TITAN2** is that the logical
-argument `filter` defaults to TRUE. This argument ensures that the only taxa
+argument `filter`{.R} defaults to `TRUE`{.R}. This argument ensures that the only taxa
 contributing to patterns in the sum(z) are pure and reliable taxa identified by
-the bootstrap results rather than all taxa. Setting `filter` to FALSE allows
-impure or unreliable taxa to contribute to apparent patterns of commuity change.
+the bootstrap results rather than all taxa. Setting `filter`{.R} to `FALSE`{.R} allows
+impure or unreliable taxa to contribute to apparent patterns of community change.
 In general, the filtered scores should show a similar pattern but be somewhat
 lower in magnitude depending on contributions from impure or unreliable taxa.
 
 The middle panel shows the estimated probability density of the sum(z) across
 all bootstrap replicates.  Previously these distributions were represented by
 cumulative frequency distributions of the sum(z) maxima. A narrow spread
-indicates a high degree of precison regarding the location of the community
+indicates a high degree of precision regarding the location of the community
 change point.
 
 The top panel shows the observed sum(z-) and sum(z+) maxima as circles with the
@@ -550,11 +548,11 @@ The top panel shows the observed sum(z-) and sum(z+) maxima as circles with the
 for this plot is to illustrate how much information is hidden by this technique
 relative to the probability density functions.
 
-There are several additional plotting options in `plot_sumz_density()`. First,
-any of the three panels can be dropped by setting logical agruments `sumz`,
-`density`, or `change_points` to FALSE. Second, it is possible to display only
-the z- or z+ taxa through the use of the logical arguments `sumz1` and `sumz2`.
-Finally, the x axis label can be edited using the `xlabel` aregument.
+There are several additional plotting options in `plot_sumz_density()`{.R}. First,
+any of the three panels can be dropped by setting logical arguments `sumz`{.R},
+`density`{.R}, or `change_points`{.R} to `FALSE`{.R}. Second, it is possible to display only
+the z- or z+ taxa through the use of the logical arguments `sumz1`{.R} and `sumz2`{.R}.
+Finally, the x axis label can be edited using the `xlabel`{.R} argument.
 
 ```{r, fig.height = 6,fig.width = 8}
 plot_sumz_density(glades.titan, 
@@ -565,46 +563,46 @@ plot_sumz_density(glades.titan,
 
 Besides the mandatory titan object, arguments include:
 
-- `filter` - controls whether filtered (default) or unfiltered sum(z) scores are
+- `filter`{.R} - controls whether filtered (default) or unfiltered sum(z) scores are
 plotted
 
-- `sumz` - logical whether sum(z) values are plotted
+- `sumz`{.R} - logical whether sum(z) values are plotted
 
-- `points` - logical whether point values of the sum(z) should be plotted
+- `points`{.R} - logical whether point values of the sum(z) should be plotted
 
-- `ribbon` - logical whether values of sum(z) should be plotted as a ribbon
+- `ribbon`{.R} - logical whether values of sum(z) should be plotted as a ribbon
 
-- `density` - logical whether estimated probability densities should be plotted
+- `density`{.R} - logical whether estimated probability densities should be plotted
 
-- `change_points` - logical whether community change points should be plotted
+- `change_points`{.R} - logical whether community change points should be plotted
 
-- `sumz1` - logical whether sum(z) for `maxgrp = 1` should be plotted
+- `sumz1`{.R} - logical whether sum(z) for `maxgrp == 1`{.R} should be plotted
 
-- `sumz2` - logical whether sum(z) for `maxgrp = 2` should be plotted
+- `sumz2`{.R} - logical whether sum(z) for `maxgrp == 2`{.R} should be plotted
 
-- `xmin` - controls the x-axis minimum
+- `xmin`{.R} - controls the x-axis minimum
 
-- `xmax` - controls the x-axis maximum
+- `xmax`{.R} - controls the x-axis maximum
 
-- `xlabel` - text string for x-axis label
+- `xlabel`{.R} - text string for x-axis label
 
-- `y1label` - text string for sum(z) y-axis, default labels are provided
+- `y1label`{.R} - text string for sum(z) y-axis, default labels are provided
 
-- `y2label` - text string for density plot
+- `y2label`{.R} - text string for density plot
 
-- `alpha1` - controls the transparancy of sum(z-)
+- `alpha1`{.R} - controls the transparancy of sum(z-)
 
-- `alpha2` - controls the transparancy of sum(z+)
+- `alpha2`{.R} - controls the transparancy of sum(z+)
 
-- `col1` - color for `maxgrp = 1
+- `col1`{.R} - color for `maxgrp == 1`{.R}
 
-- `col2` - color for `maxgrp = 2 
+- `col2`{.R} - color for `maxgrp == 2`{.R}
 
-- `axis_lab_size` - controls size of axis labels
+- `axis_lab_size`{.R} - controls size of axis labels
 
-- `legend.position` - controls location of legend
+- `legend.position`{.R} - controls location of legend
 
-For `plot_sumz`, the older plotting function in **TITAN2**, filled and hollow
+For `plot_sumz`{.R}, the older plotting function in **TITAN2**, filled and hollow
 symbols denote the magnitude of summed z scores of increasing (z+) or decreasing
 (z-) taxa. Peaks in the values indicate points along the environmental gradient
 that produce large amounts of change in community composition and/or structure.
@@ -615,8 +613,8 @@ stair-step CFDs suggest broad uncertainty regarding the location of maximum
 change.
 
 Note that users can adjust colors (e.g. col1 and fil1) and labels for the left
-hand y-axis using the argument `y1label` or the x-axis with `xlabel`.  Setting
-`filter = TRUE` will display the filtered sum(z) scores.  In general, the
+hand y-axis using the argument `y1label`{.R} or the x-axis with `xlabel`{.R}.  Setting
+`filter = TRUE`{.R} will display the filtered sum(z) scores.  In general, the
 filtered scores should show a similar pattern but be somewhat lower in magnitude
 depending on contributions from impure or unreliable taxa:
 
@@ -625,90 +623,83 @@ plot_sumz(glades.titan, filter = TRUE)
 ```
 
 
-<!-- Besides the mandatory titan object, arguments include: -->
+Besides the mandatory titan object, arguments include:
 
-<!-- - `filter` - controls whether filtered or unfiltered (default) sum(z) scores are plotted -->
+- `filter`{.R} - logical whether filtered or unfiltered sum(z) scores are plotted (default `FALSE`{.R}, unfiltered)
 
-<!-- - `cumfrq` - logical whether cumulative frequencies are plotted -->
+- `cumfrq`{.R} - logical whether cumulative frequencies are plotted
 
-<!-- - `bootz1` - logical whether cumulative frequencies for `maxgrp = 1` should be plotted -->
+- `bootz1`{.R} - logical whether cumulative frequencies for `maxgrp == 1`{.R} should be plotted
 
-<!-- - `bootz2` - logical whether cumulative frequencies for `maxgrp = 2` should be plotted -->
+- `bootz2`{.R} - logical whether cumulative frequencies for `maxgrp == 2`{.R} should be plotted
 
-<!-- - `sumz1` - logical whether sum(z) for `maxgrp = 1` should be plotted -->
+- `sumz1`{.R} - logical whether sum(z) for `maxgrp == 1`{.R} should be plotted
 
-<!-- - `sumz2` - logical whether sum(z) for `maxgrp = 2` should be plotted -->
+- `sumz2`{.R} - logical whether sum(z) for `maxgrp == 2`{.R} should be plotted
 
-<!-- - `xmin` - controls the x-axis minimum -->
+- `xmin`{.R} - controls the x-axis minimum
 
-<!-- - `xmax` - controls the x-axis maximum -->
+- `xmax`{.R} - controls the x-axis maximum
 
-<!-- - `xlabel` - text string for x-axis label -->
+- `xlabel`{.R} - text string for x-axis label
 
-<!-- - `y1label` - text string for first y-axis, default labels are filtered or unfiltered sum(z) -->
+- `y1label`{.R} - text string for first y-axis, default labels are filtered or unfiltered sum(z)
 
-<!-- - `y2label` - text string for second y-axis -->
+- `y2label`{.R} - text string for second y-axis
 
-<!-- - `log` - whether any axis should be log transformed for display (default is " ") -->
+- `log`{.R} - whether any axis should be log transformed for display (default `" "`{.R})
 
-<!-- - `at` - controls coordinates of x-axis location -->
+- `at`{.R} - controls coordinates of x-axis location
 
-<!-- - `tck` - controls length and direction of tick marks; set to point -->
+- `tck`{.R} - controls length and direction of tick marks; set to point
 
-<!-- - `bty` - controls box type around plot; default = "u" -->
+- `bty`{.R} - controls box type around plot (default `"u"`{.R})
 
-<!-- - `ntick` - number of tick marks to be plotted per axis -->
+- `ntick`{.R} - number of tick marks to be plotted per axis
 
-<!-- - `prtty` - controls whether `pretty()` is used to plot axis labels -->
+- `prtty`{.R} - controls whether `pretty()`{.R} is used to plot axis labels
 
-<!-- - `dig` - controls number of decimal digits in axes -->
+- `dig`{.R} - controls number of decimal digits in axes
 
-<!-- - `cex` - controls size of points in graph -->
+- `cex`{.R} - controls size of points in graph
 
-<!-- - `cex.leg` - controls size of legend text/symbols -->
+- `cex.leg`{.R} - controls size of legend text/symbols
 
-<!-- - `cex.lab` and cex.axis - control size of text on axes -->
+- `cex.lab`{.R} and cex.axis - control size of text on axes
 
-<!-- - `leg.x - x` coordinate of legend -->
+- `leg.x - x` coordinate of legend
 
-<!-- - `leg.y - y` coordinate of legend -->
+- `leg.y - y` coordinate of legend
 
-<!-- - `legend` - logical whether legend should be plotted -->
+- `legend`{.R} - logical whether legend should be plotted
 
-<!-- - `pch1` - point symbols for `maxgrp = 1` -->
+- `pch1`{.R} - point symbols for `maxgrp == 1`{.R}
 
-<!-- - `pch2` - point symbols for `maxgrp = 2` -->
+- `pch2`{.R} - point symbols for `maxgrp == 2`{.R}
 
-<!-- - `col1` - color for `maxgrp = 1` -->
+- `col1`{.R} - color for `maxgrp == 1`{.R}
 
-<!-- - `col2` - color for `maxgrp = 2` (unfilled) -->
+- `col2`{.R} - color for `maxgrp == 2`{.R} (unfilled)
 
 
 
-#### `plot_taxa_ridges()`
+#### `plot_taxa_ridges()`{.R}
 
 Pure (purity>=0.95 or higher) and reliable (reliability>=0.95 or higher)
-indicator taxa that contribute to the overall sum(z) scores can be plotted using
-the function `plot_taxa_ridges()`.
+indicator taxa that contribute to the overall sum(z) scores can be plotted using the function `plot_taxa_ridges()`{.R}.
 
-Taxa that meet purity (pur.cut) and reliability (rel.cut) criteria are extracted
-from the full taxa output object `titan.out$sppmax`, separated into two groups:
+Taxa that meet purity (pur.cut) and reliability (rel.cut) criteria are extracted from the full taxa output object `titan.out$sppmax`{.R}, separated into two groups:
 z- (negative responders, or decliners) and z+ (positive responders, or
 increasers).
 
-These two groups of negative and positive responders are arranged into separate,
-stacked panels for plotting. Within each panel, taxa change points (values of x
-resulting in the largest indicator z value) are visualized as a probability
-density function of the nBoot bootstrapped replicates (n=500 or however many
-nBoot replicates specified by the user).
+These two groups of negative and positive responders are arranged into separate, stacked panels for plotting. Within each panel, taxa change points (values of x resulting in the largest indicator z value) are visualized as a probability density function of the nBoot bootstrapped replicates (n=500 or however many nBoot replicates specified by the user).
 
 Taxa names are arranged discretely along the y-axis based on the rank order of
-the central tendency of the probability density function for z- (negative,
-decliners) and z+ (positive, increasers), respectively.
+the median (i.e., 50th percentile or 2nd quantile) change-point value from *n* bootstrap replicates. The rank order of taxa is low-to-high (ascending) for z- (negative, decliners) but high-to-low (descending) for z+ (positive, increasers), respectively.
 
 There are many options for changing the look of the graph, so see the full
-documentation with `?plot_taxa_ridges`, but you can get started by simply
-calling `plot_taxa_ridges()` on the output of `titan()`:
+documentation with `?plot_taxa_ridges`{.R}, but you can get started by simply
+calling `plot_taxa_ridges()`{.R} on the output of `titan()`{.R}:
 
 ```{r, fig.height = 10,fig.width = 8}
 plot_taxa_ridges(glades.titan, axis.text.y = 8)
@@ -716,58 +707,63 @@ plot_taxa_ridges(glades.titan, axis.text.y = 8)
 
 Optional arguments include:
 
-- `z1` - logical whether `maxgrp = 1` taxa  (z-, negative, decliners)
+- `z1`{.R} - logical whether `maxgrp == 1`{.R} taxa  (z-, negative, decliners)
 should be plotted
 
-- `z2` - logical whether `maxgrp = 2` taxa  (z-, negative, decliners) should be
+- `z2`{.R} - logical whether `maxgrp == 2`{.R} taxa  (z-, negative, decliners) should be
 plotted 
 
-- `z1_fill_low` -  low value of the color fill gradient for z- (negative) taxa 
+- `z1_fill_low`{.R} -  low value of the color fill gradient for z- (negative) taxa 
 
-- `z1_fill_high` -  high value of the color fill gradient for z- (negative) taxa 
+- `z1_fill_high`{.R} -  high value of the color fill gradient for z- (negative) taxa 
 
-- `z2_fill_low` -  low value of the color fill gradient for z+ (positive) taxa 
+- `z2_fill_low`{.R} -  low value of the color fill gradient for z+ (positive) taxa 
 
-- `z2_fill_high` - high value of the color fill gradient for z+ (positive) taxa 
+- `z2_fill_high`{.R} - high value of the color fill gradient for z+ (positive) taxa 
 
-- `pur.cut` -  the purity value cutoff for selecting taxa for plotting (defaults
-to value selected in titan.out). We do not recommend selecting values less than
-0.95 for purity; higher values up to 1.0 may be used to refine your selection to
-the purest responders in terms of direction.
+<!-- - `pur.cut`{.R} -  the purity value cutoff for selecting taxa for plotting (defaults -->
+<!-- to value selected in titan.out). We do not recommend selecting values less than -->
+<!-- 0.95 for purity; higher values up to 1.0 may be used to refine your selection to -->
+<!-- the purest responders in terms of direction. -->
 
-- `rel.cut` -  the reliability value cutoff for selecting taxa for plotting
-(defaults to value selected in titan.out). We do not recommend selecting values
-less than 0.95 for purity; higher values up to 1.0 may be used to refine your
-selection to the purest responders in terms of direction.
+<!-- - `rel.cut`{.R} -  the reliability value cutoff for selecting taxa for plotting -->
+<!-- (defaults to value selected in titan.out). We do not recommend selecting values -->
+<!-- less than 0.95 for purity; higher values up to 1.0 may be used to refine your -->
+<!-- selection to the purest responders in terms of direction. -->
 
-- `xlabel` - the x axis label; the default is "Environmental Gradient"
+- `xlabel`{.R} - the x axis label; the default is "Environmental Gradient"
 
-- `n_ytaxa` -  the maximum number of taxa that can be plotted on the y-axes
-(combined between the two panels if both z1 and z2 = TRUE, or just for one panel
-if z1 or z2 = FALSE). If the total number of pure and reliable indicator taxa
-*exceeds* the value of n_ytaxa, then the function will select only the most pure
-and reliable taxa to match the value of n_ytaxa based on rank order of purity,
-reliability, and finally z.med (sequential sorting, respectively). The selection
-of n_ytaxa is independent of group membership, so that only the best indicators
-are displayed, regardless of z- or z+ grouping.
+- `n_ytaxa`{.R} -  the maximum number of taxa that can be plotted on the y-axes
+(combined between the two panels if both `z1`{.R} and `z2 == TRUE`{.R}, or just for one panel if z1 or z2 = FALSE).  If the total number of pure and reliable indicator taxa *exceeds* the value of n_ytaxa, then the function will select only the most pure and reliable taxa to match the value of n_ytaxa based on rank order of purity, reliability, and finally z.med (sequential sorting, respectively). The selection of n_ytaxa is independent of group membership, so that only the best indicators are displayed, regardless of z- or z+ grouping. default = 90.
 
-- `ytxt.sz` -  size of the taxa labels on the y-axis. Defaults to ytxt.sz=10.
-Depending upon the height and width of the plot, labels may need to set to a
-smaller size to avoid overlap (e.g., see the plot above; here, ytxt.sz = 8).
-
-- `printspp` - a logical determining whether the sppmax output for the plotted
+- `printspp`{.R} - a logical determining whether the sppmax output for the plotted
 taxa is printed to the console; default = FALSE.
 
-- `grid` - a logical determining whether gridlines are plotted; default=TRUE
+- `grid`{.R} - a logical determining whether gridlines are plotted; default=TRUE
   
-- `xlim` - the upper and lower limits of the x-axis, e.g., xlim=c(0,180). The
+- `xlim`{.R} - the upper and lower limits of the x-axis, e.g., xlim=c(0,180). The
 default is computed internally based on the lower and upper limits of the x
 variable.
 
-- `bw` - short for "bandwidth", it controls the degree of smoothing of the
+- `bw`{.R} - short for "bandwidth", it controls the degree of smoothing of the
 probability density plots. This is computed internally but can be adjusted
-manually using this argument. We strongly advise against changing this parameter
-from the default.
+manually using this argument. We strongly advise against changing this parameter from the default.
+
+- `d_lines`{.R} - short for "density lines", a logical determining whether the median change point values estimated from each taxon's density function, is plotted. If TRUE, a dashed, black vertical line will be plotted. default = FALSE (The solid vertical line represents the median from the actual bootstrap changepoint distribution).
+
+- `trans`{.R} - applies "identity", "log10" or "sqrt" transformation to the x-axis. Set minimum value of xlim(,) to > 0 if trans = "log10". default="identity"
+
+- `xaxis`{.R} - logical for plotting solid black line and tick marks for x-axis (single panel) or x-axes (multi-panel). When FALSE, only the gray grid lines are plotted. default=FALSE
+
+- `breaks`{.R} - specify x-axis breaks and tick mark labels with a string of values, e.g., breaks = c(10, 20, 40, 80). Defaults to values generated by geom_density_ridges().
+
+- `rel_heights`{.R} - determines the relative height of panels if z1 and z2 = TRUE. Allows user to scale z1 and z2 panels in proportion to the number of taxa plotted on y. default = (0.5, 0.5). 
+
+-  `axis.text.x`{.R} - size of tick labels on x-axis
+
+- `axis.text.y`{.R} - size of the taxa labels on the y-axis. Defaults to axis.text.y=10. Depending upon the height and width of the plot, labels may need to set to a smaller size to avoid overlap (e.g., see the plot above; here, axis.text.y= 8).
+
+- `axis.title.x`{.R} - size of text of x-axis title
 
 Below is the same function with a user-specified x-label and n_ytaxa set to 50 
 
@@ -778,14 +774,14 @@ plot_taxa_ridges(glades.titan,
 )
 ``` 
 
-There are a total of 90 pure and reliable indicator taxa in the `glades.titan`
+There are a total of 90 pure and reliable indicator taxa in the `glades.titan`{.R}
 output, thus 40 taxa were excluded from this plot because we set `n_ytaxa = 50`.
 The 50 taxa plotted are the top 50 out of 90 taxa based on descending rank order
-of `purity`, `reliability`, and `z.median`, respectively.This argument can be
+of `purity`{.R}, `reliability`{.R}, and `z.median`{.R}, respectively. This argument can be
 useful when there are too many pure and reliable taxa to effectively visualize
 in one plot.
 
-Alternatively, set `z1` or `z2 = FALSE`.
+Alternatively, set `z1`{.R} or `z2 = FALSE`.
 
 ```{r, fig.height = 6,fig.width = 8}
 plot_taxa_ridges(glades.titan, 
@@ -794,7 +790,7 @@ plot_taxa_ridges(glades.titan,
 )
 ``` 
 
-Gridlines are set to `TRUE` as the default, but can be removed if desired:
+Gridlines are set to `TRUE`{.R} as the default, but can be removed if desired:
 
 ```{r, fig.height = 6,fig.width = 8}
 plot_taxa_ridges(glades.titan, 
@@ -803,60 +799,101 @@ plot_taxa_ridges(glades.titan,
 )
 ``` 
 
+Here's a final example with additional arguments:
+  1) `d_lines = TRUE`{.R} (dashed vertical line corresponding to the median change point from the density distribution function),
+  2) `rel_heights`{.R} set in proportion to the number of decreaser and increaser taxa, respectively,
+  3) `xaxis = TRUE`{.R},
+  4) log-10 scaling of the x-axis,
+  5) specification of x-axis limits, 
+  6) specification of x-axis breaks and tick mark values, and
+  7) resizing of x and y axes text and and x-axis title (`axis.text.x`{.R}, `axis.text.y`{.R}, and `axis.title.x`{.R}). 
+
+```{r, fig.height = 10,fig.width = 8}
+plot_taxa_ridges(
+  glades.titan, 
+  axis.text.x = 12, axis.text.y = 8, axis.title.x = 14,  
+  rel_heights = c(0.45, 0.55), xaxis = TRUE, d_lines = TRUE, trans = "log10", 
+  xlim = c(4, 200), breaks = c( 10, 20, 40, 80, 160), 
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
+)
+```
 
 
-
-#### `plot_taxa()`
+#### `plot_taxa()`{.R}
 
 Pure and reliable indicator taxa change points can be plotted using an older
 plotting function that was integral to the original TITAN2 release,
-`plot_taxa()`.  We have replaced this plot with the distributions in
-`plot_taxa_ridges()` because it tended to empahsize the observed change points
-over the bootrap replicates. Again, there are many options for changing the look
-of the graph, so see the full documentation with `?plot_taxa`, but you can get
-started by simply calling `plot_taxa()` on the output of `titan()`:
+`plot_taxa()`{.R}.  We have replaced this plot with the distributions in
+`plot_taxa_ridges()`{.R} because it tended to emphasize the observed change points
+over the distribution of change points from the bootstrap replicates. Again, there are many options for changing the look 
+of the graph, so see the full documentation with `?plot_taxa`{.R}, but you can get
+started by simply calling `plot_taxa()`{.R} on the output of `titan()`{.R}:
 
-```{r, fig.height = 8,fig.width = 8}
+```{r, fig.height = 8,fig.width = 9}
 plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 ``` 
 
 Each plot includes robust declining taxa on the left axis, increasers on the
-right.  Each observed change point (or median of bootstrap replicates if `z.med
-= TRUE`) is indicated by the circular symbol; the horizontal lines suggest 5-95%
-quantiles from the bootstrapped change point distribution.
+right.  Each median change point (50th percentile) of bootstrap replicates (or
+observed change point if `z.med = FALSE`) is indicated by the circular symbol;
+the horizontal lines suggest 5-95% quantiles from the bootstrapped change point
+distribution.
 
 Optional arguments include:
 
-- `z1` - logical whether `maxgrp = 1` taxa change points should be plotted
+- `z1`{.R} - logical whether `maxgrp == 1`{.R} taxa change points should be plotted
 
-- `z2` - logical whether `maxgrp = 2` taxa change points should be plotted
+- `z2`{.R} - logical whether `maxgrp == 2`{.R} taxa change points should be plotted
 
-- `interval` - logical whether 5%-95% quantile intervals should be plotted
+- `interval`{.R} - logical whether 5%-95% quantile intervals should be plotted
 
-- `prob95` - controls whether change point symbols are plotted at observed value
+- `prob95`{.R} - controls whether change point symbols are plotted at observed value
 or at quantile extremes, the extremes are useful for thinking about change from
 a risk perspective
 
-- `z.med` - controls whether change point symbols are plotted at median of
-bootstrap replicates and using median $z$ score instead of observed value
+- `z.med`{.R} - controls whether change point symbols are plotted at median of
+bootstrap replicates and using median $z$ score instead of observed value.
+`default = TRUE`{.R} (recommended).
 
-- `cex.taxa` - controls size of taxon names in graph.
+- `cex.taxa`{.R} - controls size of taxon names in graph.
 
-`log`, `at`, `xmin`, `xmax`, `xlabel`, `tck`, `bty`, `ntick`, `prtty`,
-`dig`, `leg.x`, `leg.y`, `cex`, `cex.axis`, `cex.leg`, `cex.lab`,
-`legend`, `col1`, `fil1`, `col2`, and `fil2` are the same as in
-`plot_sumz()` above.
+`log`{.R}, `at`{.R}, `xmin`{.R}, `xmax`{.R}, `xlabel`{.R}, `tck`{.R}, `bty`{.R}, `ntick`{.R}, `prtty`{.R},
+`dig`{.R}, `leg.x`{.R}, `leg.y`{.R}, `cex`{.R}, `cex.axis`{.R}, `cex.leg`{.R}, `cex.lab`{.R},
+`legend`{.R}, `col1`{.R}, `fil1`{.R}, `col2`{.R}, and `fil2`{.R} are the same as in
+`plot_sumz()`{.R} above.
 
-Here is the same function with `z.med = TRUE`:
+Here is the same function with `z.med = FALSE`{.R} (plots points at observed
+change-point value instead of 50% of bootreps; we recommend the default
+(`TRUE`{.R}), however, as it more robust, particularly in small data sets):
 
-```{r, fig.height = 8,fig.width = 8}
-plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = TRUE)
+```{r, fig.height = 8,fig.width = 9}
+plot_taxa(
+  glades.titan, z.med = FALSE,
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
+)
+``` 
+ 
+
+A more complete illustration of plot_taxa(), with `z.med = TRUE`{.R} (default), no legend, decreased size of taxa labels, increased size of x-axis labels, and added colored points and fill. 
+
+```{r, fig.height = 8,fig.width = 9}
+plot_taxa(
+  glades.titan, 
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), 
+  cex.taxa = 0.5, cex = 1.25, cex.axis = 1.1, legend = FALSE, 
+  col1 = "black", col2 = "red", fil2 = "red"
+)
 ``` 
 
 Alternatively, with `prob95 = TRUE`:
 
-```{r, fig.height = 8,fig.width = 8}
-plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = FALSE, prob95 = TRUE)
+```{r, fig.height = 8,fig.width = 9}
+plot_taxa(
+  glades.titan, 
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), 
+  cex.taxa = 0.5, cex = 1.25, cex.axis = 1.1, legend = FALSE,  
+  prob95 = TRUE, col1 = "black", col2 = "red", fil2 = "red"
+)
 ``` 
 
 Importantly, some of the control over the plotting that was optional in the
@@ -864,40 +901,40 @@ original version has been internalized and warnings are issued when users plot
 results without using the bootstrap results.  Tables of significant z- and z+
 taxa used to make graph are automatically returned but no longer automatically
 written as text files (these can be easily extracted from the
-`glades.titan$sppmax` table).
+`glades.titan$sppmax`{.R} table).
 
 
 
-#### `plot_cps()`
+#### `plot_cps()`{.R}
 
 In **TITAN2** 2.0 and later, there are several plotting options; all contained
 within a single function centered on interpreting taxon-specific change points
 in the context of the results from the bootstrap resampling procedure.
 
-- `taxa.dist` - logical controls if taxon-specific change point distributions
+- `taxa.dist`{.R} - logical controls if taxon-specific change point distributions
 are plotted
 
-- `z.weights` - logical controls if the median z-sore magnitude is used to
+- `z.weights`{.R} - logical controls if the median z-sore magnitude is used to
 weight the PDF from the distribution of resampled change points
 
-- `taxaID` - if a number or name, creates a single taxon-specific abundance plot
+- `taxaID`{.R} - if a number or name, creates a single taxon-specific abundance plot
 
-- `cp.med` - logical controls if change point locations should be plotted using
+- `cp.med`{.R} - logical controls if change point locations should be plotted using
 the median value across all bootstrap replicates instead of the observed value
 
-- `cp.trace` - logical controls if IndVal and zscores are plotted for all
+- `cp.trace`{.R} - logical controls if IndVal and zscores are plotted for all
 candidate change points
 
-- `cp.hist` - logical controls if histogram of change point PDF is plotted
+- `cp.hist`{.R} - logical controls if histogram of change point PDF is plotted
 
-- `stacked` - logical controls if change point PDFs for increasing and
+- `stacked`{.R} - logical controls if change point PDFs for increasing and
 decreasing taxa are stacked or plotted separately
 
-The remaining arguments: `xlabel`, `xmin`, `xmax`, `tck`, `bty`, `ntick`, `cex`,
-`cex.axis`, `cex.leg`, `cex.lab`, `leg.x`, `leg.y` and `legend` are the same as
+The remaining arguments: `xlabel`{.R}, `xmin`{.R}, `xmax`{.R}, `tck`{.R}, `bty`{.R}, `ntick`{.R}, `cex`{.R},
+`cex.axis`{.R}, `cex.leg`{.R}, `cex.lab`{.R}, `leg.x`{.R}, `leg.y`{.R} and `legend`{.R} are the same as
 in the previous plotting functions.
 
-The default graphic from `plot_cps()` is a $z$-score weighted probability
+The default graphic from `plot_cps()`{.R} is a $z$-score weighted probability
 density function derived from the empirical distribution of change points across
 all bootstrap replicates plotted as a histogram for each pure and reliable taxon
 (blue for decreasers and red for increasers). NOTE: When you try to plot the
@@ -913,8 +950,8 @@ Typically, these histograms are visually scanned to distinguish those taxa whose
 bootstrapped change point distributions are clearly unimodal from those that are
 multimodal or more uniform.  For any taxon of interest, a closer inspection can
 be achieved by setting the argument "taxaID" to a taxon ID number or label name.
-For example, in the plot above, if the declining (i.e., `maxgrp = 1`) taxon
-`"ENALCIVI"` is of interest, the user can set `taxaID = 57` or `taxaID =
+For example, in the plot above, if the declining (i.e., `maxgrp == 1`{.R}) taxon
+`"ENALCIVI"`{.R} is of interest, the user can set `taxaID = 57`{.R} or `taxaID =
 "ENALCIVI"` and either will produce the plot below.  Again, you may need to
 close the plotting window or turn graphics off because we are switching plot
 margins.
@@ -925,13 +962,13 @@ plot_cps(glades.titan, taxaID = "ENALCIVI", xlabel = "Surface Water TP (ug/l)")
 
 The base plot is simply taxon-specific abundance (black circles) along the
 environmental gradient.  Overlaid near the top of the plot in red is the
-observed change point, or if `cp.med = TRUE`, the median change point across all
+observed change point, or if `cp.med = TRUE`{.R}, the median change point across all
 bootstrap replicates.   Overlaid on the abundance plot is the $z$-weighted (if
-`z.weights = TRUE`) probability density function of change point locations
-across all bootstrap replicates (blue histogram).  Setting `cp.hist = FALSE`
-will remove the histogram.  On the other hand, setting `cp.trace = TRUE` will
+`z.weights = TRUE`{.R}) probability density function of change point locations
+across all bootstrap replicates (blue histogram).  Setting `cp.hist = FALSE`{.R}
+will remove the histogram.  On the other hand, setting `cp.trace = TRUE`{.R} will
 plot the observed IndVal $z$ scores (in red; what **TITAN2** uses by default if
-`imax = FALSE`) and the observed IndVal scores (in grey) for every candidate
+`imax = FALSE`{.R}) and the observed IndVal scores (in grey) for every candidate
 change point along the environmental gradient (see [Baker and King
 2013](http://www.bioone.org/doi/abs/10.1899/12-142.1) for examples):
 
@@ -950,9 +987,9 @@ Here it appears as if two potential change points were predominantly identified:
 one that kept nearly all of the abundance to the right, and another (the
 observed) than kept nearly all the absences to the left.
 
-Finally, if `taxa.dist = FALSE`, instead of a taxon-specific plot, `plot_cps()`
-will produce a plot of the summed $z$-weighted (if `z.weights = TRUE`)
-probability densities across increasing (`maxgrp = 1`; blue) decreasing (`maxgrp
+Finally, if `taxa.dist = FALSE`{.R}, instead of a taxon-specific plot, `plot_cps()`{.R}
+will produce a plot of the summed $z$-weighted (if `z.weights = TRUE`{.R})
+probability densities across increasing (`maxgrp == 1`{.R}; blue) decreasing (`maxgrp
 = 2`; red) and all pure and reliable taxa (filter>0; grey):
 
 ```{r, fig.height = 6,fig.width = 8}
@@ -961,7 +998,7 @@ plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)")
 
 The accompanying table summarizes the location of both the $z$-weighted and
 unweighted maxima along the environmental gradient, as well as the magnitude of
-those maxima for decreasing taxa (`maxgrp = 1`), increasing taxa (`maxgrp = 2`),
+those maxima for decreasing taxa (`maxgrp == 1`{.R}), increasing taxa (`maxgrp == 2`{.R}),
 and all pure and reliable taxa combined.  In this case there appears to be good
 correspondence between the sum(z) maxima and the summed $z$-weighted PDF maxima.
 In other words, the points at which community change appears to be greatest
@@ -975,7 +1012,7 @@ frequently occurring change points across both decliners and increasers even
 though they are not particularly large for either group by itself.
 
 Alternatively, these different sums can be represented as a stacked bar chart by
-setting `stacked = TRUE`:
+setting `stacked = TRUE`{.R}:
 
 ```{r, fig.height = 6,fig.width = 8}
 plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", stacked = TRUE)
@@ -983,7 +1020,7 @@ plot_cps(glades.titan, taxa.dist = FALSE, xlabel = "Surface Water TP (ug/l)", st
 
 Here the blue and red circles correspond to the location of the respective
 maxima for decreasing and increasing taxa change points. In either case, the
-summed PDFs are meant to provide complementarity to the `plot_sumz()` graphic
+summed PDFs are meant to provide complementarity to the `plot_sumz()`{.R} graphic
 about where there are key values along the environmental gradient where many
 coincident change points occur regardless of the sample.
 

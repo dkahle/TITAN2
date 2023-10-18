@@ -18,7 +18,7 @@ str(glades.env)
 ## ---- eval = FALSE------------------------------------------------------------
 #  glades.titan <- titan(glades.env, glades.taxa,
 #    minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 500, imax = FALSE,
-#    ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
+#    ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 8, memory = FALSE
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -92,14 +92,39 @@ plot_taxa_ridges(glades.titan,
   z2 = FALSE, grid = FALSE
 )
 
-## ---- fig.height = 8,fig.width = 8--------------------------------------------
+## ---- fig.height = 10,fig.width = 8-------------------------------------------
+plot_taxa_ridges(
+  glades.titan, 
+  axis.text.x = 12, axis.text.y = 8, axis.title.x = 14,  
+  rel_heights = c(0.45, 0.55), xaxis = TRUE, d_lines = TRUE, trans = "log10", 
+  xlim = c(4, 200), breaks = c( 10, 20, 40, 80, 160), 
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
+)
+
+## ---- fig.height = 8,fig.width = 9--------------------------------------------
 plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)")
 
-## ---- fig.height = 8,fig.width = 8--------------------------------------------
-plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = TRUE)
+## ---- fig.height = 8,fig.width = 9--------------------------------------------
+plot_taxa(
+  glades.titan, z.med = FALSE,
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)"))
+)
 
-## ---- fig.height = 8,fig.width = 8--------------------------------------------
-plot_taxa(glades.titan, xlabel = "Surface Water TP (ug/l)", z.med = FALSE, prob95 = TRUE)
+## ---- fig.height = 8,fig.width = 9--------------------------------------------
+plot_taxa(
+  glades.titan, 
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), 
+  cex.taxa = 0.5, cex = 1.25, cex.axis = 1.1, legend = FALSE, 
+  col1 = "black", col2 = "red", fil2 = "red"
+)
+
+## ---- fig.height = 8,fig.width = 9--------------------------------------------
+plot_taxa(
+  glades.titan, 
+  xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), 
+  cex.taxa = 0.5, cex = 1.25, cex.axis = 1.1, legend = FALSE,  
+  prob95 = TRUE, col1 = "black", col2 = "red", fil2 = "red"
+)
 
 ## ---- fig.height = 10, fig.width = 10-----------------------------------------
 plot_cps(glades.titan)
