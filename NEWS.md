@@ -2,9 +2,12 @@
 
 MINOR CHANGES
 
-* `plot_taxa_ridges()`: 
+* `plot_taxa_ridges()`: put your comments here.
 
-* `plot_taxa()`: 
+* `plot_taxa()`: put your comments here.
+
+* `plot_sumz_density()`: `guide = FALSE` has been changed to `guide = "none"` to
+  conform to **ggplot2**'s changes.
 
 
 # TITAN2 2.4.2
