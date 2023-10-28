@@ -104,8 +104,8 @@ plot_cps <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
   minSplt <- titan.out$arguments[[1]]
   boot <- titan.out$arguments[[3]] > 0.5
   imax <- titan.out$arguments[[5]] > 0.5
-  if (boot == F) {
-    stop("Bootstrap Output Required for this TITAN plot")
+  if ( isFALSE(boot) ) {
+    cli_abort("Bootstrap Output Required for this TITAN plot")
   }
   numUnit <- length(titan.out$env)
   selTaxa <- which(titan.out$sppmax[, 16] > 0)
@@ -163,7 +163,7 @@ plot_cps <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
         taxNum <- which(taxaID == rownames(titan.out$sppmax))
       }
       if (titan.out$sppmax[taxNum, 16] < 1) {
-        stop("This taxon is either impure or unreliable, try a robust taxon")
+        cli_abort("This taxon is either impure or unreliable, try a robust taxon.")
       }
       tag <- rep(0, nrow(titan.out$sppmax))
       tag[taxNum] <- 1
@@ -326,12 +326,10 @@ plot_cps <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
     plot.stacked <- function(x, y, order.method = "as.is",
       ylab = "", xlab = "", border = NULL, lwd = 0.5, col = c("blue",
         "red"), ylim = NULL, ...) {
-      if (sum(y < 0) > 0)
-        warning("Y cannot contain negative numbers")
+      if (sum(y < 0) > 0) cli_warn("Y cannot contain negative numbers")
       if (is.null(border))
         border <- par("fg")
-      border <- as.vector(matrix(border, nrow = ncol(y),
-        ncol = 1))
+        border <- as.vector(matrix(border, nrow = ncol(y), ncol = 1))
       col <- as.vector(matrix(col, nrow = ncol(y), ncol = 1))
       lwd <- as.vector(matrix(lwd, nrow = ncol(y), ncol = 1))
       if (order.method == "max") {

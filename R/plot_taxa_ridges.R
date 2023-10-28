@@ -144,9 +144,13 @@ plot_taxa_ridges <- function(
   num.dcr <- sum(sppmax$filter == 1L)
   num.ncr <- sum(sppmax$filter == 2L)
 
-  message(glue("There are {sum(num.dcr, num.ncr)} indicator taxa of {n_ytaxa} possible for plotting"))
-  message(glue("Number of Decreasers = {num.dcr}"))
-  message(glue("Number of Increasers = {num.ncr}"))
+  cli_alert("There are {sum(num.dcr, num.ncr)} indicator taxa of {n_ytaxa} possible for plotting")
+  cat(paste(
+    col_red("\u2198"), col_black(glue("Number of Decreasers = {num.dcr}")), "\n"
+  ))
+  cat(paste(
+    cli::col_blue("\u2197"), col_black(glue("Number of Increasers = {num.ncr}"))
+  ))
 
   sppmax_filter_index <- which(sppmax$filter > 0) #changed name of index for pure/reliable taxa (more intuitive)
 

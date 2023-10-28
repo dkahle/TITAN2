@@ -5,15 +5,18 @@
 #' frequency along an environmental gradient as evidence of an ecological
 #' community threshold.
 #'
-#' Relevant references include: Baker, ME and RS King. 2010. A new method for
-#' detecting and interpreting biodiversity and ecological community thresholds.
+#' Relevant references include:
 #'
-#' Methods in Ecology and Evolution 1(1): 25:37. King, RS and ME Baker. 2010.
-#' Considerations for identifying and interpreting ecological community
-#' thresholds.#' Journal of the North American Benthological Association
-#' 29(3):998-1008. Baker ME and RS King. 2013. Of TITAN and straw men: an appeal
-#' for greater understanding of community data. Freshwater Science
-#' 32(2):489-506.
+#' Baker, ME and RS King. 2010. A new method for detecting and interpreting
+#' biodiversity and ecological community thresholds. Methods in Ecology and
+#' Evolution 1(1): 25:37.
+#'
+#' King, RS and ME Baker. 2010. Considerations for identifying and interpreting
+#' ecological community thresholds. Journal of the North American Benthological
+#' Association 29(3):998-1008.
+#'
+#' Baker ME and RS King. 2013. Of TITAN and straw men: an appeal for greater
+#' understanding of community data. Freshwater Science 32(2):489-506.
 #'
 #' @import parallel ggplot2
 #' @docType package
@@ -28,5 +31,8 @@
 #'   bind_rows rename arrange n slice
 #' @importFrom purrr pluck map map_dfr
 #' @importFrom ggridges geom_density_ridges
+#' @importFrom cli cli_alert_info cli_alert col_red col_green col_black
+#'   cli_alert_success cli_warn cli_progress_bar cli_progress_update
+#'   cli_progress_done cli_abort cli_alert_warning
 #' @aliases TITAN2 package-TITAN2
 NULL

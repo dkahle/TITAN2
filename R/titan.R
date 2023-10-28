@@ -98,7 +98,7 @@
 #' if (FALSE) {
 #' glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
 #'   numPerm = 250, boot = TRUE, nBoot = 100, imax = FALSE,
-#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
+#'   ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
 #' )
 #' }
 #'
@@ -111,8 +111,8 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
 
   ## fail gracefully is any NAs present
   ############################################################
-  if (any(is.na(env))) stop(glue("Missing values found in env"))
-  if (any(is.na(txa))) stop(glue("Missing values found in txa"))
+  if (any(is.na(env))) cli_abort("Missing values found in env.")
+  if (any(is.na(txa))) cli_abort("Missing values found in txa.")
 
   ## screen data
   ############################################################
@@ -185,7 +185,7 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
 
   nsumz1 <- sum(sppmax[, 16] == 1)
   nsumz2 <- sum(sppmax[, 16] == 2)
-  message("Proportion of pure and reliable taxa = ", round(sum(nsumz2, nsumz1, na.rm = T)/nrow(sppmax), 4) )
+  cli_alert_success("Proportion of pure and reliable taxa = {round(sum(nsumz2, nsumz1, na.rm = T)/nrow(sppmax), 4)}")
   sumz.list <- sumz.tab(ivzScores, ivz, srtEnv, sppmax, maxSumz, maxFsumz, minSplt, boot)
   sumz.cp <- sumz.list[[1]]
   ivz.f <- sumz.list[[2]]
@@ -194,12 +194,10 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
   if (nsumz1 > 2 & nsumz2 > 2) {
     print(sppmax[,-6])
     print(sumz.cp)
-    # message("TITAN complete.")
   } else {
     print(sppmax[,-6])
-    warning("Low number of pure and reliable taxa, sum(z) output should be interpreted with caution")
-    message("Number of z- taxa = ", nsumz1, ", Number of z+ taxa = ", nsumz2)
-    # message("TITAN complete.")
+    cli_warn("Low number of pure and reliable taxa, sum(z) output should be interpreted with caution")
+    cli_alert_warning("Number of z- taxa = {nsumz1}, Number of z+ taxa = {nsumz2}")
   }
 
 

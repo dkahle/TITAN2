@@ -62,7 +62,8 @@
 #' @keywords TITAN bootstrap
 tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax) {
 
-  message(bSeq, ".. ", appendLF = FALSE)
+  # below was replaced by the progress bar
+  # cli_alert_info("{bSeq}.. ")
 
   # create empty arrays for storing sum(z-) and sum(z+) across envcls by replicate
   boot.metrics <- rep(NA, length(bSeq))
@@ -226,9 +227,9 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 
   # if multiple cores are available, take advantage of parallel processing
   if (ncpus > 1) {
-    message(glue::glue("Bootstrap resampling in parallel using {ncpus} CPUs... no index will be printed to screen."))
+    cli_alert_info("Bootstrap resampling in parallel using {ncpus} CPUs... no index will be printed to screen.")
     # if (ncpus > nBoot) {
-    #   message(glue("Decreasing number of CPUs to number of bootstrap replicates ({nBoot})."))
+    #   cli_alert_info("Decreasing number of CPUs to number of bootstrap replicates ({nBoot}).")
     #   ncpus <- nBoot
     # }
     # cl <- parallel::makeCluster(rep("localhost", ncpus), type = "SOCK")
@@ -238,9 +239,16 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
     parallel::stopCluster(cl)
   } else {
     # otherwise run bootstrap in sequence
-    message("Bootstrap resampling in sequence...")
+    cli_alert_info("Bootstrap resampling in sequence...")
     bSeq <- 0
-    ivz.bt.list = lapply(1:nBoot, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
+    # ivz.bt.list = lapply(1:nBoot, tboot, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
+    cli_progress_bar("Resampling", total = nBoot)
+    ivz.bt.list <- vector(mode = "list", length = nBoot)
+    for (i in 1:nBoot) {
+      ivz.bt.list[[i]] <- tboot(i, env = env, taxa = taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax)
+      cli_progress_update()
+    }
+    cli_progress_done()
   }
 
   list(bSeq, ivz.bt.list)

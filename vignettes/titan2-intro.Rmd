@@ -247,8 +247,8 @@ it is appropriate for `titan()`{.R} and the following messages are written to th
 screen:
 
 ```{r, echo = FALSE}
-message("100% occurrence detected 1 times (0.8% of taxa), use of TITAN less than ideal for this data type")
-message("Taxa frequency screen complete")
+cli_alert("100% occurrence detected 1 times (0.8% of taxa), use of TITAN less than ideal for this data type")
+cli_alert_success("Taxa frequency screen complete")
 ```
 
 The first screening checks for excessively rare or common taxa occurrences and
@@ -261,13 +261,12 @@ The next set of messages detail progress of the change point analysis
 computations on the observed data:
 
 ```{r, echo = FALSE}
-message("Determining partitions along gradient")
-message("Calculating observed IndVal maxima and class values")
-message("Calculating IndVals using mean relative abundance")
-message("Permuting IndVal scores")
-message("IndVal $z$ score calculation complete")
-message("Summarizing Observed Results")
-message("Estimating taxa change points using z-score maxima")
+cli_alert_info("Determining partitions along gradient...")
+cli_alert_info("Calculating observed IndVal maxima and class values...")
+cli_alert_info("Calculating IndVals using mean relative abundance...")
+cli_alert_info("Permuting IndVal scores...")
+cli_alert_info("Summarizing Observed Results...")
+cli_alert_info("Estimating taxa change points using z-score maxima...")
 ```
 
 The final message issued in a normal execution presents the progress of the

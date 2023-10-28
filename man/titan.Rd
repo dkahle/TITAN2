@@ -124,7 +124,7 @@ str(glades.titan, give.attr = FALSE)
 if (FALSE) {
 glades.titan <- titan(glades.env, glades.taxa, minSplt = 5,
   numPerm = 250, boot = TRUE, nBoot = 100, imax = FALSE,
-  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 7, memory = FALSE
+  ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95, ncpus = 1, memory = FALSE
 )
 }
 
