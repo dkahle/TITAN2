@@ -1,21 +1,16 @@
 Package: TITAN2
 Type: Package
 Title: Threshold Indicator Taxa Analysis
-Version: 2.4.2.900
+Version: 2.4.3
 Authors@R: c(person("Matthew E.", "Baker", email = "mbaker@umbc.edu", role = c("aut", "cph"), comment = c(ORCID = "0000-0001-5069-0204")),
   person("Ryan S.", "King",email = "Ryan_S_King@baylor.edu", role = c("aut", "cph"), comment = c(ORCID = "0000-0002-3159-9816")),
   person("David", "Kahle", email = "david@kahle.io", role = c("aut", "cph", "cre"), comment = c(ORCID = "0000-0002-9999-1558")))
 Description: Uses indicator species scores across binary partitions of
   a sample set to detect congruence in taxon-specific changes of abundance
   and occurrence frequency along an environmental gradient as evidence of
-  an ecological community threshold.  Relevant references include: Baker,
-  ME and RS King. 2010. A new method for detecting and interpreting
-  biodiversity and ecological community thresholds.  Methods in Ecology and
-  Evolution 1(1): 25:37. King, RS and ME Baker. 2010. Considerations for
-  identifying and interpreting ecological community thresholds.  Journal
-  of the North American Benthological Association 29(3):998-1008. Baker ME
-  and RS King. 2013. Of TITAN and straw men: an appeal for greater
-  understanding of community data. Freshwater Science 32(2):489-506.
+  an ecological community threshold.  Relevant references include Baker and King 
+  (2010) <doi:10.1111/j.2041-210X.2009.00007.x>, King and Baker (2010) 
+  <doi:10.1899/09-144.1>, and Baker and King (2013) <doi:10.1899/12-142.1>.
 VignetteBuilder: knitr
 Depends: R (>= 2.15.0)
 Imports:
