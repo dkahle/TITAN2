@@ -54,7 +54,7 @@ txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
     }
   }
 
-  if(messaging) cli_alert_success("  taxa frequency screen complete.")
+  if(messaging) cli_alert_success("  Taxa frequency screen complete.")
   taxa
 }
 

@@ -3,6 +3,9 @@ title: "An Introduction to TITAN2"
 author: "Matthew Baker (UMBC),  Ryan King (Baylor), and David Kahle (Baylor)"
 date: "`r ip <- as.data.frame(installed.packages()); paste('Version', ip[ip$Package == 'TITAN2',]$Version[[1]])`"
 output: rmarkdown::html_vignette
+# output: 
+#   pdf_document:
+#     latex_engine: xelatex
 vignette: >
   %\VignetteIndexEntry{An Introduction to TITAN2}
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,8 +41,7 @@ first published by [King and Richardson
 
 For users familiar with the original version of `titan()`{.R} and associated
 functions, released as a text file for R 2.9.2 in Appendix 3 of [Baker and King
-(2010)]
-(http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full),
+(2010)](http://onlinelibrary.wiley.com/doi/10.1111/j.2041-210X.2009.00007.x/full),
 there are a number of updates included in this R package **TITAN2**, some of
 which may break your code.  First, the original scripts have been divided into
 modular component functions to facilitate dissemination through CRAN.  Second, a
@@ -247,8 +249,10 @@ it is appropriate for `titan()`{.R} and the following messages are written to th
 screen:
 
 ```{r, echo = FALSE}
-cli_alert("100% occurrence detected 1 times (0.8% of taxa), use of TITAN less than ideal for this data type")
-cli_alert_success("Taxa frequency screen complete")
+cli::cli_alert_info("Screening taxa...")
+cli::cli_alert("  100% occurrence detected 1 times (0.6% of taxa),")
+cli::cli_alert("  use of TITAN less than ideal for this data type.")
+cli::cli_alert_success("  Taxa frequency screen complete.")
 ```
 
 The first screening checks for excessively rare or common taxa occurrences and
@@ -261,29 +265,26 @@ The next set of messages detail progress of the change point analysis
 computations on the observed data:
 
 ```{r, echo = FALSE}
-cli_alert_info("Determining partitions along gradient...")
-cli_alert_info("Calculating observed IndVal maxima and class values...")
-cli_alert_info("Calculating IndVals using mean relative abundance...")
-cli_alert_info("Permuting IndVal scores...")
-cli_alert_info("Summarizing Observed Results...")
-cli_alert_info("Estimating taxa change points using z-score maxima...")
+cli::cli_alert_info("Partitioning along gradient...")
+cli::cli_alert_info("Calculating observed IndVal maxima and class values...")
+cli::cli_alert_info("Calculating IndVals using mean relative abundance...")
+cli::cli_alert_info("Permuting IndVal scores...")
+cli::cli_alert_info("Summarizing observed results...")
+cli::cli_alert_info("Estimating taxa change points using z-score maxima...")
 ```
 
 The final message issued in a normal execution presents the progress of the
 bootstrap routine by counting off replicates (if `ncpus == 1`{.R}):
 
 ```{r, echo = FALSE}
-message("Bootstrap resampling in sequence...")
-message(1*1)
-message(2*1)
-message(3*1)
+cli::cli_alert_info("Bootstrap resampling in sequence...")
 ```
 
-or informing the user that the bootstrap is running in parallel (if `ncpus == 2`{.R}
-or greater):
+followed by a progress bar or informing the user that the bootstrap is running
+in parallel (if `ncpus == 8`{.R} or greater):
 
 ```{r, echo = FALSE}
-message("Bootstrap resampling in parallel using 2 CPUs...no index will be printed to screen")
+cli::cli_alert_info("Bootstrap resampling in parallel using 8 CPUs... no index will be printed to screen.")
 ```
 
 This is the most computationally intensive step in the analysis.  The Everglades
@@ -700,7 +701,7 @@ There are many options for changing the look of the graph, so see the full
 documentation with `?plot_taxa_ridges`{.R}, but you can get started by simply
 calling `plot_taxa_ridges()`{.R} on the output of `titan()`{.R}:
 
-```{r, fig.height = 10,fig.width = 8}
+```{r, fig.height = 9, fig.width = 8}
 plot_taxa_ridges(glades.titan, axis.text.y = 8)
 ``` 
 
@@ -766,7 +767,7 @@ manually using this argument. We strongly advise against changing this parameter
 
 Below is the same function with a user-specified x-label and n_ytaxa set to 50 
 
-```{r, fig.height = 10,fig.width = 8}
+```{r, fig.height = 9, fig.width = 8}
 plot_taxa_ridges(glades.titan, 
   xlabel = expression(paste("Surface water total phosphorus ("*mu*"g/l)")), 
   n_ytaxa = 50
