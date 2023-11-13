@@ -135,12 +135,12 @@ plot_taxa <- function(
   ## Check length of sppsub1 and sppsub2
   if (z1) {
     if (nrow(sppsub1) < 1) {
-      stop("z1 is empty, set z1=FALSE, change significance criteria, or set boot=FALSE if bootstrapping was not used to generate the titan object")
+      cli_abort("z1 is empty, set z1=FALSE, change significance criteria, or set boot=FALSE if bootstrapping was not used to generate the titan object.")
     }
   }
   if (z2) {
     if (nrow(sppsub2) < 1) {
-      stop("z2 is empty, set z2=FALSE, change significance criteria, or set boot=FALSE if bootstrapping was not used to generate the titan object")
+      cli_abort("z2 is empty, set z2=FALSE, change significance criteria, or set boot=FALSE if bootstrapping was not used to generate the titan object.")
     }
   }
 

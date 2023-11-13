@@ -25,36 +25,36 @@
 #' @author M. Baker and R. King
 txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
 
-  if(messaging) message("Screening taxa...")
+  if (messaging) cli_alert_info("Screening taxa...")
   taxa <- data.matrix(txa)
   numUnit <- nrow(txa)
   numSpp <- ncol(txa)
-  if (numUnit < 10) stop("Number of observations too small")
-  if (numUnit < 20) warning("Low number of observations")
+  if (numUnit < 10) cli_abort("Number of observations too small.")
+  if (numUnit < 20) cli_warn("Low number of observations.")
 
   ocrnc <- colSums(taxa > 0, na.rm = TRUE)
   minTaxa <- min(ocrnc)
   if (max(ocrnc) == numUnit) {
     detected_times <- sum(ocrnc == numUnit)
     pct_of_taxa <- round((detected_times/numSpp) * 100, digits = 1)
-    if(messaging) message(sprintf(
-      "  100%% occurrence detected %i times (%.1f%% of taxa),", detected_times, pct_of_taxa
-    ))
-    if(messaging) message("  use of TITAN less than ideal for this data type.")
+    if(messaging) cli_alert(
+      "  100% occurrence detected {detected_times} times ({pct_of_taxa}% of taxa),"
+    )
+    if(messaging) cli_alert("  use of TITAN less than ideal for this data type.")
   }
   if (minTaxa < 3) {
-    stop("Minimum taxon occurrence frequency is 3, your data do not meet this criterion")
+    cli_abort("Minimum taxon occurrence frequency is 3, your data do not meet this criterion")
   }
 
   if (minSplt < 5) {
     if (minSplt < 3) {
-      stop("Minimum split size should be greater than 2, preferably 5 or more; please set minSplt to larger value and try again")
+      cli_abort("Minimum split size should be greater than 2, preferably 5 or more; please set minSplt to larger value and try again")
     } else {
-      warning("Minimum split size is preferably 5 or more; please double check minSplt settings")
+      cli_warn("Minimum split size is preferably 5 or more; please double check minSplt settings")
     }
   }
 
-  if(messaging) message("  taxa frequency screen complete.")
+  if(messaging) cli_alert_success("  taxa frequency screen complete.")
   taxa
 }
 
@@ -128,10 +128,10 @@ txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
 #' @author M. Baker and R. King
 #' @keywords TITAN
 env.part <- function(env, taxa, minSplt = minSplt, messaging = TRUE) {
-  if(messaging) message("Partitioning along gradient...")
+  if(messaging) cli_alert_info("Partitioning along gradient...")
   nUnit <- length(env)
   numUnit <- nrow(taxa)
-  if (nUnit != numUnit) stop("Number of sites not equal between env vector and taxa matrix")
+  if (nUnit != numUnit) cli_abort("Number of sites not equal between env vector and taxa matrix")
   env <- as.matrix(env)
   rankEnv <- rank(env, ties.method = "random")
   srtEnv <- sort(env)
@@ -221,10 +221,10 @@ obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax) {
   sppmax <- matrix(NA, numTxa, 16)
   rownames(sppmax) <- colnames(taxa)
   colnames(sppmax) <- c("ienv.cp", "zenv.cp", "freq", "maxgrp",
-    "IndVal", "obsiv.prob", "zscore", "5%", "10%", "50%", "90%",
-    "95%", "purity", "reliability", "z.median", "filter")
+                        "IndVal", "obsiv.prob", "zscore", "5%", "10%", "50%", "90%",
+                        "95%", "purity", "reliability", "z.median", "filter")
 
-  message("Summarizing observed results...")
+  cli_alert_info("Summarizing observed results...")
   ## Obtain env values at IndVal, z-score maxima
   max.ival <- apply(ivzScores[((numTxa * 2) + 1):(numTxa * 3),], 1, which.max)
   max.zval <- apply(ivzScores[(numTxa + 1):(numTxa * 2), ], 1,which.max)
@@ -238,13 +238,13 @@ obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax) {
   ## table
   for (i in 1:numTxa) {
     sppmax[i, 1] <- (srtEnv[minSplt + (max.ival[i] - 1)] +
-      srtEnv[minSplt + max.ival[i]])/2
+                       srtEnv[minSplt + max.ival[i]])/2
     sppmax[i, 2] <- (srtEnv[minSplt + (max.zval[i] - 1)] +
-      srtEnv[minSplt + max.zval[i]])/2
+                       srtEnv[minSplt + max.zval[i]])/2
     sppmax[i, 3] <- sum(taxa[, i] > 0, na.rm = TRUE)
     if (imax == FALSE) {
       if (i == 1) {
-        message("Estimating taxa change points using z-score maxima...")
+        cli_alert_info("Estimating taxa change points using z-score maxima...")
       }
       sppmax[i, 4] <- ivzScores[i, max.zval[i]]
       sppmax[i, 5] <- ivzScores[((numTxa * 2) + i), max.zval[i]]
@@ -256,7 +256,7 @@ obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax) {
       obs2[i] <- ivzScores[i, max.zval[i]] == 2
     } else {
       if (i == 1) {
-        message("Estimating taxa change points using raw IndVal maxima...")
+        cli_alert_info("Estimating taxa change points using raw IndVal maxima...")
       }
       sppmax[i, 4] <- ivzScores[i, max.ival[i]]
       sppmax[i, 5] <- ivzScores[((numTxa * 2) + i), max.ival[i]]
@@ -347,36 +347,36 @@ obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax) {
 #' @seealso [ivzsums()], [ivzsums.f()], [getivz()], [titan()]
 #' @keywords TITAN sum(z)
 sumz.tab <- function(ivzScores, ivz, srtEnv, sppmax, maxSumz = maxSumz,
-  maxFsumz = maxFsumz, minSplt = minSplt, boot = boot) {
+                     maxFsumz = maxFsumz, minSplt = minSplt, boot = boot) {
   sumz.cp <- matrix(NA, 4, 6)
   colnames(sumz.cp) <- c("cp", "0.05", "0.10", "0.50", "0.90",
-    "0.95")
+                         "0.95")
   rownames(sumz.cp) <- c("sumz-", "sumz+", "fsumz-", "fsumz+")
   sumz.cp[1, 1] <- (srtEnv[minSplt + (which.max(ivz[, 1]) - 1)] +
-    srtEnv[minSplt + which.max(ivz[, 1])])/2
+                      srtEnv[minSplt + which.max(ivz[, 1])])/2
   sumz.cp[2, 1] <- (srtEnv[minSplt + (which.max(ivz[, 2]) - 1)] +
-    srtEnv[minSplt + which.max(ivz[, 2])])/2
+                      srtEnv[minSplt + which.max(ivz[, 2])])/2
   ivz.f <- 0
   if (boot) {
     ivz.f <- ivzsums.f(ivzScores, sppmax)
     if (!is.na(sum(ivz.f[, 1]))) {
       sumz.cp[3, 1] <- (srtEnv[minSplt + (which.max(ivz.f[,
-        1]) - 1)] + srtEnv[minSplt + which.max(ivz.f[,
-        1])])/2
+                                                          1]) - 1)] + srtEnv[minSplt + which.max(ivz.f[,
+                                                                                                       1])])/2
     }
     if (!is.na(sum(ivz.f[, 2]))) {
       sumz.cp[4, 1] <- (srtEnv[minSplt + (which.max(ivz.f[,
-        2]) - 1)] + srtEnv[minSplt + which.max(ivz.f[,
-        2])])/2
+                                                          2]) - 1)] + srtEnv[minSplt + which.max(ivz.f[,
+                                                                                                       2])])/2
     }
     sumz.cp[1, 2:6] <- quantile(maxSumz[, 1], probs = c(0.05,
-      0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
+                                                        0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
     sumz.cp[2, 2:6] <- quantile(maxSumz[, 2], probs = c(0.05,
-      0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
+                                                        0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
     sumz.cp[3, 2:6] <- quantile(maxFsumz[, 1], probs = c(0.05,
-      0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
+                                                         0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
     sumz.cp[4, 2:6] <- quantile(maxFsumz[, 2], probs = c(0.05,
-      0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
+                                                         0.1, 0.5, 0.9, 0.95), na.rm = TRUE)
   }
   sumzTabList <- list(sumz.cp, ivz.f)
 }
