@@ -19,7 +19,7 @@ default is to use the argument from the original TITAN function call.}
 \item{messaging}{message user?}
 }
 \value{
-A list of seven objects: \itemize{
+A list of seven objects: \describe{
 
 \item{env}{an environmental vector}
 

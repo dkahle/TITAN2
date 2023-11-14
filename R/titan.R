@@ -31,7 +31,7 @@
 #'   memory.  This function is sometimes necessary for large data files (e.g.
 #'   more than 400 sampling sites and less than 100 taxa).
 #' @param messaging If \code{TRUE}, provide progress messages.
-#' @return A list with 13 items: \itemize{
+#' @return A list with 13 items: \describe{
 #'
 #'   \item{sppmax}{Description of 'comp1'}
 #'

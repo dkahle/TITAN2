@@ -103,7 +103,7 @@ txa.screen <- function(txa, minSplt = minSplt, messaging = TRUE) {
 #' @param minSplt The  minimum split size used in binary partitioning.  The
 #'   default is to use the argument from the original TITAN function call.
 #' @param messaging message user?
-#' @return A list of seven objects: \itemize{
+#' @return A list of seven objects: \describe{
 #'
 #'   \item{env}{an environmental vector}
 #'
@@ -197,7 +197,7 @@ env.part <- function(env, taxa, minSplt = minSplt, messaging = TRUE) {
 #'   original TITAN function call.
 #' @param imax A logical indicating whether taxon-specific change points should
 #'   be determined using IndVal maxima or z-score maxima (as in TITAN v1.0).
-#' @return The function output consists of a list of three objects: \itemize{
+#' @return The function output consists of a list of three objects: \describe{
 #'
 #'   \item{obs1}{a logical indicating decreasing taxa}
 #'
@@ -328,7 +328,7 @@ obs.summ <- function(ivzScores, taxa, srtEnv, minSplt = minSplt, imax = imax) {
 #'   TITAN function call.
 #' @return A list with two objects:
 #'
-#'   \itemize{
+#'   \describe{
 #'
 #'   \item{sumz.cp}{A second summary output table from TITAN to accompany
 #'   'sppmax'.}

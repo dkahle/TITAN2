@@ -24,7 +24,7 @@ original TITAN function call.}
 be determined using IndVal maxima or z-score maxima (as in TITAN v1.0).}
 }
 \value{
-The function output consists of a list of three objects: \itemize{
+The function output consists of a list of three objects: \describe{
 
 \item{obs1}{a logical indicating decreasing taxa}
 

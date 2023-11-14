@@ -77,7 +77,7 @@ along the environmental gradient.  The default is to use the value
 specified in the original TITAN function call.}
 }
 \value{
-A list of six items: \itemize{
+A list of six items: \describe{
 
 \item{sppSub1}{A vector of taxon index numbers for pure and reliable
 decreasers}

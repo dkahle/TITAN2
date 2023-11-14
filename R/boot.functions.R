@@ -38,7 +38,7 @@
 #'   be determined by IndVal maxima or z-score maxima (as in Baker and King
 #'   2010). The default is to pass on the argument from the original TITAN
 #'   funtion call.
-#' @return A list of four elements: \itemize{
+#' @return A list of four elements: \describe{
 #'
 #'   \item{bt.metrics}{A matrix with nrow equal to number of taxa where the
 #'   first column is the bootstrapped IndVal or z score maximum, the second is
@@ -206,7 +206,7 @@ tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPe
 #'   default is to pass on the argument from the original TITAN funtion call.
 #' @param numUnit An argument specifying the number of values along the
 #'   environmental gradient.
-#' @return A list of two items: \itemize{
+#' @return A list of two items: \describe{
 #'
 #'   \item{bSeq}{An index of the sequence of bootstrap replicates. The structure
 #'   of bSeq will differ for sequential or parallel processing.}
@@ -335,7 +335,7 @@ boot.titan <- function(env, taxa, ivTot = ivTot, boot = boot, ncpus = ncpus,
 #' @param minSplt An argument specifying minimum split size of partitioning
 #'   along the environmental gradient.  The default is to use the value
 #'   specified in the original TITAN function call.
-#' @return A list of six items: \itemize{
+#' @return A list of six items: \describe{
 #'
 #'   \item{sppSub1}{A vector of taxon index numbers for pure and reliable
 #'   decreasers}

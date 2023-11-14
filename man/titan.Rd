@@ -61,7 +61,7 @@ more than 400 sampling sites and less than 100 taxa).}
 \item{messaging}{If \code{TRUE}, provide progress messages.}
 }
 \value{
-A list with 13 items: \itemize{
+A list with 13 items: \describe{
 
 \item{sppmax}{Description of 'comp1'}
 

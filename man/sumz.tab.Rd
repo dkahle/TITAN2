@@ -44,7 +44,7 @@ TITAN function call.}
 \value{
 A list with two objects:
 
-\itemize{
+\describe{
 
 \item{sumz.cp}{A second summary output table from TITAN to accompany
 'sppmax'.}

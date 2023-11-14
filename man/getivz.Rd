@@ -40,7 +40,7 @@ A matrix containing four submatrices (the first from
 \code{[1:numTxa,]}, the second from \code{[(numTxa+1):(2*numTxa),]}, etc.),
 the first two of which include indicator direction and z scores.
 
-\itemize{
+\describe{
 
 \item{Group Membership }{A vector for every taxon showing decreasing
 (\code{1}) or increasing (\code{2}) group membership at each value of

@@ -47,7 +47,7 @@ be determined by IndVal maxima or z-score maxima (as in Baker and King
 funtion call.}
 }
 \value{
-A list of four elements: \itemize{
+A list of four elements: \describe{
 
 \item{bt.metrics}{A matrix with nrow equal to number of taxa where the
 first column is the bootstrapped IndVal or z score maximum, the second is

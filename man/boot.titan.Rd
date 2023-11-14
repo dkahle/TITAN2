@@ -61,7 +61,7 @@ default is to pass on the argument from the original TITAN funtion call.}
 environmental gradient.}
 }
 \value{
-A list of two items: \itemize{
+A list of two items: \describe{
 
 \item{bSeq}{An index of the sequence of bootstrap replicates. The structure
 of bSeq will differ for sequential or parallel processing.}
