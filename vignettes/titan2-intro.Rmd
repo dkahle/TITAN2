@@ -2,10 +2,10 @@
 title: "An Introduction to TITAN2"
 author: "Matthew Baker (UMBC),  Ryan King (Baylor), and David Kahle (Baylor)"
 date: "`r ip <- as.data.frame(installed.packages()); paste('Version', ip[ip$Package == 'TITAN2',]$Version[[1]])`"
-output: rmarkdown::html_vignette
-# output: 
-#   pdf_document:
-#     latex_engine: xelatex
+# output: rmarkdown::html_vignette
+output:
+  pdf_document:
+    latex_engine: xelatex
 vignette: >
   %\VignetteIndexEntry{An Introduction to TITAN2}
   %\VignetteEngine{knitr::rmarkdown}

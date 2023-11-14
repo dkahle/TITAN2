@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">An Introduction to TITAN2</h1>
 <h4 class="author">Matthew Baker (UMBC), Ryan King (Baylor), and David
 Kahle (Baylor)</h4>
-<h4 class="date">Version 2.4.2.900</h4>
+<h4 class="date">Version 2.4.3</h4>
 
 
 
@@ -629,20 +629,20 @@ Since this is a <span class="math inline">\(164 \times 16\)</span>
 matrix, we use the <code class="sourceCode r"><span class="fu">head</span>()</code> function to
 just display the top to get a feel for the results:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">head</span>(glades.titan<span class="sc">$</span>sppmax)</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#          ienv.cp zenv.cp freq maxgrp IndVal obsiv.prob zscore      5%    10%</span></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co"># ABLARHAM    5.05   15.60   15      1  31.83      0.004   9.77  7.3475 10.235</span></span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co"># ACENTRIA   14.10   14.60    7      1  14.24      0.004   4.99  9.3550 10.900</span></span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co"># ANOPHELE  109.40   43.15   15      2  27.42      0.004   7.81 29.1175 32.200</span></span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co"># APEDELAS   18.35   20.10    5      1   6.69      0.132   1.94 10.9000 13.060</span></span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co"># APHAOPAC   39.55   39.55  104      1  66.05      0.004   8.80 32.2000 33.000</span></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co"># ARRENSP1   86.95   85.55    9      2  21.97      0.020   3.91 13.1500 18.170</span></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#            50%    90%      95% purity reliability  z.median filter</span></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co"># ABLARHAM 15.80  20.10  21.6000  1.000       1.000 10.604653      1</span></span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co"># ACENTRIA 14.55  28.05  28.5000  0.998       0.956  5.915082      1</span></span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co"># ANOPHELE 43.45  69.70  83.8625  1.000       1.000  9.336369      2</span></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co"># APEDELAS 18.40  43.76  55.0000  0.844       0.520  2.565831      0</span></span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co"># APHAOPAC 37.85  39.55  40.1000  0.998       1.000  9.246758      1</span></span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co"># ARRENSP1 85.80 109.40 126.2000  0.960       0.812  4.716420      0</span></span></code></pre></div>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#          ienv.cp zenv.cp freq maxgrp IndVal obsiv.prob zscore      5%    10%   50%    90%</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co"># ABLARHAM    5.05   15.60   15      1  31.83      0.004   9.77  7.3475 10.235 15.80  20.10</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co"># ACENTRIA   14.10   14.60    7      1  14.24      0.004   4.99  9.3550 10.900 14.55  28.05</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co"># ANOPHELE  109.40   43.15   15      2  27.42      0.004   7.81 29.1175 32.200 43.45  69.70</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co"># APEDELAS   18.35   20.10    5      1   6.69      0.132   1.94 10.9000 13.060 18.40  43.76</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co"># APHAOPAC   39.55   39.55  104      1  66.05      0.004   8.80 32.2000 33.000 37.85  39.55</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co"># ARRENSP1   86.95   85.55    9      2  21.97      0.020   3.91 13.1500 18.170 85.80 109.40</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#               95% purity reliability  z.median filter</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co"># ABLARHAM  21.6000  1.000       1.000 10.604653      1</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co"># ACENTRIA  28.5000  0.998       0.956  5.915082      1</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co"># ANOPHELE  83.8625  1.000       1.000  9.336369      2</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co"># APEDELAS  55.0000  0.844       0.520  2.565831      0</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co"># APHAOPAC  40.1000  0.998       1.000  9.246758      1</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co"># ARRENSP1 126.2000  0.960       0.812  4.716420      0</span></span></code></pre></div>
 <p>The resulting table lists all taxa as rows and the columns are as
 follows:</p>
 <ul>
