@@ -8,9 +8,9 @@
 #' @param printspp A logical specifying whether the sppmax table should be
 #'   printed.
 #' @param z1_fill_low,z1_fill_high,z2_fill_low,z2_fill_high Respective fill
-#'   colors passed to [scale_fill_gradient()]
-#' @param grid The `grid` argument of [theme_ridges()]. Setting this to
-#'   `FALSE` removes horizontal lines from the plot, see examples.
+#'   colors passed to [ggplot2::scale_fill_gradient()]
+#' @param grid The `grid` argument of [ggridges::theme_ridges()]. Setting this
+#'   to `FALSE` removes horizontal lines from the plot, see examples.
 #' @param trans a scale transformation to be applied to the x-axis through
 #'   ggplot2. e.g. `"log10"` or `"sqrt"`.
 #' @param xaxis Logical; should the x-axis be plotted?
@@ -22,13 +22,13 @@
 #'   [density()].
 #' @param rel_heights Argument to pass to [cowplot::plot_grid()] as an override
 #'   for the defaults
-#' @param breaks Argument to pass to [geom_density_ridges()].
-#' Determines values and labels of breaks (ticks) on the x-axis.
-#' @param d_lines Argument to pass to [geom_density_ridges()].
-#' Short for density lines, a logical determining whether the median change
-#' point values from estimated from each taxon's density function, is plotted.
-#' If `TRUE`, a dashed, black vertical line will be plotted.
-#' @param ... Arguments to pass to [geom_density_ridges()]
+#' @param breaks Argument to pass to [ggridges::geom_density_ridges()].
+#'   Determines values and labels of breaks (ticks) on the x-axis.
+#' @param d_lines Argument to pass to [ggridges::geom_density_ridges()]. Short
+#'   for density lines, a logical determining whether the median change point
+#'   values from estimated from each taxon's density function, is plotted. If
+#'   `TRUE`, a dashed, black vertical line will be plotted.
+#' @param ... Arguments to pass to [ggridges::geom_density_ridges()]
 #' @return A plot of decreasing and/or increasing taxon-specific change points
 #'   along the environmental gradient.
 #' @references Baker, ME and RS King.  2010. A new method for detecting and
@@ -121,9 +121,10 @@ plot_taxa_ridges <- function(
   Q50 <- NULL; rm(Q50)
   Q95 <- NULL; rm(Q95)
 
+
   # deal with axis font defaulting
-  if (missing(axis.text.x)) axis.text.x <- if (is.null(theme_get()$axis.text.x$size)) theme_get()$axis.text.x$size else theme_get()$text$size
-  if (missing(axis.text.y)) axis.text.y <- if (is.null(theme_get()$axis.text.y$size)) theme_get()$axis.text.y$size else theme_get()$text$size
+  if (missing( axis.text.x))  axis.text.x <- if (is.null(theme_get()$ axis.text.x$size)) theme_get()$ axis.text.x$size else theme_get()$     text$size
+  if (missing( axis.text.y))  axis.text.y <- if (is.null(theme_get()$ axis.text.y$size)) theme_get()$ axis.text.y$size else theme_get()$     text$size
   if (missing(axis.title.x)) axis.title.x <- if (is.null(theme_get()$axis.title.x$size)) theme_get()$axis.title.x$size else theme_get()$titletext$size
   if (missing(axis.title.y)) axis.title.y <- if (is.null(theme_get()$axis.title.y$size)) theme_get()$axis.title.y$size else theme_get()$titletext$size
 
@@ -161,6 +162,8 @@ plot_taxa_ridges <- function(
   n_filter_decr <- sum(sppmax_ny$filter == 1L)
   n_filter_incr <- sum(sppmax_ny$filter == 2L)
 
+  titan.out$metricArray |> str()
+
   gdf <- sppmax_filter_index %>% #use of new pure/reliable filter index
     map_dfr(~
               cbind(
@@ -195,7 +198,7 @@ plot_taxa_ridges <- function(
     ) +
       ggridges::geom_density_ridges(
         quantile_lines = d_lines, #made an argument
-        vline_size = 0.25,
+        linewidth = 0.25,
         quantiles = 2,
         vline_color = "black", #suggest using black
         vline_linetype = 2, #distinguish from 50% by linetype = 2
@@ -238,7 +241,7 @@ plot_taxa_ridges <- function(
     ) +
       ggridges::geom_density_ridges(
         quantile_lines = d_lines, #made an argument
-        vline_size = 0.25,
+        linewidth = 0.25,
         quantiles = 2,
         vline_color = "black", #suggest using black
         vline_linetype = 2, #distinguish from 50% by linetype = 2
@@ -278,7 +281,7 @@ plot_taxa_ridges <- function(
         ggridges::theme_ridges(center_axis_labels = TRUE, grid = grid) +
         ggridges::geom_density_ridges(
           quantile_lines = d_lines,  #made an argument
-          vline_size = 0.25,
+          linewidth = 0.25,
           quantiles = 2,
           vline_color = "black", #suggest using black
           vline_linetype = 2, #distinguish from 50% by linetype = 2

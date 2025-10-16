@@ -10,12 +10,11 @@
 #' <doi:10.1899/09-144.1>, and Baker and King (2013) <doi:10.1899/12-142.1>.
 #'
 #' @import parallel ggplot2
-#' @docType package
 #' @name TITAN2
 #' @importFrom graphics axis box legend mtext par plot points polygon segments
 #'   symbols
 #' @importFrom stats approxfun median quantile runif sd reorder
-#' @importFrom utils read.table write.table
+#' @importFrom utils read.table write.table str
 #' @importFrom glue glue
 #' @importFrom cowplot plot_grid
 #' @importFrom dplyr %>% data_frame as_data_frame mutate filter case_when slice
@@ -25,5 +24,5 @@
 #' @importFrom cli cli_alert_info cli_alert col_red col_green col_black
 #'   cli_alert_success cli_warn cli_progress_bar cli_progress_update
 #'   cli_progress_done cli_abort cli_alert_warning
-#' @aliases TITAN2 package-TITAN2
+#' @aliases TITAN2 TITAN2-package
 NULL

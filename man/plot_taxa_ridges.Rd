@@ -38,7 +38,7 @@ plot_taxa_ridges(
 \item{z2}{A logical specifying whether increasing taxa should be plotted.}
 
 \item{z1_fill_low, z1_fill_high, z2_fill_low, z2_fill_high}{Respective fill
-colors passed to \code{\link[=scale_fill_gradient]{scale_fill_gradient()}}}
+colors passed to \code{\link[ggplot2:scale_gradient]{ggplot2::scale_fill_gradient()}}}
 
 \item{xlabel}{A character string for the x axis label.}
 
@@ -47,13 +47,13 @@ colors passed to \code{\link[=scale_fill_gradient]{scale_fill_gradient()}}}
 \item{printspp}{A logical specifying whether the sppmax table should be
 printed.}
 
-\item{grid}{The \code{grid} argument of \code{\link[=theme_ridges]{theme_ridges()}}. Setting this to
-\code{FALSE} removes horizontal lines from the plot, see examples.}
+\item{grid}{The \code{grid} argument of \code{\link[ggridges:theme_ridges]{ggridges::theme_ridges()}}. Setting this
+to \code{FALSE} removes horizontal lines from the plot, see examples.}
 
-\item{d_lines}{Argument to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}.
-Short for density lines, a logical determining whether the median change
-point values from estimated from each taxon's density function, is plotted.
-If \code{TRUE}, a dashed, black vertical line will be plotted.}
+\item{d_lines}{Argument to pass to \code{\link[ggridges:geom_density_ridges]{ggridges::geom_density_ridges()}}. Short
+for density lines, a logical determining whether the median change point
+values from estimated from each taxon's density function, is plotted. If
+\code{TRUE}, a dashed, black vertical line will be plotted.}
 
 \item{trans}{a scale transformation to be applied to the x-axis through
 ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
@@ -62,7 +62,7 @@ ggplot2. e.g. \code{"log10"} or \code{"sqrt"}.}
 
 \item{xlim}{x axis limits, e.g. \code{xlim = c(0,10)}.}
 
-\item{breaks}{Argument to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}.
+\item{breaks}{Argument to pass to \code{\link[ggridges:geom_density_ridges]{ggridges::geom_density_ridges()}}.
 Determines values and labels of breaks (ticks) on the x-axis.}
 
 \item{bw}{The bandwidth of used in the kernel density estimate; see
@@ -71,7 +71,7 @@ Determines values and labels of breaks (ticks) on the x-axis.}
 \item{rel_heights}{Argument to pass to \code{\link[cowplot:plot_grid]{cowplot::plot_grid()}} as an override
 for the defaults}
 
-\item{...}{Arguments to pass to \code{\link[=geom_density_ridges]{geom_density_ridges()}}}
+\item{...}{Arguments to pass to \code{\link[ggridges:geom_density_ridges]{ggridges::geom_density_ridges()}}}
 
 \item{axis.text.x, axis.text.y, axis.title.x, axis.title.y}{Font sizes of
 respective axis text. Passed as the size argument to the ggplot2 thematic

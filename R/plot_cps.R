@@ -149,7 +149,7 @@ plot_cps <- function(titan.out, taxa.dist = T, z.weights = T, taxaID = NULL,
     rownames(txaDens) <- rownames(titan.out$sppmax[selTaxa,
       ])
     for (i in 1:nrow(cp.eden)) {
-      txaDens[i, 1] <- round((titan.out$srtEnv[maxZmed[i] - 1] + titan.out$srtEnv[maxZmed[i]])/2, digits = 2)
+      txaDens[i, 1] <- ifelse(length(round((titan.out$srtEnv[maxZmed[i] - 1] + titan.out$srtEnv[maxZmed[i]])/2, digits = 2))<1,titan.out$srtEnv[maxZmed[i]],round((titan.out$srtEnv[maxZmed[i] - 1] + titan.out$srtEnv[maxZmed[i]])/2, digits = 2))
       txaDens[i, 2] <- maxZmed[i]
       txaDens[i, 3] <- round(cp.eden[i, maxZmed[i]], digits = 2)
       txaDens[i, 4] <- round(zmed[i], digits = 2)
