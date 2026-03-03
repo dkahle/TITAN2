@@ -44,7 +44,7 @@ install.packages("TITAN2")
 ## Acknowledgements
 
 This work continues to be supported by the [Department of Geography and
-Environmental Systems (UMBC)](https://ges.umbc.edu/), [Department of
-Biology (Baylor)](https://biology.artsandsciences.baylor.edu/), and
-[Department of Statistical Science
-(Baylor)](https://statistics.artsandsciences.baylor.edu/).
+Environmental Systems (UMBC)](https://ges.umbc.edu/), Department of
+Biology (Baylor), and
+Department of Statistical Science
+(Baylor).
