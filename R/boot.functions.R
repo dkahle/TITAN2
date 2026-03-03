@@ -62,72 +62,29 @@
 #' @keywords TITAN bootstrap
 tboot <- function(bSeq, env, taxa, ivTot = ivTot, minSplt = minSplt, nPerm = nPerm, memory = memory, imax = imax) {
 
-  # below was replaced by the progress bar
-  # cli_alert_info("{bSeq}.. ")
-
-  # create empty arrays for storing sum(z-) and sum(z+) across envcls by replicate
   boot.metrics <- rep(NA, length(bSeq))
-  numUnit <- length(env) # number along gradient
+  numUnit <- length(env)
   rnum <- runif(1, 0, 100)
-  max.btSumz <- rep(NA, 2)
   n_taxa <- ncol(taxa)
 
   for (i in 1:length(bSeq)) {
 
-    # resample data with replacement, repeat part 1 preliminaries
-    permuted_row_ndcs <- sample(1:numUnit, replace = TRUE) # generate permutation of row indices
-    booted_taxa <- taxa[permuted_row_ndcs, ]
-    permuted_env <- env[permuted_row_ndcs]
-    bRankEnv <- rank(permuted_env, ties.method = "random")
-    bSrti <- sort(permuted_env)
+    # Call C++ for the core computation
+    bt.list.cpp <- tboot_cpp(env, as.matrix(taxa), ivTot, as.integer(minSplt), as.integer(nPerm), imax)
 
-    bSrti2 <- sort(bRankEnv)
-    bEnvCls <- bSrti[minSplt:(numUnit - minSplt)]
-    nClass <- length(bEnvCls)
-    boot.env <- matrix(NA, numUnit, nClass)
-    for (c in 1:nClass) {
-      boot.env[, c] <- (bRankEnv > bSrti2[minSplt + (c - 1)]) + 1
-    }
+    bt.metrics.mat <- bt.list.cpp[[1]]
+    ivzs <- bt.list.cpp[[2]]
+    bSrti <- bt.list.cpp[[3]]
+    rspdr <- bt.list.cpp[[4]]
 
-    # create temporary matrix for storing z scores and group assignments
-    ivzScores.bt <- getivz(boot.env, booted_taxa, ivTot, nPerm = nPerm, imax = imax, numClass = nClass)
-
-    # replace NaNs with 0s
-    for (k in (n_taxa + 1):(n_taxa * 3)) {
-      for (j in 1:nClass) {
-        if (is.nan(ivzScores.bt[k, j]))  ivzScores.bt[k, j] <- 0
-      }
-    }
-
-
-    bt.metrics <- matrix(NA, n_taxa, 4)  #output matrix of metrics
-
-    # obtain env level for IndVal maxima and group assignment for
-    # each replicate bt.metric 1:4 include maxgrp, env.cp (either
-    # imax or zmax), z.score, iv.p
-    for (j in 1:n_taxa) {
-      if (imax == FALSE) {
-        maxSplt <- which.max(abs(ivzScores.bt[j + (n_taxa),]))
-      } else {
-        maxSplt <- which.max(abs(ivzScores.bt[j + (n_taxa * 2), ]))
-      }
-      bt.metrics[j, 1] <- ivzScores.bt[j, maxSplt]
-      bt.metrics[j, 2] <- (bSrti[minSplt + maxSplt - 1] + bSrti[minSplt + maxSplt])/2
-      bt.metrics[j, 3] <- ivzScores.bt[j + n_taxa, maxSplt]
-      bt.metrics[j, 4] <- ivzScores.bt[(j + (n_taxa * 3)), maxSplt]
-    }
-
-    # obtain z scores and response direction
-    ivzs <- ivzScores.bt[(n_taxa+1):(2*n_taxa),]
-    rspdr <- ivzScores.bt[1:n_taxa,]
     if (memory) {
       if (!file.exists("temp.dir")) dir.create("temp.dir")
-      write.table(ivzs, glue("temp.dir/boot.z.{rnum}.{i}.txt"), append = F, row.names = F, col.names = F)
-      write.table(rspdr, glue("temp.dir/boot.rd.{rnum}.{i}.txt"), append = F, row.names = F, col.names = F)
-      write.table(bSrti, glue("temp.dir/bSrti.{rnum}.{i}.txt"), append = F, row.names = F, col.names = F)
-      bt.list <- list(bt.metrics, rnum)
+      write.table(ivzs, glue("temp.dir/boot.z.{rnum}.{i}.txt"), append = FALSE, row.names = FALSE, col.names = FALSE)
+      write.table(rspdr, glue("temp.dir/boot.rd.{rnum}.{i}.txt"), append = FALSE, row.names = FALSE, col.names = FALSE)
+      write.table(bSrti, glue("temp.dir/bSrti.{rnum}.{i}.txt"), append = FALSE, row.names = FALSE, col.names = FALSE)
+      bt.list <- list(bt.metrics.mat, rnum)
     } else {
-      bt.list <- list(bt.metrics, ivzs, bSrti, rspdr)
+      bt.list <- list(bt.metrics.mat, ivzs, bSrti, rspdr)
     }
     boot.metrics[i] <- list(bt.list)
   }
@@ -384,8 +341,7 @@ small.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   bEnvMatrix <- array(NA, c(nBoot, numUnit))
   rspdir     <- array(NA, c(nTaxa, numClass, nBoot))
 
-  # create empty matrices to store env values of filtered and unfiltered sum(z) maxima by bootstrap replicate
-  sumzBoot <- sumzBoot.f <- maxSumz <- maxFsumz <- matrix(NA, nBoot, 2)
+  # maxSumz and maxFsumz are computed by small_boot_sumz_cpp below
 
   # create an array across all bootreps from parallel or sequenced result list
   # aseq <- 0
@@ -437,28 +393,14 @@ small.boot <- function(ivz.bt.list, bSeq, sppmax, obs1, obs2, nBoot,
   sppSub1 <- which(sppmax[, 16] == 1)
   sppSub2 <- which(sppmax[, 16] == 2)
 
-  for (i in 1:nBoot) {
-    sumzBoot[i, 1] <- which.max(colSums(zArray[, , i] * (rspdir[, , i] == 1), na.rm = T))
-    if (length(sppSub1) > 1) {
-      sumzBoot.f[i, 1] <- which.max(colSums(zArray[sppSub1, , i] * (rspdir[sppSub1, , i] == 1), na.rm = T))
-    } else {
-      if (length(sppSub1) > 0) {
-        sumzBoot.f[i, 1] <- which.max(zArray[sppSub1, , i] * (rspdir[sppSub1, , i] == 1))
-      }
-    }
-    sumzBoot[i, 2] <- which.max(colSums(zArray[, , i] * (rspdir[, , i] == 2), na.rm = T))
-    if (length(sppSub2) > 1) {
-      sumzBoot.f[i, 2] <- which.max(colSums(zArray[sppSub2, , i] * (rspdir[sppSub2, , i] == 2), na.rm = T))
-    } else {
-      if (length(sppSub2) > 0) {
-        sumzBoot.f[i, 2] <- which.max(zArray[sppSub2, , i] * (rspdir[sppSub2, , i] == 2))
-      }
-    }
-     maxSumz[i, 1] <- (bEnvMatrix[i,   (minSplt + sumzBoot[i, 1]) - 1] + bEnvMatrix[i,   (minSplt + sumzBoot[i, 1])])/2
-     maxSumz[i, 2] <- (bEnvMatrix[i,   (minSplt + sumzBoot[i, 2]) - 1] + bEnvMatrix[i,   (minSplt + sumzBoot[i, 2])])/2
-    maxFsumz[i, 1] <- (bEnvMatrix[i, (minSplt + sumzBoot.f[i, 1]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot.f[i, 1])])/2
-    maxFsumz[i, 2] <- (bEnvMatrix[i, (minSplt + sumzBoot.f[i, 2]) - 1] + bEnvMatrix[i, (minSplt + sumzBoot.f[i, 2])])/2
-  }
+  sumz_result <- small_boot_sumz_cpp(
+    as.numeric(zArray), as.numeric(rspdir), bEnvMatrix,
+    as.integer(sppSub1), as.integer(sppSub2),
+    as.integer(nTaxa), as.integer(numClass), as.integer(nBoot),
+    as.integer(minSplt)
+  )
+  maxSumz <- sumz_result$maxSumz
+  maxFsumz <- sumz_result$maxFsumz
   list(sppSub1, sppSub2, sppmax, maxSumz, maxFsumz, metricArray)
 }
 

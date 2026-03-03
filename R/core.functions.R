@@ -49,6 +49,11 @@
 
 #' @rdname indval
 indval <- function(grp, spp, allscores = FALSE) {
+  if (!allscores) {
+    return(indval_cpp(as.integer(grp), as.matrix(spp)))
+  }
+
+  # R fallback for allscores=TRUE (rarely used)
   numTxa <- ncol(spp)
 
   i1 <- which(grp == 1)
@@ -89,11 +94,7 @@ indval <- function(grp, spp, allscores = FALSE) {
   maxcls <- maxcls + (max1 * 1)
   maxcls <- maxcls + (max2 * 2)
 
-  ivout <- cbind(maxcls, ivmax)
-  if (identical(allscores, TRUE)) {
-    ivout <- cbind(maxcls, ivmax, iv1, iv2, relabnd1, relabnd2)
-  }
-  ivout
+  cbind(maxcls, ivmax, iv1, iv2, relabnd1, relabnd2)
 }
 
 
@@ -129,49 +130,7 @@ indval <- function(grp, spp, allscores = FALSE) {
 
 #' @rdname indval
 indvals <- function(grp, spp, allscores = FALSE) {
-  numTxa <- ncol(spp)
-
-  i1 <- which(grp == 1)
-  i2 <- which(grp == 2)
-
-  if (length(i1) > 1) {
-    smabnd1 <- colSums(spp[i1, ])
-    frq1 <- colMeans(spp[i1, ] > 0)
-  } else {
-    smabnd1 <- spp[i1, ]
-    frq1 <- (spp[i1, ] > 0) * 1
-  }
-
-  if (length(i2) > 1) {
-    smabnd2 <- colSums(spp[i2, ])
-    frq2 <- colMeans(spp[i2, ] > 0)
-  } else {
-    smabnd2 <- spp[i2, ]
-    frq1 <- (spp[i2, ] > 0) * 1
-  }
-
-  m1 <- which(smabnd1 == 0)
-  m2 <- which(smabnd2 == 0)
-
-  relabnd1 <- smabnd1/(smabnd1 + smabnd2)
-  relabnd2 <- smabnd2/(smabnd1 + smabnd2)
-
-  relabnd1[m1] <- 0
-  relabnd2[m2] <- 0
-
-  iv1 <- (relabnd1 * frq1) * 100
-  iv2 <- (relabnd2 * frq2) * 100
-
-  ivmax <- pmax(iv1, iv2)
-  maxcls <- rep(0, numTxa)
-  max1 <- iv1 > iv2
-  max2 <- iv2 > iv1
-  maxcls <- maxcls + (max1 * 1)
-  maxcls <- maxcls + (max2 * 2)
-
-  ivout <- cbind(maxcls, ivmax)
-  if (allscores) ivsout <- cbind(maxcls, ivmax, iv1, iv2, relabnd1, relabnd2)
-  ivout
+  indvals_cpp(as.integer(grp), as.matrix(spp))
 }
 
 
@@ -255,33 +214,8 @@ indvals <- function(grp, spp, allscores = FALSE) {
 
 #' @rdname indvalp
 indvalp <- function(grpMatrix, spp) {
-  grp1Matrix <- (grpMatrix == 1) * 1
-  grp2Matrix <- (grpMatrix == 2) * 1
-
-  grp1MeansOp <- (1/colSums(grp1Matrix)) * t(grp1Matrix)
-  grp2MeansOp <- (1/colSums(grp2Matrix)) * t(grp2Matrix)
-
-  mnabnd1 <- grp1MeansOp %*% spp
-  mnabnd2 <- grp2MeansOp %*% spp
-
-  sppCnts <- (spp > 0)
-  frq1 <- grp1MeansOp %*% sppCnts
-  frq2 <- grp2MeansOp %*% sppCnts
-
-  zeroIdx1 <- which(mnabnd1 == 0)
-  zeroIdx2 <- which(mnabnd2 == 0)
-
-  mnabndSumInv <- 1/(mnabnd1 + mnabnd2)
-  relabnd1 <- mnabnd1 * mnabndSumInv
-  relabnd2 <- mnabnd2 * mnabndSumInv
-
-  relabnd1[zeroIdx1] <- 0
-  relabnd2[zeroIdx2] <- 0
-
-  iv1 <- (relabnd1 * frq1) * 100
-  iv2 <- (relabnd2 * frq2) * 100
-
-  ivmax <- pmax(iv1, iv2)
+  storage.mode(grpMatrix) <- "integer"
+  indvalp_cpp(grpMatrix, as.matrix(spp))
 }
 
 
@@ -298,34 +232,8 @@ indvalp <- function(grpMatrix, spp) {
 
 #' @rdname indvalp
 indvalps <- function(grpMatrix, spp) {
-
-  grp1Matrix <- (grpMatrix == 1) * 1
-  grp2Matrix <- (grpMatrix == 2) * 1
-
-  grp1MeansOp <- (1/colSums(grp1Matrix)) * t(grp1Matrix)
-  grp2MeansOp <- (1/colSums(grp2Matrix)) * t(grp2Matrix)
-
-  smabnd1 <- t(grp1Matrix) %*% spp
-  smabnd2 <- t(grp2Matrix) %*% spp
-
-  sppCnts <- (spp > 0)
-  frq1 <- grp1MeansOp %*% sppCnts
-  frq2 <- grp2MeansOp %*% sppCnts
-
-  zeroIdx1 <- which(smabnd1 == 0)
-  zeroIdx2 <- which(smabnd2 == 0)
-
-  abndInv <- 1/(smabnd1 + smabnd2)
-  relabnd1 <- smabnd1 * abndInv
-  relabnd2 <- smabnd2 * abndInv
-
-  relabnd1[zeroIdx1] <- 0
-  relabnd2[zeroIdx2] <- 0
-
-  iv1 <- (relabnd1 * frq1) * 100
-  iv2 <- (relabnd2 * frq2) * 100
-
-  ivmax <- pmax(iv1, iv2)
+  storage.mode(grpMatrix) <- "integer"
+  indvalps_cpp(grpMatrix, as.matrix(spp))
 }
 
 
@@ -472,47 +380,9 @@ permiv <- function(grp, spp, ivTot = ivTot, nPerm = 250) {
 #' @author M. Baker and R. King
 #' @keywords TITAN Threshold~Indicator~Taxa~Analysis Indicator~Value
 #' @export
-getivz <- function(clss, spp, ivTot = ivTot, nPerm = nPerm, numClass = numClass, imax = imax, messaging = FALSE) {
-
-  numTxa <- ncol(spp)
-  numUnit <- nrow(spp)
-  if (messaging) cli_alert_info("Calculating observed IndVal maxima and class values...")
-
-  # observed IndVal maxima and class values
-  if (ivTot) {
-    if (messaging) cli_alert_info("Calculating IndVals using total relative abundance...")
-    obs <- apply(clss, 2, indvals, spp = spp)
-  } else {
-    if (messaging) cli_alert_info("Calculating IndVals using mean relative abundance...")
-    obs <- apply(clss, 2, indval, spp = spp)
-  }
-
-  if (messaging) cli_alert_info("Permuting IndVal scores...")
-
-  # permuted IndVal scores
-  # spp <- as.matrix(spp)
-  piv <- array(
-    apply(clss, 2, permiv, spp = spp, ivTot = ivTot, nPerm = nPerm),
-    c(nPerm, numTxa, numClass)
-  )
-
-  # calculate IndVal z-scores
-  mniv <- colMeans(piv, dims = 1, na.rm = TRUE)
-  sdiv <- apply(piv, c(2, 3), sd)
-  sdiv[which(sdiv < 0.1)] <- 1
-  obsiv <- obs[(numTxa + 1):(2*numTxa), ]
-  obsmx <- obs[1:numTxa, ]
-  ivz <- (obsiv - mniv) / sdiv
-
-  # calculate p-value
-  iv.p <- matrix(NA, nrow(obsiv), ncol(obsiv))
-  for (j in 1:ncol(obsiv)) {
-    for (i in 1:nrow(obsiv)) {
-      iv.p[i, j] <- (sum(piv[, i, j] >= obsiv[i, j], na.rm = TRUE) + 1)/nPerm
-    }
-  }
-
-  rbind(obsmx, ivz, obsiv, iv.p)
+getivz <- function(clss, spp, ivTot, nPerm, numClass, imax = TRUE, messaging = FALSE) {
+  storage.mode(clss) <- "integer"
+  getivz_cpp(clss, as.matrix(spp), ivTot, as.integer(nPerm), as.integer(numClass), imax)
 }
 
 

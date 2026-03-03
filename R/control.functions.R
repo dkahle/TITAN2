@@ -139,10 +139,7 @@ env.part <- function(env, taxa, minSplt = minSplt, messaging = TRUE) {
   numTxa <- ncol(taxa)
   envcls <- srtEnv[(minSplt):(numUnit - minSplt)]
   numClass <- length(envcls)
-  eclass <- matrix(NA, numUnit, numClass)
-  for (c in 1:numClass) {
-    eclass[, c] <- ((rankEnv > srtEnv2[minSplt + (c - 1)]) * 1) + 1
-  }
+  eclass <- env_part_cpp(as.integer(rankEnv), as.integer(srtEnv2), numUnit, minSplt)
   list(env, numUnit, numTxa, numClass, srtEnv, envcls, eclass)
 }
 

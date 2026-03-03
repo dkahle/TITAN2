@@ -141,7 +141,7 @@ titan <- function(env, txa, minSplt = 5, numPerm = 250, boot = TRUE,
 
   # run IndVal calculation and permute for z score computations,
   # track processing time
-  ivzScores <- getivz(eclass, taxa, ivTot, numPerm, numClass, messaging = TRUE) # not fast, < 5s for glades
+  ivzScores <- getivz(eclass, taxa, ivTot, numPerm, numClass, imax = imax, messaging = TRUE) # not fast, < 5s for glades
 
   # sum IndVal z scores across all taxa
   ivz <- ivzsums(ivzScores) # fast

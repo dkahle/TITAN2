@@ -1,0 +1,548 @@
+---
+title: "Validating the C++ (Rcpp) Implementation"
+author: "David Kahle"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    latex_engine: xelatex
+vignette: >
+  %\VignetteIndexEntry{Validating the C++ (Rcpp) Implementation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, comment = "#")
+```
+
+
+## Overview
+
+TITAN2 v3.0 reimplements core computational functions in C++ via Rcpp and
+RcppArmadillo for substantially improved performance. This vignette validates
+that the new C++ implementations produce results equivalent to the original
+pure-R functions.
+
+We proceed by defining each original pure-R function as a local "reference"
+implementation, then comparing its output against the corresponding C++ version
+on the included Everglades dataset.
+
+
+## Setup
+
+```{r load}
+library(TITAN2)
+data(glades.env)
+data(glades.taxa)
+env <- glades.env[[1]]
+taxa <- data.matrix(glades.taxa)
+```
+
+
+## Reference R Implementations
+
+The following functions reproduce the original pure-R code from TITAN2 prior to
+the Rcpp rewrite. They are defined here as local functions with `_R` suffixes so
+we can compare them against the new C++ versions.
+
+### `indval_R` — Single-partition IndVal (mean abundance)
+
+```{r indval_R}
+indval_R <- function(grp, spp, allscores = FALSE) {
+  numTxa <- ncol(spp)
+  i1 <- which(grp == 1)
+  i2 <- which(grp == 2)
+  if (length(i1) > 1) {
+    mnabnd1 <- colMeans(spp[i1, ])
+    frq1 <- colMeans(spp[i1, ] > 0)
+  } else {
+    mnabnd1 <- spp[i1, ]
+    frq1 <- (spp[i1, ] > 0) * 1
+  }
+  if (length(i2) > 1) {
+    mnabnd2 <- colMeans(spp[i2, ])
+    frq2 <- colMeans(spp[i2, ] > 0)
+  } else {
+    mnabnd2 <- spp[i2, ]
+    frq2 <- (spp[i2, ] > 0) * 1
+  }
+  m1 <- which(mnabnd1 == 0)
+  m2 <- which(mnabnd2 == 0)
+  relabnd1 <- mnabnd1 / (mnabnd1 + mnabnd2)
+  relabnd2 <- mnabnd2 / (mnabnd1 + mnabnd2)
+  relabnd1[m1] <- 0
+  relabnd2[m2] <- 0
+  iv1 <- (relabnd1 * frq1) * 100
+  iv2 <- (relabnd2 * frq2) * 100
+  ivmax <- pmax(iv1, iv2)
+  maxcls <- rep(0, numTxa)
+  max1 <- iv1 > iv2
+  max2 <- iv2 > iv1
+  maxcls <- maxcls + (max1 * 1)
+  maxcls <- maxcls + (max2 * 2)
+  ivout <- cbind(maxcls, ivmax)
+  if (identical(allscores, TRUE)) {
+    ivout <- cbind(maxcls, ivmax, iv1, iv2, relabnd1, relabnd2)
+  }
+  ivout
+}
+```
+
+### `indvals_R` — Single-partition IndVal (total abundance)
+
+Note: the original R code contained a bug on line 150 where `frq1` was
+assigned instead of `frq2` when group 2 had a single element. The C++
+implementation corrects this bug.
+
+```{r indvals_R}
+indvals_R <- function(grp, spp) {
+  numTxa <- ncol(spp)
+  i1 <- which(grp == 1)
+  i2 <- which(grp == 2)
+  if (length(i1) > 1) {
+    smabnd1 <- colSums(spp[i1, ])
+    frq1 <- colMeans(spp[i1, ] > 0)
+  } else {
+    smabnd1 <- spp[i1, ]
+    frq1 <- (spp[i1, ] > 0) * 1
+  }
+  if (length(i2) > 1) {
+    smabnd2 <- colSums(spp[i2, ])
+    frq2 <- colMeans(spp[i2, ] > 0)
+  } else {
+    smabnd2 <- spp[i2, ]
+    frq1 <- (spp[i2, ] > 0) * 1  # <-- original bug: should be frq2
+  }
+  m1 <- which(smabnd1 == 0)
+  m2 <- which(smabnd2 == 0)
+  relabnd1 <- smabnd1 / (smabnd1 + smabnd2)
+  relabnd2 <- smabnd2 / (smabnd1 + smabnd2)
+  relabnd1[m1] <- 0
+  relabnd2[m2] <- 0
+  iv1 <- (relabnd1 * frq1) * 100
+  iv2 <- (relabnd2 * frq2) * 100
+  ivmax <- pmax(iv1, iv2)
+  maxcls <- rep(0, numTxa)
+  max1 <- iv1 > iv2
+  max2 <- iv2 > iv1
+  maxcls <- maxcls + (max1 * 1)
+  maxcls <- maxcls + (max2 * 2)
+  cbind(maxcls, ivmax)
+}
+
+# Bug-fixed version for comparison with C++
+indvals_R_fixed <- function(grp, spp) {
+  numTxa <- ncol(spp)
+  i1 <- which(grp == 1)
+  i2 <- which(grp == 2)
+  if (length(i1) > 1) {
+    smabnd1 <- colSums(spp[i1, ])
+    frq1 <- colMeans(spp[i1, ] > 0)
+  } else {
+    smabnd1 <- spp[i1, ]
+    frq1 <- (spp[i1, ] > 0) * 1
+  }
+  if (length(i2) > 1) {
+    smabnd2 <- colSums(spp[i2, ])
+    frq2 <- colMeans(spp[i2, ] > 0)
+  } else {
+    smabnd2 <- spp[i2, ]
+    frq2 <- (spp[i2, ] > 0) * 1  # <-- bug fixed
+  }
+  m1 <- which(smabnd1 == 0)
+  m2 <- which(smabnd2 == 0)
+  relabnd1 <- smabnd1 / (smabnd1 + smabnd2)
+  relabnd2 <- smabnd2 / (smabnd1 + smabnd2)
+  relabnd1[m1] <- 0
+  relabnd2[m2] <- 0
+  iv1 <- (relabnd1 * frq1) * 100
+  iv2 <- (relabnd2 * frq2) * 100
+  ivmax <- pmax(iv1, iv2)
+  maxcls <- rep(0, numTxa)
+  max1 <- iv1 > iv2
+  max2 <- iv2 > iv1
+  maxcls <- maxcls + (max1 * 1)
+  maxcls <- maxcls + (max2 * 2)
+  cbind(maxcls, ivmax)
+}
+```
+
+### `indvalp_R` — Permuted IndVal via matrix multiply (mean abundance)
+
+```{r indvalp_R}
+indvalp_R <- function(grpMatrix, spp) {
+  grp1Matrix <- (grpMatrix == 1) * 1
+  grp2Matrix <- (grpMatrix == 2) * 1
+  grp1MeansOp <- (1 / colSums(grp1Matrix)) * t(grp1Matrix)
+  grp2MeansOp <- (1 / colSums(grp2Matrix)) * t(grp2Matrix)
+  mnabnd1 <- grp1MeansOp %*% spp
+  mnabnd2 <- grp2MeansOp %*% spp
+  sppCnts <- (spp > 0)
+  frq1 <- grp1MeansOp %*% sppCnts
+  frq2 <- grp2MeansOp %*% sppCnts
+  zeroIdx1 <- which(mnabnd1 == 0)
+  zeroIdx2 <- which(mnabnd2 == 0)
+  mnabndSumInv <- 1 / (mnabnd1 + mnabnd2)
+  relabnd1 <- mnabnd1 * mnabndSumInv
+  relabnd2 <- mnabnd2 * mnabndSumInv
+  relabnd1[zeroIdx1] <- 0
+  relabnd2[zeroIdx2] <- 0
+  iv1 <- (relabnd1 * frq1) * 100
+  iv2 <- (relabnd2 * frq2) * 100
+  pmax(iv1, iv2)
+}
+```
+
+### `indvalps_R` — Permuted IndVal via matrix multiply (total abundance)
+
+```{r indvalps_R}
+indvalps_R <- function(grpMatrix, spp) {
+  grp1Matrix <- (grpMatrix == 1) * 1
+  grp2Matrix <- (grpMatrix == 2) * 1
+  grp1MeansOp <- (1 / colSums(grp1Matrix)) * t(grp1Matrix)
+  grp2MeansOp <- (1 / colSums(grp2Matrix)) * t(grp2Matrix)
+  smabnd1 <- t(grp1Matrix) %*% spp
+  smabnd2 <- t(grp2Matrix) %*% spp
+  sppCnts <- (spp > 0)
+  frq1 <- grp1MeansOp %*% sppCnts
+  frq2 <- grp2MeansOp %*% sppCnts
+  zeroIdx1 <- which(smabnd1 == 0)
+  zeroIdx2 <- which(smabnd2 == 0)
+  abndInv <- 1 / (smabnd1 + smabnd2)
+  relabnd1 <- smabnd1 * abndInv
+  relabnd2 <- smabnd2 * abndInv
+  relabnd1[zeroIdx1] <- 0
+  relabnd2[zeroIdx2] <- 0
+  iv1 <- (relabnd1 * frq1) * 100
+  iv2 <- (relabnd2 * frq2) * 100
+  pmax(iv1, iv2)
+}
+```
+
+### `getivz_R` — Full IndVal z-score computation
+
+```{r getivz_R}
+permiv_R <- function(grp, spp, ivTot, nPerm = 250) {
+  grpRandMatrix <- replicate(nPerm, sample(grp))
+  if (ivTot) {
+    indvalps_R(grpRandMatrix, spp)
+  } else {
+    indvalp_R(grpRandMatrix, spp)
+  }
+}
+
+getivz_R <- function(clss, spp, ivTot, nPerm, numClass, imax) {
+  numTxa <- ncol(spp)
+  numUnit <- nrow(spp)
+
+  if (ivTot) {
+    obs <- apply(clss, 2, indvals_R_fixed, spp = spp)
+  } else {
+    obs <- apply(clss, 2, indval_R, spp = spp)
+  }
+
+  piv <- array(
+    apply(clss, 2, permiv_R, spp = spp, ivTot = ivTot, nPerm = nPerm),
+    c(nPerm, numTxa, numClass)
+  )
+
+  mniv <- colMeans(piv, dims = 1, na.rm = TRUE)
+  sdiv <- apply(piv, c(2, 3), sd)
+  sdiv[which(sdiv < 0.1)] <- 1
+  obsiv <- obs[(numTxa + 1):(2 * numTxa), ]
+  obsmx <- obs[1:numTxa, ]
+  ivz <- (obsiv - mniv) / sdiv
+
+  iv.p <- matrix(NA, nrow(obsiv), ncol(obsiv))
+  for (j in 1:ncol(obsiv)) {
+    for (i in 1:nrow(obsiv)) {
+      iv.p[i, j] <- (sum(piv[, i, j] >= obsiv[i, j], na.rm = TRUE) + 1) / nPerm
+    }
+  }
+
+  rbind(obsmx, ivz, obsiv, iv.p)
+}
+```
+
+### `env_part_R` — Environmental partitioning loop
+
+```{r env_part_R}
+env_part_loop_R <- function(rankEnv, srtEnv2, numUnit, minSplt) {
+  numClass <- numUnit - 2 * minSplt + 1
+  eclass <- matrix(NA, numUnit, numClass)
+  for (c in 1:numClass) {
+    eclass[, c] <- ((rankEnv > srtEnv2[minSplt + (c - 1)]) * 1) + 1
+  }
+  eclass
+}
+```
+
+
+## Test 1: `indval` — Single-partition IndVal (mean abundance)
+
+```{r test_indval}
+minSplt <- 5L
+
+# Create a partition at the midpoint
+set.seed(42)
+rankEnv <- rank(env, ties.method = "random")
+srtEnv2 <- sort(rankEnv)
+numUnit <- nrow(taxa)
+mid <- as.integer(numUnit / 2)
+grp <- ((rankEnv > srtEnv2[mid]) * 1) + 1
+
+result_R   <- indval_R(grp, taxa)
+result_cpp <- TITAN2:::indval(grp, taxa)
+
+cat("indval: max absolute difference =", max(abs(result_R - result_cpp)), "\n")
+stopifnot(all.equal(unname(result_R), unname(result_cpp), tolerance = 1e-12))
+cat("PASS: indval_cpp matches indval_R exactly\n")
+```
+
+
+## Test 2: `indvals` — Single-partition IndVal (total abundance)
+
+The C++ implementation fixes a bug in the original R code where `frq1` was
+assigned instead of `frq2` when group 2 had a single element. For the glades
+dataset (where groups always have multiple elements), the bug does not manifest,
+so the buggy and fixed versions agree.
+
+```{r test_indvals}
+result_R_buggy <- indvals_R(grp, taxa)
+result_R_fixed <- indvals_R_fixed(grp, taxa)
+result_cpp     <- TITAN2:::indvals(grp, taxa)
+
+cat("indvals (buggy R vs fixed R):", max(abs(result_R_buggy - result_R_fixed)), "\n")
+cat("indvals (fixed R vs C++):    ", max(abs(result_R_fixed - result_cpp)), "\n")
+stopifnot(all.equal(unname(result_R_fixed), unname(result_cpp), tolerance = 1e-12))
+cat("PASS: indvals_cpp matches bug-fixed indvals_R\n")
+```
+
+
+## Test 3: `indvalp` — Permuted IndVal (mean abundance)
+
+```{r test_indvalp}
+set.seed(42)
+grpRandMatrix <- replicate(50, sample(grp))
+
+result_R   <- indvalp_R(grpRandMatrix, taxa)
+storage.mode(grpRandMatrix) <- "integer"
+result_cpp <- TITAN2:::indvalp(grpRandMatrix, taxa)
+
+cat("indvalp: max absolute difference =", max(abs(result_R - result_cpp)), "\n")
+stopifnot(all.equal(unname(result_R), unname(result_cpp), tolerance = 1e-10))
+cat("PASS: indvalp_cpp matches indvalp_R\n")
+```
+
+
+## Test 4: `indvalps` — Permuted IndVal (total abundance)
+
+```{r test_indvalps}
+set.seed(42)
+grpRandMatrix <- replicate(50, sample(grp))
+
+result_R   <- indvalps_R(grpRandMatrix, taxa)
+storage.mode(grpRandMatrix) <- "integer"
+result_cpp <- TITAN2:::indvalps(grpRandMatrix, taxa)
+
+cat("indvalps: max absolute difference =", max(abs(result_R - result_cpp)), "\n")
+stopifnot(all.equal(unname(result_R), unname(result_cpp), tolerance = 1e-10))
+cat("PASS: indvalps_cpp matches indvalps_R\n")
+```
+
+
+## Test 5: `env_part` — Environmental partitioning
+
+```{r test_env_part}
+set.seed(42)
+rankEnv_int  <- as.integer(rank(env, ties.method = "random"))
+srtEnv2_int  <- as.integer(sort(rankEnv_int))
+
+result_R   <- env_part_loop_R(rankEnv_int, srtEnv2_int, numUnit, minSplt)
+result_cpp <- TITAN2:::env_part_cpp(rankEnv_int, srtEnv2_int, numUnit, minSplt)
+
+cat("env_part: dimensions R =", dim(result_R), ", C++ =", dim(result_cpp), "\n")
+cat("env_part: max absolute difference =", max(abs(result_R - result_cpp)), "\n")
+stopifnot(all.equal(unname(result_R), unname(result_cpp)))
+cat("PASS: env_part_cpp matches env_part_R exactly\n")
+```
+
+
+## Test 6: `getivz` — Full IndVal z-score computation
+
+Because `getivz` involves permutation, the R and C++ versions draw different
+random numbers even with the same seed (the C++ version fuses the loop
+internally). We validate structural equivalence (same dimensions, same observed
+IndVals) and statistical equivalence (z-scores and p-values are close in
+distribution).
+
+```{r test_getivz}
+set.seed(42)
+e.prt <- TITAN2:::env.part(env, taxa, minSplt = minSplt, messaging = FALSE)
+eclass   <- e.prt[[7]]
+numClass <- e.prt[[4]]
+
+# Run both with same seed — note they will still differ due to
+# different permutation ordering between R and C++ implementations
+set.seed(123)
+result_R <- getivz_R(eclass, taxa, ivTot = FALSE, nPerm = 250,
+                     numClass = numClass, imax = FALSE)
+
+set.seed(123)
+result_cpp <- getivz(eclass, taxa, ivTot = FALSE, nPerm = 250,
+                     numClass = numClass, imax = FALSE)
+
+numTxa <- ncol(taxa)
+cat("Dimensions match:", identical(dim(result_R), dim(result_cpp)), "\n")
+
+# Observed IndVals (rows numTxa*2+1 to numTxa*3) should match exactly
+# because they don't involve permutation
+obsiv_R   <- result_R[(2*numTxa + 1):(3*numTxa), ]
+obsiv_cpp <- result_cpp[(2*numTxa + 1):(3*numTxa), ]
+cat("Observed IndVals: max difference =", max(abs(obsiv_R - obsiv_cpp)), "\n")
+stopifnot(all.equal(unname(obsiv_R), unname(obsiv_cpp), tolerance = 1e-10))
+
+# Group membership (rows 1:numTxa) should match exactly
+grp_R   <- result_R[1:numTxa, ]
+grp_cpp <- result_cpp[1:numTxa, ]
+cat("Group membership: exact match =", all.equal(unname(grp_R), unname(grp_cpp)), "\n")
+stopifnot(all.equal(unname(grp_R), unname(grp_cpp)))
+
+# Z-scores will differ due to different permutation draws, but should
+# be statistically similar. Compare correlation of z-scores.
+z_R   <- result_R[(numTxa + 1):(2*numTxa), ]
+z_cpp <- result_cpp[(numTxa + 1):(2*numTxa), ]
+cor_z <- cor(as.vector(z_R), as.vector(z_cpp))
+cat("Z-score correlation (R vs C++):", round(cor_z, 4), "\n")
+stopifnot(cor_z > 0.95)
+
+# P-values: compare distributions
+p_R   <- result_R[(3*numTxa + 1):(4*numTxa), ]
+p_cpp <- result_cpp[(3*numTxa + 1):(4*numTxa), ]
+cor_p <- cor(as.vector(p_R), as.vector(p_cpp))
+cat("P-value correlation (R vs C++):", round(cor_p, 4), "\n")
+stopifnot(cor_p > 0.95)
+
+cat("PASS: getivz_cpp structurally and statistically equivalent to getivz_R\n")
+```
+
+
+## Test 7: Full `titan()` Integration
+
+Run the full TITAN pipeline twice with the same seed to verify end-to-end
+consistency.
+
+```{r test_titan_full, cache=TRUE}
+set.seed(42)
+result <- titan(glades.env, glades.taxa,
+  minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 10,
+  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
+  ncpus = 1, memory = FALSE, messaging = FALSE
+)
+
+cat("\nOutput structure:\n")
+cat("  sppmax:       ", nrow(result$sppmax), "x", ncol(result$sppmax), "\n")
+cat("  sumz.cp:      ", nrow(result$sumz.cp), "x", ncol(result$sumz.cp), "\n")
+cat("  ivzScores:    ", nrow(result$ivzScores), "x", ncol(result$ivzScores), "\n")
+cat("  ivz:          ", nrow(result$ivz), "x", ncol(result$ivz), "\n")
+cat("  metricArray:  ", paste(dim(result$metricArray), collapse = " x "), "\n")
+cat("  maxSumz:      ", nrow(result$maxSumz), "x", ncol(result$maxSumz), "\n")
+cat("  maxFsumz:     ", nrow(result$maxFsumz), "x", ncol(result$maxFsumz), "\n")
+
+# Verify key properties
+numTxa <- ncol(glades.taxa)
+stopifnot(nrow(result$sppmax) == numTxa)
+stopifnot(ncol(result$sppmax) == 16)
+stopifnot(nrow(result$sumz.cp) == 4)
+stopifnot(ncol(result$sumz.cp) == 6)
+stopifnot(nrow(result$ivzScores) == 4 * numTxa)
+stopifnot(dim(result$metricArray)[1] == numTxa)
+stopifnot(dim(result$metricArray)[2] == 4)
+stopifnot(dim(result$metricArray)[3] == 10)
+
+# Check that pure/reliable taxa are identified
+n_pure_reliable <- sum(result$sppmax[, 16] %in% c(1, 2))
+cat("  Pure & reliable taxa:", n_pure_reliable, "of", numTxa, "\n")
+
+cat("\nPASS: Full titan() pipeline completes successfully with expected output structure\n")
+```
+
+
+## Test 8: Reproducibility (same seed, same result)
+
+```{r test_reproducibility, cache=TRUE}
+set.seed(99)
+run1 <- titan(glades.env, glades.taxa,
+  minSplt = 5, numPerm = 100, boot = TRUE, nBoot = 5,
+  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
+  ncpus = 1, memory = FALSE, messaging = FALSE
+)
+
+set.seed(99)
+run2 <- titan(glades.env, glades.taxa,
+  minSplt = 5, numPerm = 100, boot = TRUE, nBoot = 5,
+  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
+  ncpus = 1, memory = FALSE, messaging = FALSE
+)
+
+cat("sppmax identical:      ", identical(run1$sppmax, run2$sppmax), "\n")
+cat("sumz.cp identical:     ", identical(run1$sumz.cp, run2$sumz.cp), "\n")
+cat("ivzScores identical:   ", identical(run1$ivzScores, run2$ivzScores), "\n")
+cat("ivz identical:         ", identical(run1$ivz, run2$ivz), "\n")
+cat("metricArray identical: ", identical(run1$metricArray, run2$metricArray), "\n")
+cat("maxSumz identical:     ", identical(run1$maxSumz, run2$maxSumz), "\n")
+cat("maxFsumz identical:    ", identical(run1$maxFsumz, run2$maxFsumz), "\n")
+
+stopifnot(identical(run1$sppmax, run2$sppmax))
+stopifnot(identical(run1$ivzScores, run2$ivzScores))
+stopifnot(identical(run1$metricArray, run2$metricArray))
+
+cat("\nPASS: Identical seeds produce identical results\n")
+```
+
+
+## Test 9: Timing Benchmark
+
+```{r benchmark, cache=TRUE}
+# Benchmark the C++ implementation
+set.seed(42)
+t_start <- proc.time()
+result_bench <- titan(glades.env, glades.taxa,
+  minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 25,
+  imax = FALSE, ivTot = FALSE, pur.cut = 0.95, rel.cut = 0.95,
+  ncpus = 1, memory = FALSE, messaging = FALSE
+)
+t_end <- proc.time()
+elapsed <- (t_end - t_start)["elapsed"]
+
+cat("Time for 25 bootstrap replicates:", round(elapsed, 1), "seconds\n")
+cat("Average per replicate:", round(elapsed / 25, 2), "seconds\n")
+cat("Projected time for 500 replicates:", round(elapsed / 25 * 500 / 60, 1), "minutes\n")
+cat("(Original pure-R time for 500 replicates: ~58 minutes)\n")
+```
+
+
+## Summary
+
+All tests confirm that the C++ reimplementation:
+
+1. **Exact equivalence** for deterministic functions (`indval`, `indvals`,
+   `indvalp`, `indvalps`, `env_part`): outputs match the original R
+   implementations to machine precision.
+
+2. **Structural equivalence** for `getivz`: observed IndVals and group
+   membership are identical; z-scores and p-values (which depend on permutation
+   ordering) are statistically equivalent (correlation > 0.95).
+
+3. **End-to-end correctness**: the full `titan()` pipeline produces well-formed
+   output with expected dimensions and properties.
+
+4. **Reproducibility**: identical random seeds produce identical results.
+
+5. **Bug fix**: `indvals_cpp` corrects a variable assignment error in the
+   original `indvals()` where `frq1` was set instead of `frq2` when group 2
+   contained a single element.
+
+```{r session_info}
+sessionInfo()
+```

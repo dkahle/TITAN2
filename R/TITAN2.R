@@ -10,6 +10,8 @@
 #' <doi:10.1899/09-144.1>, and Baker and King (2013) <doi:10.1899/12-142.1>.
 #'
 #' @import parallel ggplot2
+#' @useDynLib TITAN2, .registration = TRUE
+#' @importFrom Rcpp evalCpp
 #' @name TITAN2
 #' @importFrom graphics axis box legend mtext par plot points polygon segments
 #'   symbols

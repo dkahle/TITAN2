@@ -22,12 +22,14 @@ Imports:
     ggridges,
     purrr,
     tibble,
-    cli
+    cli,
+    Rcpp
+LinkingTo: Rcpp, RcppArmadillo
 Suggests: 
     knitr,
     rmarkdown
 License: GPL-2
 LazyData: TRUE
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
