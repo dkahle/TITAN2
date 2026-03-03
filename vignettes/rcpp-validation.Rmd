@@ -432,7 +432,7 @@ cat("PASS: getivz_cpp structurally and statistically equivalent to getivz_R\n")
 Run the full TITAN pipeline twice with the same seed to verify end-to-end
 consistency.
 
-```{r test_titan_full, cache=TRUE}
+```{r test_titan_full}
 set.seed(42)
 result <- titan(glades.env, glades.taxa,
   minSplt = 5, numPerm = 250, boot = TRUE, nBoot = 10,
@@ -470,7 +470,7 @@ cat("\nPASS: Full titan() pipeline completes successfully with expected output s
 
 ## Test 8: Reproducibility (same seed, same result)
 
-```{r test_reproducibility, cache=TRUE}
+```{r test_reproducibility}
 set.seed(99)
 run1 <- titan(glades.env, glades.taxa,
   minSplt = 5, numPerm = 100, boot = TRUE, nBoot = 5,
@@ -503,7 +503,7 @@ cat("\nPASS: Identical seeds produce identical results\n")
 
 ## Test 9: Timing Benchmark
 
-```{r benchmark, cache=TRUE}
+```{r benchmark}
 # Benchmark the C++ implementation
 set.seed(42)
 t_start <- proc.time()
